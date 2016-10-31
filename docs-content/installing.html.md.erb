@@ -1,24 +1,68 @@
 ---
-title: Installing and Configuring YOUR-PRODUCT-NAME
+title: Installing and Configuring Firehose Nozzle for Splunk
 owner: Partners
 ---
 
-This topic describes how to install and configure YOUR-PRODUCT-NAME.
+This topic describes how to install and configure Firehose Nozzle for Splunk.
 
-##<a id='install'></a> Install and Configure YOUR-PRODUCT-NAME
+##<a id='install'></a> Install and Configure Firehose Nozzle for Splunk
 
 1. Download the product file from Pivotal Network.
 
-1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file. 
+1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to
+upload the product file.
 
-1. Click **Add** next to the uploaded YOUR-PRODUCT-NAME tile in the Ops Manager **Available Products** view to add it to your staging area.
+1. Click **Add** next to the uploaded Firehose Nozzle for Splunk tile in the Ops
+Manager **Available Products** view to add it to your staging area.
 
-1. Click the newly added **YOUR-PRODUCT-NAME** tile.
+1. Click the newly added **Firehose Nozzle for Splunk** tile.
 
-1. **This portion of the procedure should tell the users how to configure the newly added tile by walking them through the sections. Which fields should they fill out? What are the different checkboxes? Include relevant screenshots here.** 
+1. [Configure the tile](#configure)
 
 1. Click **Save**.
 
-1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to install YOUR-PRODUCT-NAME tile.
+1. Return to the Ops Manager Installation Dashboard and click **Apply Changes**
+to install Firehose Nozzle for Splunk tile.
 
-**If needed, include additional configuration information below. For example, maybe there are configuration options not required for installation but which could be useful for certain users.**
+##<a id='configure'></a> Configuration
+
+1. **Assign AZs and Networks**: choose placement.
+
+1. **Splunk** **todo: Roy**
+
+1. **Cloud Foundry**:
+  * **Skip SSL validation**: disables SSL certificate validation; inappropriate for a production environment
+  * **Add app info**: when true, the nozzle will connect back to the Cloud Foundry API and query events that
+  have an application GUID to add additional information (app name, space name, space GUID, organization name,
+  organization GUID). This will increase load on the API machines in step with the number of running applications,
+  as each Nozzle will populate a cache of app metadata.
+  * **API user/API password**: The nozzle's credentials. Best practice is to provide a user in
+  keeping with "Rotate, Repave, Repair," so that credentials that can be easily deactivated, rotated,
+  and have minimal access privileges. If left empty, `admin` will be used. The user needs
+  scopes `cloud_controller.admin_read_only` and `doppler.firehose`
+  * **Event Types**: Chose which events the nozzle forwards to the Splunk indexer. See the
+  [dropsonde-protocol](https://github.com/cloudfoundry/dropsonde-protocol/tree/master/events)
+  for more information about the individual events.
+
+1. **Advanced**
+  * **Admin user/Admin password**: The tile creates vms which includes a Splunk forwarder co-located
+  with the nozzle. These are the admin credentials used on these machines.
+  Only be useful in a debugging context.
+  * **HEC Token**: This token is used by the nozzle to connect to its co-located
+  Splunk forwarder. Only be useful in a debugging context.
+  * **Firehose subscription id**: The loggregator will round-robin events across connections
+  having the same id. An operator would only need to change this if some other connection
+  is also using the default value.
+
+1. **Resource config**:
+  * To prevent message loss, a minimum of two `splunk-nozzle` instances should be used.
+  The loggregator system will round robin events across connections having the same subscription id, so
+  to prevent message loss during actions that create and destroy vms (stemcell upgrades, for example),
+  a second instance is needed.
+  * The vm size and instance count will vary depending on which **event types** the nozzle is configured to
+  listen to and if **add app info** is turned on. A good starting point is to have
+  one nozzle for every 10,000 messages per second. See
+  [this mailing list thread](https://lists.cloudfoundry.org/archives/list/cf-dev@lists.cloudfoundry.org/message/F3JF2UNPFHXMY23NLDZBAOYNRBMATODT/)
+  for some suggestions on how to scale the loggregator system's components and measure message loss.
+
+1. **Stemcell**: Ensure the proper stemcell is available.
