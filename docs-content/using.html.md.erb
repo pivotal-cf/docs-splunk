@@ -1,12 +1,65 @@
 ---
-title: Using YOUR-PRODUCT-NAME
+title: Using Firehose Nozzle for Splunk
 owner: Partners
 ---
 
-This topic describes how to use YOUR-PRODUCT-NAME.
+This topic describes how to use Firehose Nozzle for Splunk.
 
-##<a id='using'></a> Using YOUR-PRODUCT-NAME
+##<a id='using'></a> Using Firehose Nozzle for Splunk
 
-**This topic should include any instructions for how to use the service or dashboard created by the tile. Give procedures for how to perform the different functions offered by your product, and provide screenshots where necessary.** 
+**todo: Roy**
 
-**You can also use this section to include information about Architecture and Troubleshooting for known errors. If you include a Troubleshooting section, follow the Symptom/Explanation format used in the [Okta Troubleshooting](http://docs.pivotal.io/p-identity/okta/troubleshooting.html) topic**.
+**This topic should include any instructions
+ for how to use the service or dashboard created by the tile.
+ Give procedures for how to perform the different functions offered by your product,
+ and provide screenshots where necessary.**
+
+##<a id='troubleshooting'></a> Advanced Troubleshooting
+
+#### <a id='architecture'></a> Architecture Overview
+
+Before troubleshooting it's useful to understand exactly what the tile installs.
+Each vm contains two jobs:
+
+* **splunk-nozzle**: This job is a small application that listens to the Cloud Foundry
+[Loggregator's firehose](https://github.com/cloudfoundry/loggregator). When configured
+to, the nozzle will also connect back to the Cloud Foundry API to collect and cache application metadata
+(enriching events with additional information).
+* **splunk-forwarder**: This job is a Splunk
+[heavy forwarder](https://docs.splunk.com/Splexicon:Heavyforwarder). It sets up a local
+[HTTP event collector](http://dev.splunk.com/view/event-collector/SP-CAAAE6M) to
+receive events from the nozzle and then sends them on to the configured indexer.
+
+The logging system will round-robin events across the `splunk-nozzle` vm instances. Each
+`splunk-nozzle` job will send the events it received locally to the
+co-loated `splunk-forwarder`.
+
+#### <a id='walkthrough'></a> Troubleshooting Walkthrough
+
+The pre-requisite to trouble shooting the Nozzle is
+[connecting to the PCF deployment's bosh](http://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html)
+
+Having done that, the [bosh logs](https://bosh.io/docs/job-logs.html)
+command is a useful place to start debugging.
+
+```
+bosh logs splunk-nozzle 0
+```
+
+This will download a local copy of the nozzle's logs and the control script that starts
+the Splunk forwarder deamon. This could illuminate issues. For example, seeing
+
+```
+goroutine 28 [running]:
+...
+panic: Non-ok response code [503] from splunk: {"text":"Server is busy","code":9}
+...
+```
+
+would point an operator toward failure in the communication between the nozzle and
+its co-located Splunk forwarder.
+
+To view the Splunk forwarder's logs, look through
+`/var/vcap/packages/splunk/var/log` on the nozzle's vms.
+
+**todo Roy: add some useful info/links to debugging a Splunk forwarder**
