@@ -50,6 +50,13 @@ to install Firehose Nozzle for Splunk tile.
   Skipping configuration for the nozzle user for versions in which it's required will result in the tile
   failing to install with the message
   `unknown property "splunk_firehose_credentials"...`
+  <br/><br/>
+  `uaac` commands to add a user:
+      1. `uaac target https://uaa.[system domain url]`
+      1. `uaac token client get admin -s [admin client credentials secret]`
+      1. `uaac -t user add splunk-nozzle --password password123 --emails na`
+      1. `uaac -t member add cloud_controller.admin_read_only splunk-nozzle`
+      1. `uaac -t member add doppler.firehose splunk-nozzle`
   * **Event Types**: Chose which events the nozzle forwards to the Splunk indexer. See the
   [dropsonde-protocol](https://github.com/cloudfoundry/dropsonde-protocol/tree/master/events)
   for more information about the individual events.
