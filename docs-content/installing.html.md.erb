@@ -70,6 +70,10 @@ to install Firehose Nozzle for Splunk tile.
   * **Firehose subscription id**: The loggregator will round-robin events across connections
   having the same id. An operator would only need to change this if some other connection
   is also using the default value.
+  * **Key:value tags**: Arbitrary set of key:value pairs in the form `key1:value1,key2:value2,key3:value3`. These are
+  added to index-time payloads. These values tag all events
+  from this foundation. One situation in which this might be useful is
+  differentiating logs from multiple multiple foundations draining into the same Splunk installation.
 
 1. **Resource config**:
   * To prevent message loss, a minimum of two `splunk-nozzle` instances should be used.
