@@ -1,5 +1,5 @@
 ---
-title: Splunk Nozzle for PCF Firehose
+title: Splunk Firehose Nozzle for PCF
 owner: Partners
 ---
 
@@ -7,9 +7,9 @@ This documentation describes the Splunk Nozzle for Pivotal Cloud Foundry (PCF) F
 
 ## <a id="overview"></a>Overview
 
-After [installing](/installing.html) the Splunk Nozzle for PCF Firehose tile, PCF streaming logs & metrics will be forwarded to user-specified Splunk Enterprise target server(s) configured to receive data. PCF operators & Splunk users can then immediately search & analyze PCF Firehose data from their Splunk Enterprise deployment, and easily build reports, dashboards, and alerts on the health of their foundation and the performance of the applications.
+After installing the Splunk Firehose Nozzle for PCF tile, PCF streaming logs & metrics will be forwarded to user-specified Splunk Enterprise indexer(s) configured to receive data. PCF operators & Splunk users can then immediately search & analyze PCF Firehose data from their Splunk Enterprise deployment, and easily build reports, dashboards, and alerts on the health of their foundation and the performance of the applications.
 
-Splunk Nozzle for PCF Firehose includes the following key features:
+Splunk Firehose Nozzle for PCF includes the following key features:
 
 * Simple setup with out of the box data parsing & enrichment for various PCF event types
 * Reliable event delivery by leveraging Splunk Forwarder capabilities from indexer acknowledgement, buffering and load balancing.
@@ -19,12 +19,12 @@ Splunk Nozzle for PCF Firehose includes the following key features:
 ## <a id="snapshot"></a>Product Snapshot
 
 <dl>
-<dt>Firehose Nozzle for Splunk Details:</dt>
+<dt>Splunk Firehose Nozzle for PCF Details:</dt>
 <dd><strong>Version</strong>: v0.2.0 </dd>
 <dd><strong>Release Date</strong>: 2016, November 15</dd>
-<dd><strong>Software component version</strong>: vYOUR-SOFTWARE-COMPONENT-VERSION-NUMBER</dd>
-<dd><strong>Compatible Ops Manager Version(s)</strong>: vYOUR-COMPATIBLE-OPS-MAN-VERSION (Ex. v1.6.x, v1.7.x)</dd>
-<dd><strong>Compatible Elastic Runtime Version(s)</strong>: vYOUR-COMPATIBLE-ELASTIC-RUNTIME-VERSION (Ex. v1.4.x, v1.5.x, v1.6.x)</dd>
+<dd><strong>Software component version</strong>: Splunk Enterprise v6.5.0</dd>
+<dd><strong>Compatible Ops Manager Version(s)</strong>: v1.6.x, v1.7.x, v1.8.x</dd>
+<dd><strong>Compatible Elastic Runtime Version(s)</strong>: todo vYOUR-COMPATIBLE-ELASTIC-RUNTIME-VERSION (Ex. v1.4.x, v1.5.x, v1.6.x) </dd>
 <dd><strong>vSphere support?</strong> Yes</dd>
 <dd><strong>OpenStack support?</strong> Yes</dd>
 <dd><strong>AWS support?</strong> Yes</dd>
@@ -32,22 +32,16 @@ Splunk Nozzle for PCF Firehose includes the following key features:
 
 ## <a id="reqs"></a>Requirements
 
-Firehose Nozzle for Splunk has the following requirements:
+Splunk Firehose Nozzle for PCF has the following requirements:
 
-+ An external Splunk indexer destination for logs and metrics.
++ An external Splunk Enterprise deployment configured to receive data from a Splunk Forwarder.
 
 ## <a id="limitations"></a>Limitations
 
-**todo: Roy List any known limitations.**
+No known limitations.
 
 ## <a id="feedback"></a>Feedback
 
-**todo: Roy**
-
 Please provide any bugs, feature requests, or questions to
-the [Pivotal Cloud Foundry Feedback](mailto:pivotal-cf-feedback@pivotal.io) list or send an
-email to YOUR-SUPPORT-EMAIL.
+the [Pivotal Cloud Foundry Feedback](mailto:pivotal-cf-feedback@pivotal.io) or to [Splunk](mailto:support@splunk.com).
 
-## <a id='license'></a>License
-
-**todo: Roy, List any license information here.**
