@@ -5,11 +5,13 @@ owner: Partners
 
 This topic describes how to use Splunk Firehose Nozzle for PCF. After installing & configuring Splunk Firehose Nozzle for PCF, PCF operators can then navigate in the browser to the URL of their existing Splunk Enterprise deployment to immediately search, report, visualize and alert on PCF Firehose data.
 
-The following assumes basic familiarty on how to run searches, save reports, and create dashboards in Splunk Enterprise. If you're new to Splunk, start with the [Search Tutorial](https://docs.splunk.com/Documentation/Splunk/6.5.0/SearchTutorial/WelcometotheSearchTutorial) which will show you how to search data and create simple dashboards. Refer [here](https://docs.splunk.com/Documentation/Splunk) for complete list of search & report manuals, from generating visualizations to creating alerts based on the health of your foundation and the performance of the applications.
+The following assumes basic familiarty on how to run searches, save reports, and create dashboards in Splunk Enterprise. If you're new to Splunk, start with the [Search Tutorial](https://docs.splunk.com/Documentation/Splunk/6.5.0/SearchTutorial/WelcometotheSearchTutorial) which will show you how to search data and create simple dashboards.
+
+For a starter sample dashboard for operational intelligence, you can [use Splunk Add-on for Cloud Foundry](#add-on) which also includes many pre-built panels and reports to help you quickly build your own custom dashboards to monitor the health of your foundation and the performance of your applications.
 
 ##<a id='search'></a>Search Firehose Data
 
-As part of configuring the tile, the event types to be forwared from PCF firehose to Splunk Enterprise are selected by the user, and will be assigned the following Splunk sourcetypes by default:
+The firehose event types forwared by the Splunk Nozzle are assigned the following Splunk sourcetypes by default:
 
   PCF Firehose event type | Splunk sourcetype
   --- | ---
@@ -20,17 +22,61 @@ As part of configuring the tile, the event types to be forwared from PCF firehos
   CounterEvent | `cf:counterevent`
   ValueMetric | `cf:valuemetric`
 
-You can therefore search relevant event type using Splunk sourcetypes. For example:
+In addition, logs from the Nozzle itself are of sourcetype `cf:splunknozzle`.
 
-Search is the primary way users navigate data in Splunk Enterprise. You can write a search to retrieve events from an index, use statistical commands to calculate metrics and generate reports, search for specific conditions within a rolling time window, identify patterns in your data, predict future trends, and so on. Searches can be saved as reports and used to power dashboard panels.
+You can use these Splunk sourcetypes to search relevant events from the search bar in Splunk Search & Reporting Application. For example:
+
+  * Search for any errors from your foundation:
+
+    `sourcetype=cf:error`
+
+  * Search for router bad gateways:
+
+    `sourcetype=cf:counterevent name="bad_gateways"`
+
+  * Search for metrics of remaining cell disk capacity or memory:
+
+    `sourcetype=cf:valuemetric name=CapacityRemainingDisk`
+    `sourcetype=cf:valuemetric name=CapacityRemainingMemory`
+
+Search is the primary way users navigate data in Splunk Enterprise. You can write a search to retrieve events from an index, use statistical commands to calculate metrics and generate reports, search for specific conditions within a rolling time window, identify patterns in your data, predict future trends, and so on. Searches can be saved as reports and used to power dashboard panels, as covered in next section.
 
 ##<a id='report'></a>Report & Visualize Firehose Data
 
-Build your own reports & dashboards from Firehose events. For a started dashboards, you can [use Splunk Add-on for Cloud Foundry](#add-on)
+To monitor your environment operational health, you can build on these same searches to generate reports & visualizations. For example:
 
-##<a id='alert'></a>Alert on Firehose Data
+  * Report available memory per cell:
+
+    ```
+    sourcetype=cf:valuemetric name=CapacityRemainingMemory
+      | eval valueGB=round(case(unit=="MiB", value/1024, unit=="KiB", value/(1024*1024), unit=="GiB", value),2)
+      | stats min(valueGB) as mem by job_instance
+      | rename mem as "Available Memory (GB)", job_instance as "Job Instance"
+    ```
+    ![Report Example: Available mem per cell](images/report-available-memory-per-cell.png)
+
+  * Report available memory per cell over time:
+
+    ```
+    sourcetype=cf:valuemetric name=CapacityRemainingMemory 
+      | eval valueGB=round(case(unit=="MiB", value/1024, unit=="KiB", value/(1024*1024), unit=="GiB", value),2) 
+      | timechart min(valueGB) by job_instance
+    ```
+    ![Report Example: Available mem per cell over time](images/report-available-memory-per-cell-over-time.png)
+
+  * Report number of routes registered with trend indicator:
+
+    ```
+    sourcetype=cf:valuemetric name=RoutesTotal
+      | timechart avg(value) as numRoutes
+    ```
+    ![Report Example: Total routes with trend](images/report-routes-total-with-trend.png)
+
+To learn more about searching & reporting with Splunk, refer [here](https://docs.splunk.com/Documentation/Splunk) for complete list of manuals, from generating visualizations to creating alerts.
 
 ##<a id='add-on'></a>Use Splunk Add-on for Cloud Foundry
+
+![Report Example: Sample Ops Dashboard](images/dashboard-sample-cloud-foundry-add-on.png)
 
 ##<a id='troubleshooting'></a> Advanced Troubleshooting
 
@@ -46,7 +92,7 @@ to, the nozzle will also connect back to the Cloud Foundry API to collect and ca
 * **splunk-forwarder**: This job is a Splunk
 [heavy forwarder](https://docs.splunk.com/Splexicon:Heavyforwarder). It sets up a local
 [HTTP event collector](http://dev.splunk.com/view/event-collector/SP-CAAAE6M) to
-receive events from the nozzle and then sends them on to the configured indexer.
+receive events from the nozzle and then sends them on to the user-specified pre-configured indexer(s).
 
 The logging system will round-robin events across the `splunk-nozzle` vm instances. Each
 `splunk-nozzle` job will send the events it received locally to the
@@ -81,3 +127,7 @@ To view the Splunk forwarder's logs, look through
 `/var/vcap/packages/splunk/var/log` on the nozzle's vms.
 
 **todo Roy: add some useful info/links to debugging a Splunk forwarder**
+
+```
+sourcetype="cf:splunknozzle" data.error=*
+```
