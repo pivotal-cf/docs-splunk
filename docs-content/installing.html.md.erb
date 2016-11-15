@@ -100,3 +100,124 @@ to install Splunk Firehose Nozzle for PCF tile.
   for some suggestions on how to scale the loggregator system's components and measure message loss.
 
 1. **Stemcell**: Ensure the proper stemcell is available.
+
+##<a id='troubleshooting'></a> Advanced Troubleshooting
+
+#### <a id='architecture'></a> Architecture Overview
+
+Before troubleshooting it's useful to understand exactly what the tile installs.
+Each vm contains two jobs:
+
+* **splunk-nozzle**: This job is a small application that listens to the Cloud Foundry
+[Loggregator's firehose](https://github.com/cloudfoundry/loggregator). When configured
+to, the nozzle will also connect back to the Cloud Foundry API to collect and cache application metadata
+(enriching events with additional information).
+* **splunk-forwarder**: This job is a Splunk
+[heavy forwarder](https://docs.splunk.com/Splexicon:Heavyforwarder). It sets up a local
+[HTTP event collector](http://dev.splunk.com/view/event-collector/SP-CAAAE6M) to
+receive events from the nozzle and then sends them on to the user-specified pre-configured indexer(s).
+
+The logging system will round-robin events across the `splunk-nozzle` vm instances. Each
+`splunk-nozzle` job will send the events it received locally to the co-located `splunk-forwarder`
+
+**Splunk Firehose Nozzle** (or shorthand **Splunk Nozzle**) refers to
+both `splunk-nozzle` and `splunk-forwarder` jobs as one entity in this context.
+
+#### <a id='walkthrough'></a> Troubleshooting Walkthrough
+
+The following assumes you have access to Splunk to run basic searches against index `_internal`
+and the user-specified index for firehose events.
+
+##### 1) Ensure Splunk indexer(s) are listening to data on configured port
+
+  Search internal logs of indexer(s), specifically the TCP input processor, as follows:
+
+  ```
+  index=_internal sourcetype=splunkd component=TcpInputProc 
+  ```
+
+  A correct setup will show a following event at startup time:
+
+  *10-13-2016 17:31:16.226 +0000 INFO  TcpInputProc - Creating fwd data Acceptor for IPv4 port 9997 with SSL*
+
+##### 2) Ensure Splunk nozzle is connected to Splunk indexer(s):
+
+  Search internal logs of nozzle, specifically the TCP output processor, to confirm Splunk nozzle is correctly forwarding:
+
+  ```
+  index=_internal host="splunk-nozzle_*" sourcetype=splunkd component=TcpOutputProc
+  ```
+  A correct setup will show an event as follows:
+
+  *11-04-2016 20:24:13.702 +0000 INFO  TcpOutputProc - Connected to idx=<redacted>:9997 using ACK.*
+
+  If no such event is found, then no data is being forwarded from nozzle. This can be due to mis-configured indexer(s) firewall, or mis-configured SSL settings of either nozzle (forwarder) or indexer(s). Search internal logs of Splunk indexer(s) for any errors:
+
+  ```
+  index=_internal sourcetype=splunkd component=TcpInputProc ERROR
+  ```
+
+  An example error would be:
+  *11-03-2016 22:23:00.046 +0000 ERROR TcpInputProc - Error encountered for connection from src=<redacted>:55713. error:140760FC:SSL routines:SSL23_GET_CLIENT_HELLO:unknown protocol*
+
+  Whether you are using self-signed certificates or certificates signed by a third party, ensure to follow these [instructions](http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/HowtoprepareyoursignedcertificatesforSplunk) to provide your signed certificates details in correct format when configuring the tile. For more details on troubleshooting and validating your forwarder/receiver connection, refer to the following Splunk Docs resources:
+
+  * http://docs.splunk.com/Documentation/Splunk/6.5.0/Forwarding/Receiverconnection
+  * http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/Validateyourconfiguration
+  * http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/Troubleshootyouforwardertoindexerauthentication
+
+##### 3) Ensure Splunk nozzle is forwarding events from the firehose:
+
+  Search application logs of nozzle to confirm correct behavior:
+
+  ```
+  sourcetype="cf:splunknozzle"
+  ```
+
+  A correct setup will log number of firehose events logged as JSON objects, for example:
+
+  ```json
+  {
+    "ip": "localhost",
+    "job": "splunk-nozzle",
+    "job_index": "-1",
+    "log_level": 1,
+    "logger_source": "splunk-nozzle-logger",
+    "message": "splunk-nozzle-logger.Posting 635 events",
+    "origin": "splunk_nozzle"
+  }
+  ```
+
+  Search application logs of nozzle for any errors:
+
+  ```
+  sourcetype="cf:splunknozzle" data.error=*
+  ```
+  Errors will be logged with corresponding message and stacktrace.
+
+##### 4) Additional troubleshooting from nozzle VMs
+
+In most cases, you would only need to troubleshoot from Splunk which is recommended as shown above. However, if you don't have access to Splunk or the Splunk nozzle is still not forwarding any data (which includes internal logs), the second alternative is to access Splunk nozzle directly. The pre-requisite for this section is [connecting to the PCF deployment's bosh](http://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html)
+
+Having done that, the [bosh logs](https://bosh.io/docs/job-logs.html)
+command is a useful place to start debugging.
+
+```
+bosh logs splunk-nozzle 0
+```
+
+This will download a local copy of the nozzle's logs and the control script that starts
+the Splunk forwarder deamon. This could illuminate issues. For example, seeing
+
+```
+goroutine 28 [running]:
+...
+panic: Non-ok response code [503] from splunk: {"text":"Server is busy","code":9}
+...
+```
+
+would point an operator toward failure in the communication between the nozzle and
+its co-located Splunk forwarder.
+
+To view the Splunk forwarder's internal logs, look through
+`/var/vcap/packages/splunk/var/log` on the nozzle's vms.
