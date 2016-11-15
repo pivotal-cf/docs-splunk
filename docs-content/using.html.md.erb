@@ -1,12 +1,85 @@
 ---
-title: Using YOUR-PRODUCT-NAME
+title: Using Splunk Firehose Nozzle for PCF
 owner: Partners
 ---
 
-This topic describes how to use YOUR-PRODUCT-NAME.
+This topic describes how to use Splunk Firehose Nozzle for PCF. After installing & configuring Splunk Firehose Nozzle for PCF, PCF operators can then navigate in the browser to the URL of their existing Splunk Enterprise deployment to immediately search, report, visualize and alert on PCF Firehose data.
 
-##<a id='using'></a> Using YOUR-PRODUCT-NAME
+The following assumes basic familiarty on how to run searches, save reports, and create dashboards in Splunk Enterprise. If you're new to Splunk, start with the [Search Tutorial](https://docs.splunk.com/Documentation/Splunk/6.5.0/SearchTutorial/WelcometotheSearchTutorial) which will show you how to search data and create simple dashboards.
 
-**This topic should include any instructions for how to use the service or dashboard created by the tile. Give procedures for how to perform the different functions offered by your product, and provide screenshots where necessary.** 
+Here's an example Splunk dashboard to demonstrate how to achieve PCF operational intelligence:
 
-**You can also use this section to include information about Architecture and Troubleshooting for known errors. If you include a Troubleshooting section, follow the Symptom/Explanation format used in the [Okta Troubleshooting](http://docs.pivotal.io/p-identity/okta/troubleshooting.html) topic**.
+![Report Example: Sample Ops Dashboard](images/dashboard-sample.png)
+
+<%#
+For a starter sample dashboard for operational intelligence, you can use community-supported [Splunk Add-on for Cloud Foundry](#add-on) which includes many pre-built panels and reports to help you quickly build your own custom dashboards to monitor the health of your foundation and the performance of your applications.
+%>
+
+##<a id='search'></a>Search Firehose Data
+
+The firehose event types forwared by the Splunk Nozzle are assigned the following Splunk sourcetypes by default:
+
+  PCF Firehose event type | Splunk sourcetype
+  --- | ---
+  Error | `cf:error`
+  HttpStartStop | `cf:httpstartstop`
+  LogMessage | `cf:logmessage`
+  ContainerMetric | `cf:containermetric`
+  CounterEvent | `cf:counterevent`
+  ValueMetric | `cf:valuemetric`
+
+In addition, logs from the nozzle itself are of sourcetype `cf:splunknozzle`.
+
+You can use these Splunk sourcetypes to search & retrieve the relevant events from the index, use statistical commands to calculate metrics and generate reports, search for specific conditions within a rolling time window, identify patterns in your data, predict future trends, and so on. For example:
+
+  * Search for any errors from your foundation:
+
+    `sourcetype=cf:error`
+
+  * Search for router bad gateways:
+
+    `sourcetype=cf:counterevent name="bad_gateways"`
+
+  * Search for metrics of remaining cell disk capacity or memory:
+
+    `sourcetype=cf:valuemetric name=CapacityRemainingDisk`
+    `sourcetype=cf:valuemetric name=CapacityRemainingMemory`
+
+This assumes you have access to the index specified to receive these firehose events. You may need to explicitly specify the index in your search if that index is not part of the indexes searched by default for the Splunk role you belong to. These searches can then be saved as reports and used to power dashboard panels, as illustrated in the next section.
+
+##<a id='report'></a>Report & Visualize Firehose Data
+
+To monitor your environment operational health, you can build on these same searches to generate reports & visualizations. For example:
+
+  * Report available memory per cell:
+
+    ```
+    sourcetype=cf:valuemetric name=CapacityRemainingMemory
+      | eval valueGB=round(case(unit=="MiB", value/1024, unit=="KiB", value/(1024*1024), unit=="GiB", value),2)
+      | stats min(valueGB) as mem by job_instance
+      | rename mem as "Available Memory (GB)", job_instance as "Job Instance"
+    ```
+    ![Report Example: Available mem per cell](images/report-available-memory-per-cell.png)
+
+  * Report available memory per cell over time:
+
+    ```
+    sourcetype=cf:valuemetric name=CapacityRemainingMemory 
+      | eval valueGB=round(case(unit=="MiB", value/1024, unit=="KiB", value/(1024*1024), unit=="GiB", value),2) 
+      | timechart min(valueGB) by job_instance
+    ```
+    ![Report Example: Available mem per cell over time](images/report-available-memory-per-cell-over-time.png)
+
+  * Report number of routes registered with trend indicator:
+
+    ```
+    sourcetype=cf:valuemetric name=RoutesTotal
+      | timechart avg(value) as numRoutes
+    ```
+    ![Report Example: Total routes with trend](images/report-routes-total-with-trend.png)
+
+To learn more about searching & reporting with Splunk, refer to [Splunk Docs](https://docs.splunk.com/Documentation/Splunk)
+for complete list of manuals & references, from generating visualizations to creating alerts.
+
+
+ 

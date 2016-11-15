@@ -38,8 +38,15 @@ To use Bookbinder to view your documentation, perform the following steps:
 1. On your local machine, `cd` into `docs-book` in the cloned repo.
 1. Run `bundle install` to make sure you have all the necessary gems installed.
 1. Build your documentation site with `bookbinder` in one of the two following ways:
-	* Run `bookbinder watch` to build an interactive version of the docs and navigate to `localhost:4567/myservice/` in a browser. (It may take a moment for the site to load at first.) This builds a site from your content repo at `docs-content`, and then watches that repo to update the site if you make any changes to the repo.
-	* Run `bookbinder bind local` to build a Rack web-app of the book. After the bind has completed, `cd` into the `final_app` directory and run `rackup`. Then navigate to `localhost:9292/myservice/` in a browser.
+	* Run `bookbinder watch` to build an interactive version of the docs and navigate to
+	[localhost:4567/myservice/](http://localhost:4567/myservice/)
+	in a browser. (It may take a moment for the site to load at first.)
+	This builds a site from your content repo at `docs-content`, and then watches that repo to update
+	the site if you make any changes to the repo.
+	* Run `bookbinder bind local` to build a Rack web-app of the book. After the bind has completed,
+	`cd` into the `final_app` directory and run `rackup`. Then navigate to
+	[localhost:9292/myservice/](http://localhost:9292/myservice/)
+	in a browser.
 
 ### <a id='zero-to-bookbinder'></a>Zero to Bookbinder: How to Install Bookbinder and Build, View, and Edit Your Docs from Nothing
 
@@ -134,7 +141,10 @@ In Terminal window:
 
    `$ bookbinder watch`
 
-1. Browse to `localhost:4567` to view the book locally and "watch" any changes that you make to source `html.md.erb` files. As you make and save changes to the local source files for your site, you will see them in your browser after a slight delay.
+1. Browse to [localhost:4567](http://localhost:4567)
+to view the book locally and "watch" any changes that you make to
+source `html.md.erb` files. As you make and save changes to the local source files for your
+site, you will see them in your browser after a slight delay.
 
 ![Partner Template landing page](docs-book/master_middleman/source/images/partner-template-landing.png)
 

@@ -1,59 +1,56 @@
 ---
-title: YOUR-PRODUCT-NAME
+title: Splunk Firehose Nozzle for PCF
 owner: Partners
 ---
 
-**This topic should begin with a brief description of your product. See below for an example.**
+This documentation describes the Splunk Nozzle for Pivotal Cloud Foundry (PCF) Firehose. 
+The Splunk Nozzle integrates with PCF [Loggregator](http://docs.pivotal.io/pivotalcf/1-8/loggregator/index.html) 
+and forwards to Splunk Enterprise streaming logs and metrics from the user applications and system components of Cloud Foundry. 
+PCF operators can then gain operational visibility over their PCF infrastructure including the health and performance of 
+applications and system components.
 
-This documentation describes the Redis Labs Enterprise Cluster (RLEC) Service Broker for Pivotal Cloud Foundry (PCF). 
-The RLEC Service Broker registers a service broker on PCF and exposes its service plans on the Marketplace. 
-Developers can provision Redis databases by creating instances of the service plans using Apps Manager or the cf CLI.
+## <a id="overview"></a>Overview
 
-## <a id='overview'></a>Overview
+After installing the Splunk Firehose Nozzle for PCF tile, PCF streaming logs and metrics are forwarded 
+to user-specified Splunk Enterprise indexer(s) configured to receive data. 
+PCF operators and Splunk users can then immediately search and analyze PCF Firehose data from their 
+Splunk Enterprise deployment, and build reports, dashboards, and alerts on the health of their foundation 
+and the performance of the applications.
 
-**The overview should provide a description of the product's key features.**
+Splunk Firehose Nozzle for PCF includes the following key features:
 
-YOUR-PRODUCT-NAME includes the following key features:
-
-* Feature one.
-* Feature two.
-* Feature three.
+* Setup with out-of-the-box data parsing and enrichment for various PCF event types
+* Reliable event delivery by leveraging Splunk Forwarder capabilities from indexer acknowledgement, 
+buffering, and load balancing.
+* Secure forwarding from PCF into external Splunk environment using user-provided SSL certificates
+* Scales up and out to meet increasing data volume and number of applications
 
 ## <a id="snapshot"></a>Product Snapshot
 
 <dl>
-<dt>YOUR-PRODUCT-NAME Details:</dt>
-<dd><strong>Version</strong>: vYOUR-VERSION-NUMBER </dd>
-<dd><strong>Release Date</strong>: YOUR-RELEASE-DATE (Ex: August 1, 2016)</dd>
-<dd><strong>Software component version</strong>: vYOUR-SOFTWARE-COMPONENT-VERSION-NUMBER</dd>
-<dd><strong>Compatible Ops Manager Version(s)</strong>: vYOUR-COMPATIBLE-OPS-MAN-VERSION (Ex. v1.6.x, v1.7.x)</dd>
-<dd><strong>Compatible Elastic Runtime Version(s)</strong>: vYOUR-COMPATIBLE-ELASTIC-RUNTIME-VERSION (Ex. v1.4.x, v1.5.x, v1.6.x)</dd>
-<dd><strong>vSphere support?</strong> YES-OR-NO</dd>
-<dd><strong>OpenStack support?</strong> YES-OR-NO</dd>
-<dd><strong>AWS support?</strong> YES-OR-NO</dd>
+<dt>Splunk Firehose Nozzle for PCF Details:</dt>
+<dd><strong>Version</strong>: v0.2.0 </dd>
+<dd><strong>Release Date</strong>: 2016, November 15</dd>
+<dd><strong>Software component version</strong>: Splunk Enterprise v6.5.0</dd>
+<dd><strong>Compatible Ops Manager Version(s)</strong>: v1.6.x, v1.7.x, v1.8.x</dd>
+<dd><strong>Compatible Elastic Runtime Version(s)</strong>: v1.6.x, v1.7.x, v1.8.x</dd>
+<dd><strong>vSphere support?</strong> Yes</dd>
+<dd><strong>OpenStack support?</strong> Yes</dd>
+<dd><strong>AWS support?</strong> Yes</dd>
 </dl>
 
 ## <a id="reqs"></a>Requirements
 
-**Provide any general or specific requirements, prerequisites, or dependencies here. 
-A general requirement might be something like, "An AppDynamics account." 
-A specific requirement might be something like, "Packaging Dependencies for Offline Buildpacks."**
+Splunk Firehose Nozzle for PCF has the following requirements:
 
-YOUR-PRODUCT-NAME has the following requirements:
-
-+ PREREQUISITE-1
-
-+ PREREQUISITE-2
++ An external Splunk Enterprise deployment configured to receive data from a Splunk Forwarder.
 
 ## <a id="limitations"></a>Limitations
 
-**List any known limitations.**
+No known limitations.
 
 ## <a id="feedback"></a>Feedback
 
-Please provide any bugs, feature requests, or questions to the [Pivotal Cloud Foundry Feedback](mailto:pivotal-cf-feedback@pivotal.io) list or send an email to YOUR-SUPPORT-EMAIL.
-
-## <a id='license'></a>License
-
-**List any license information here.**
+Please provide any bugs, feature requests, or questions to
+the [Pivotal Cloud Foundry Feedback](mailto:pivotal-cf-feedback@pivotal.io) or to [Splunk](mailto:support@splunk.com).
 
