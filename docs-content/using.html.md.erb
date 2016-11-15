@@ -7,7 +7,7 @@ This topic describes how to use Splunk Firehose Nozzle for PCF. After installing
 
 The following assumes basic familiarty on how to run searches, save reports, and create dashboards in Splunk Enterprise. If you're new to Splunk, start with the [Search Tutorial](https://docs.splunk.com/Documentation/Splunk/6.5.0/SearchTutorial/WelcometotheSearchTutorial) which will show you how to search data and create simple dashboards.
 
-For a starter sample dashboard for operational intelligence, you can [use Splunk Add-on for Cloud Foundry](#add-on) which also includes many pre-built panels and reports to help you quickly build your own custom dashboards to monitor the health of your foundation and the performance of your applications.
+For a starter sample dashboard for operational intelligence, you can use community-supported [Splunk Add-on for Cloud Foundry](#add-on) which includes many pre-built panels and reports to help you quickly build your own custom dashboards to monitor the health of your foundation and the performance of your applications.
 
 ##<a id='search'></a>Search Firehose Data
 
@@ -22,9 +22,9 @@ The firehose event types forwared by the Splunk Nozzle are assigned the followin
   CounterEvent | `cf:counterevent`
   ValueMetric | `cf:valuemetric`
 
-In addition, logs from the Nozzle itself are of sourcetype `cf:splunknozzle`.
+In addition, logs from the nozzle itself are of sourcetype `cf:splunknozzle`.
 
-You can use these Splunk sourcetypes to search relevant events from the search bar in Splunk Search & Reporting Application. For example:
+You can use these Splunk sourcetypes to search & retrieve the relevant events from the index, use statistical commands to calculate metrics and generate reports, search for specific conditions within a rolling time window, identify patterns in your data, predict future trends, and so on. For example:
 
   * Search for any errors from your foundation:
 
@@ -39,7 +39,7 @@ You can use these Splunk sourcetypes to search relevant events from the search b
     `sourcetype=cf:valuemetric name=CapacityRemainingDisk`
     `sourcetype=cf:valuemetric name=CapacityRemainingMemory`
 
-Search is the primary way users navigate data in Splunk Enterprise. You can write a search to retrieve events from an index, use statistical commands to calculate metrics and generate reports, search for specific conditions within a rolling time window, identify patterns in your data, predict future trends, and so on. Searches can be saved as reports and used to power dashboard panels, as covered in next section.
+This assumes you have access to the index specified to receive these firehose events. You may need to explicitly specify the index in your search if that index is not part of the indexes searched by default for the Splunk role you belong to. These searches can then be saved as reports and used to power dashboard panels, as illustrated in the next section.
 
 ##<a id='report'></a>Report & Visualize Firehose Data
 
@@ -72,9 +72,11 @@ To monitor your environment operational health, you can build on these same sear
     ```
     ![Report Example: Total routes with trend](images/report-routes-total-with-trend.png)
 
-To learn more about searching & reporting with Splunk, refer [here](https://docs.splunk.com/Documentation/Splunk) for complete list of manuals, from generating visualizations to creating alerts.
+To learn more about searching & reporting with Splunk, refer to [Splunk Docs](https://docs.splunk.com/Documentation/Splunk) for complete list of manuals & references, from generating visualizations to creating alerts.
 
 ##<a id='add-on'></a>Use Splunk Add-on for Cloud Foundry
+
+**todo Roy to add link to Splunkbase**
 
 ![Report Example: Sample Ops Dashboard](images/dashboard-sample-cloud-foundry-add-on.png)
 
@@ -95,13 +97,83 @@ to, the nozzle will also connect back to the Cloud Foundry API to collect and ca
 receive events from the nozzle and then sends them on to the user-specified pre-configured indexer(s).
 
 The logging system will round-robin events across the `splunk-nozzle` vm instances. Each
-`splunk-nozzle` job will send the events it received locally to the
-co-loated `splunk-forwarder`.
+`splunk-nozzle` job will send the events it received locally to the co-located `splunk-forwarder`
+
+**Splunk Firehose Nozzle** (or shorthand **Splunk Nozzle**) refers to
+both `splunk-nozzle` and `splunk-forwarder` jobs as one entity in this context.
 
 #### <a id='walkthrough'></a> Troubleshooting Walkthrough
 
-The pre-requisite to trouble shooting the Nozzle is
-[connecting to the PCF deployment's bosh](http://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html)
+##### 1) Ensure Splunk indexer(s) are listening to data on configured port
+
+  Search internal logs of indexer(s), specifically the TCP input processor, as follows:
+
+  ```
+  index=_internal sourcetype=splunkd component=TcpInputProc 
+  ```
+
+  A correct setup will show an event as follows:
+
+  *10-13-2016 17:31:16.226 +0000 INFO  TcpInputProc - Creating fwd data Acceptor for IPv4 port 9997 with SSL*
+
+##### 2) Ensure Splunk Nozzle is connected to Splunk indexer(s):
+
+  Search internal logs of nozzle, specifically the TCP output processor, to confirm Splunk nozzle is correctly forwarding:
+
+  ```
+  index=_internal host="splunk-nozzle_*" sourcetype=splunkd component=TcpOutputProc
+  ```
+  A correct setup will show an event as follows:
+
+  *11-04-2016 20:24:13.702 +0000 INFO  TcpOutputProc - Connected to idx=<redacted>:9997 using ACK.*
+
+  If no such event is found, then no data is being forwarded from nozzle. This can be due to mis-configured indexer(s) firewall, or mis-configured SSL settings of either nozzle (forwarder) or indexer(s). Search internal logs of Splunk indexer(s) for any errors:
+
+  ```
+  index=_internal sourcetype=splunkd component=TcpInputProc ERROR
+  ```
+
+  An example error would be:
+  *11-03-2016 22:23:00.046 +0000 ERROR TcpInputProc - Error encountered for connection from src=<redacted>:55713. error:140760FC:SSL routines:SSL23_GET_CLIENT_HELLO:unknown protocol*
+
+  Whether you are using self-signed certificates or certificates signed by a third party, ensure to follow these [instructions](http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/HowtoprepareyoursignedcertificatesforSplunk) to provide your signed certificates details in correct format when configuring the tile. For more details on troubleshooting and validating your forwarder/receiver connection, refer to the following Splunk Docs resources:
+
+  * http://docs.splunk.com/Documentation/Splunk/6.5.0/Forwarding/Receiverconnection
+  * http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/Validateyourconfiguration
+  * http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/Troubleshootyouforwardertoindexerauthentication
+
+##### 3) Ensure Splunk Nozzle is forwarding events from the firehose:
+
+  Search application logs of nozzle to confirm correct behavior:
+
+  ```
+  sourcetype="cf:splunknozzle"
+  ```
+
+  A correct setup with log number of firehose events logged as JSON objects, for example:
+
+  ```json
+  {
+    "ip": "localhost",
+    "job": "splunk-nozzle",
+    "job_index": "-1",
+    "log_level": 1,
+    "logger_source": "splunk-nozzle-logger",
+    "message": "splunk-nozzle-logger.Posting 635 events",
+    "origin": "splunk_nozzle"
+  }
+  ```
+
+  Search application logs of nozzle for any errors:
+
+  ```
+  sourcetype="cf:splunknozzle" data.error=*
+  ```
+  Errors will be logged with corresponding message and stacktrace.
+
+##### 4) Additional troubleshooting from Nozzle VMs
+
+In most cases, you would only need to troubleshoot from Splunk which is recommended as shown above. However, if you don't have access to Splunk or the Splunk Nozzle is still not forwarding any data (which includes internal logs), the second alternative is to access Splunk Nozzle directly. The pre-requisite for this section is [connecting to the PCF deployment's bosh](http://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html)
 
 Having done that, the [bosh logs](https://bosh.io/docs/job-logs.html)
 command is a useful place to start debugging.
@@ -123,11 +195,6 @@ panic: Non-ok response code [503] from splunk: {"text":"Server is busy","code":9
 would point an operator toward failure in the communication between the nozzle and
 its co-located Splunk forwarder.
 
-To view the Splunk forwarder's logs, look through
+To view the Splunk forwarder's internal logs, look through
 `/var/vcap/packages/splunk/var/log` on the nozzle's vms.
-
-**todo Roy: add some useful info/links to debugging a Splunk forwarder**
-
-```
-sourcetype="cf:splunknozzle" data.error=*
-```
+ 
