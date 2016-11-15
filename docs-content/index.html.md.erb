@@ -3,18 +3,27 @@ title: Splunk Firehose Nozzle for PCF
 owner: Partners
 ---
 
-This documentation describes the Splunk Nozzle for Pivotal Cloud Foundry (PCF) Firehose. The Splunk Nozzle integrates with PCF [Loggregator](http://docs.pivotal.io/pivotalcf/1-8/loggregator/index.html) and forwards to Splunk Enterprise streaming logs & metrics from all of the user applications and system components of Cloud Foundry. PCF operators can then gain operational visibility over their PCF infrastructure including the health and performance of applications & system components.
+This documentation describes the Splunk Nozzle for Pivotal Cloud Foundry (PCF) Firehose. 
+The Splunk Nozzle integrates with PCF [Loggregator](http://docs.pivotal.io/pivotalcf/1-8/loggregator/index.html) 
+and forwards to Splunk Enterprise streaming logs and metrics from the user applications and system components of Cloud Foundry. 
+PCF operators can then gain operational visibility over their PCF infrastructure including the health and performance of 
+applications and system components.
 
 ## <a id="overview"></a>Overview
 
-After installing the Splunk Firehose Nozzle for PCF tile, PCF streaming logs & metrics will be forwarded to user-specified Splunk Enterprise indexer(s) configured to receive data. PCF operators & Splunk users can then immediately search & analyze PCF Firehose data from their Splunk Enterprise deployment, and easily build reports, dashboards, and alerts on the health of their foundation and the performance of the applications.
+After installing the Splunk Firehose Nozzle for PCF tile, PCF streaming logs and metrics are forwarded 
+to user-specified Splunk Enterprise indexer(s) configured to receive data. 
+PCF operators and Splunk users can then immediately search and analyze PCF Firehose data from their 
+Splunk Enterprise deployment, and build reports, dashboards, and alerts on the health of their foundation 
+and the performance of the applications.
 
 Splunk Firehose Nozzle for PCF includes the following key features:
 
-* Simple setup with out of the box data parsing & enrichment for various PCF event types
-* Reliable event delivery by leveraging Splunk Forwarder capabilities from indexer acknowledgement, buffering and load balancing.
+* Setup with out-of-the-box data parsing and enrichment for various PCF event types
+* Reliable event delivery by leveraging Splunk Forwarder capabilities from indexer acknowledgement, 
+buffering, and load balancing.
 * Secure forwarding from PCF into external Splunk environment using user-provided SSL certificates
-* Easy to scale up and out to meet increasing data volume and number of applications
+* Scales up and out to meet increasing data volume and number of applications
 
 ## <a id="snapshot"></a>Product Snapshot
 
