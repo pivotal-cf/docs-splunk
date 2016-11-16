@@ -30,7 +30,7 @@ both `splunk-nozzle` and `splunk-forwarder` jobs as one entity in this context.
 The following assumes you have access to Splunk to run basic searches against index `_internal`
 and the user-specified index for Firehose events.
 
-### 1) Ensure Splunk indexer(s) are listening to data on configured port
+### 1. Ensure Splunk indexer(s) are listening to data on configured port
 
   Search internal logs of indexer(s), specifically the TCP input processor, as follows:
 
@@ -42,7 +42,7 @@ and the user-specified index for Firehose events.
 
   *10-13-2016 17:31:16.226 +0000 INFO  TcpInputProc - Creating fwd data Acceptor for IPv4 port 9997 with SSL*
 
-### 2) Ensure Splunk nozzle is connected to Splunk indexer(s):
+### 2. Ensure Splunk nozzle is connected to Splunk indexer(s):
 
   Search internal logs of nozzle, specifically the TCP output processor, to confirm Splunk nozzle is correctly forwarding:
 
@@ -70,7 +70,7 @@ and the user-specified index for Firehose events.
   * http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/Validateyourconfiguration
   * http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/Troubleshootyouforwardertoindexerauthentication
 
-### 3) Ensure Splunk nozzle is forwarding events from the Firehose:
+### 3. Ensure Splunk nozzle is forwarding events from the Firehose:
 
   Search app logs of nozzle to confirm correct behavior:
 
@@ -99,7 +99,7 @@ and the user-specified index for Firehose events.
   ```
   Errors are logged with corresponding message and stacktrace.
 
-### 4) Additional troubleshooting from nozzle VMs
+### 4. Additional troubleshooting from nozzle VMs
 
 In most cases, you would only need to troubleshoot from Splunk which is recommended as shown above. However, if you don't have access to Splunk or the Splunk nozzle is still not forwarding any data (which includes internal logs), the second alternative is to access Splunk nozzle directly. The pre-requisite for this section is [connecting to the PCF deployment's bosh](http://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html)
 
