@@ -5,17 +5,17 @@ owner: Partners
 
 This documentation describes the Splunk Nozzle for Pivotal Cloud Foundry (PCF) Firehose. 
 The Splunk Nozzle integrates with PCF [Loggregator](http://docs.pivotal.io/pivotalcf/1-8/loggregator/index.html) 
-and forwards to Splunk Enterprise streaming logs and metrics from the user applications and system components of Cloud Foundry. 
+and forwards to Splunk Enterprise streaming logs and metrics from the user apps and system components of Cloud Foundry. 
 PCF operators can then gain operational visibility over their PCF infrastructure including the health and performance of 
-applications and system components.
+apps and system components.
 
 ## <a id="overview"></a>Overview
 
 After installing the Splunk Firehose Nozzle for PCF tile, PCF streaming logs and metrics are forwarded 
-to user-specified Splunk Enterprise indexer(s) configured to receive data. 
+to user-specified Splunk Enterprise indexers configured to receive data. 
 PCF operators and Splunk users can then immediately search and analyze PCF Firehose data from their 
-Splunk Enterprise deployment, and build reports, dashboards, and alerts on the health of their foundation 
-and the performance of the applications.
+Splunk Enterprise deployment and build reports, dashboards, and alerts on the health of their foundation 
+and the performance of the apps.
 
 Splunk Firehose Nozzle for PCF includes the following key features:
 
@@ -23,7 +23,7 @@ Splunk Firehose Nozzle for PCF includes the following key features:
 * Reliable event delivery by leveraging Splunk Forwarder capabilities from indexer acknowledgement, 
 buffering, and load balancing.
 * Secure forwarding from PCF into external Splunk environment using user-provided SSL certificates
-* Scales up and out to meet increasing data volume and number of applications
+* Scales up and out to meet increasing data volume and number of apps
 
 ## <a id="snapshot"></a>Product Snapshot
 

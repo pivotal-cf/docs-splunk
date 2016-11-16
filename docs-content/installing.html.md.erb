@@ -7,7 +7,7 @@ This topic describes how to install and configure Splunk Firehose Nozzle for PCF
 
 ##<a id='install'></a> Install and Configure Splunk Firehose Nozzle for PCF
 
-1. Download the product file from Pivotal Network.
+1. Download the product file from [Pivotal Network](https://network.pivotal.io/).
 
 1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to
 upload the product file.
@@ -17,7 +17,7 @@ Manager **Available Products** view to add it to your staging area.
 
 1. Click the newly added **Splunk Firehose Nozzle for PCF** tile.
 
-1. [Configure the tile](#configure)
+1. [Configure the tile](#configure) as described below.
 
 1. Click **Save**.
 
@@ -29,24 +29,28 @@ to install Splunk Firehose Nozzle for PCF tile.
 1. **Assign AZs and Networks**: choose placement.
 
 1. **Splunk Destination**
-  * **Remote Splunk server(s)**: comma-separated list of Splunk indexers to send data to.  Each Splunk server is specified as `<address>:<port>`, where `<address>` is either FQDN or IP address, and `<port>` is the port on which Splunk indexer is listening.
-  * **Index**: Splunk index to use for indexing firehose events
-  * **Additional fields for metadata**: Arbitrary set of key:value pairs in the form "key1:value1,key2:value2,key3:value3" that do not occur in event payload itself. These field(s) will be indexed with every event payload, and are used as metadata for indexing & searching. One situation in which this might be useful is differentiating logs from multiple foundations draining into the same Splunk Enterprise index.
+  * **Remote Splunk server(s)**: Comma-separated list of Splunk indexers to send data to. 
+Each Splunk server is specified as `<address>:<port>`, where `<address>` is either FQDN or IP address, 
+and `<port>` is the port on which Splunk indexer is listening.
+  * **Index**: Splunk index to use for indexing Firehose events
+  * **Additional fields for metadata**: Arbitrary set of key:value pairs in the form "key1:value1,key2:value2,key3:value3" that do not occur in event payload itself. 
+These fields are indexed with every event payload, and are used as metadata for indexing and searching. 
+One situation in which this might be useful is differentiating logs from multiple foundations draining into the same Splunk Enterprise index.
 
 1. **Splunk SSL Settings**:
-  * **Enable Splunk SSL**: when true, the Splunk forwarder part of the nozzle will use HTTPS for secure connection with Splunk indexers; highly recommended for a production environment.
-  * **Client certificate**: properly concatenated client certificate, client private key & public certificate as single PEM file. Refer to Splunk docs for [how to prepare your signed certificates into single PEM file](http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/HowtoprepareyoursignedcertificatesforSplunk).
+  * **Enable Splunk SSL**: When true, the Splunk forwarder part of the nozzle uses HTTPS for secure connection with Splunk indexers; highly recommended for a production environment.
+  * **Client certificate**: Properly concatenated client certificate, client private key and public certificate as single PEM file. Refer to Splunk docs for [how to prepare your signed certificates into single PEM file](http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/HowtoprepareyoursignedcertificatesforSplunk).
   * **Client certificate password**: Passphrase for client private key (if applicable)
-  * **Root CA certificate(s)**: One or more root CA certificates concatenated together. This will be used to verify target Splunk indexer(s) certificates. Refer to Splunk docs for [how to configure certificate chains](http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/HowtoprepareyoursignedcertificatesforSplunk#How_to_configure_certificate_chains).
-  * **Common name(s) of server(s) certificates**: Comma-separated list of common names. The common name of Splunk server(s) certificates will be checked against this list.
-  * **Alternate name(s) of server(s) certificates**: Comma-separated list of alternate names. The alternate name of Splunk server(s) certificates will be checked against this list.
+  * **Root CA certificate(s)**: One or more root CA certificates concatenated together. This is used to verify target Splunk indexer(s) certificates. Refer to Splunk docs for [how to configure certificate chains](http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/HowtoprepareyoursignedcertificatesforSplunk#How_to_configure_certificate_chains).
+  * **Common name(s) of server(s) certificates**: Comma-separated list of common names. The common name of Splunk server(s) certificates is checked against this list.
+  * **Alternate name(s) of server(s) certificates**: Comma-separated list of alternate names. The alternate name of Splunk server(s) certificates is checked against this list.
 
 1. **Cloud Foundry Settings**:
-  * **Skip SSL validation**: disables SSL certificate validation; inappropriate for a production environment
-  * **Add app info**: when true, the nozzle will connect back to the Cloud Foundry API and query events that
-  have an application GUID to add additional information (app name, space name, space GUID, organization name,
-  organization GUID). This will increase load on the API machines in step with the number of running applications,
-  as each Nozzle will populate a cache of app metadata.
+  * **Skip SSL validation**: Disables SSL certificate validation; inappropriate for a production environment
+  * **Add app info**: When true, the nozzle connects back to the Cloud Foundry API and query events that
+  have an app GUID to add additional information (app name, space name, space GUID, organization name,
+  organization GUID). This increases load on the API machines in step with the number of running apps,
+  because each Nozzle populates a cache of app metadata.
   * **API user/API password**: The nozzle's credentials. Best practice is to provide a user in
   keeping with "Rotate, Repave, Repair," so that credentials that can be easily deactivated, rotated,
   and have minimal access privileges. The nozzle's user needs
@@ -54,11 +58,11 @@ to install Splunk Firehose Nozzle for PCF tile.
   `cloud_controller.admin_read_only` would have to use `cloud_controller.admin`).
   Operators can use the
   [uaac](https://github.com/cloudfoundry/cf-uaac) tool to create the appropriate user.
-  If left empty, `splunk-firehose` will be used.
+  If left empty, `splunk-firehose` is used.
   <br/><br/>
-  Credentials **are required** for ERT versions older than 1.8.9 and 1.7.29.
+  Credentials **are required** for ERT versions older than v1.8.9 and v1.7.29.
   <br/><br/>
-  Skipping configuration for the nozzle user for versions in which it's required will result in the tile
+  Skipping configuration for the nozzle user for versions in which it is required results in the tile
   failing to install with the message
   `unknown property "splunk_firehose_credentials"...`
   <br/><br/>
@@ -79,7 +83,7 @@ to install Splunk Firehose Nozzle for PCF tile.
       * ContainerMetric
 
 1. **Advanced**
-  * **Admin user/Admin password**: The tile creates vms which includes a Splunk Forwarder co-located
+  * **Admin user/Admin password**: The tile creates VMs which includes a Splunk Forwarder co-located
   with the nozzle. These are the admin credentials used on these machines.
   Only useful in a debugging context.
   * **HEC Token**: This HTTP Event Collector (HEC) token is used internally by the nozzle to connect to its co-located
@@ -91,9 +95,9 @@ to install Splunk Firehose Nozzle for PCF tile.
 1. **Resource config**:
   * To prevent message loss, a minimum of two `splunk-nozzle` instances should be used.
   The loggregator system will round robin events across connections having the same subscription id, so
-  to prevent message loss during actions that create and destroy vms (stemcell upgrades, for example),
+  to prevent message loss during actions that create and destroy VMs (stemcell upgrades, for example),
   a second instance is needed.
-  * The vm size and instance count will vary depending on which **event types** the nozzle is configured to
+  * The VM size and instance count vary depending on which **event types** the nozzle is configured to
   listen to and if **add app info** is turned on. A good starting point is to have
   one nozzle for every 10,000 messages per second. See
   [this mailing list thread](https://lists.cloudfoundry.org/archives/list/cf-dev@lists.cloudfoundry.org/message/F3JF2UNPFHXMY23NLDZBAOYNRBMATODT/)
@@ -101,123 +105,3 @@ to install Splunk Firehose Nozzle for PCF tile.
 
 1. **Stemcell**: Ensure the proper stemcell is available.
 
-##<a id='troubleshooting'></a> Advanced Troubleshooting
-
-#### <a id='architecture'></a> Architecture Overview
-
-Before troubleshooting it's useful to understand exactly what the tile installs.
-Each vm contains two jobs:
-
-* **splunk-nozzle**: This job is a small application that listens to the Cloud Foundry
-[Loggregator's firehose](https://github.com/cloudfoundry/loggregator). When configured
-to, the nozzle will also connect back to the Cloud Foundry API to collect and cache application metadata
-(enriching events with additional information).
-* **splunk-forwarder**: This job is a Splunk
-[heavy forwarder](https://docs.splunk.com/Splexicon:Heavyforwarder). It sets up a local
-[HTTP event collector](http://dev.splunk.com/view/event-collector/SP-CAAAE6M) to
-receive events from the nozzle and then sends them on to the user-specified pre-configured indexer(s).
-
-The logging system will round-robin events across the `splunk-nozzle` vm instances. Each
-`splunk-nozzle` job will send the events it received locally to the co-located `splunk-forwarder`
-
-**Splunk Firehose Nozzle** (or shorthand **Splunk Nozzle**) refers to
-both `splunk-nozzle` and `splunk-forwarder` jobs as one entity in this context.
-
-#### <a id='walkthrough'></a> Troubleshooting Walkthrough
-
-The following assumes you have access to Splunk to run basic searches against index `_internal`
-and the user-specified index for firehose events.
-
-##### 1) Ensure Splunk indexer(s) are listening to data on configured port
-
-  Search internal logs of indexer(s), specifically the TCP input processor, as follows:
-
-  ```
-  index=_internal sourcetype=splunkd component=TcpInputProc 
-  ```
-
-  A correct setup will show a following event at startup time:
-
-  *10-13-2016 17:31:16.226 +0000 INFO  TcpInputProc - Creating fwd data Acceptor for IPv4 port 9997 with SSL*
-
-##### 2) Ensure Splunk nozzle is connected to Splunk indexer(s):
-
-  Search internal logs of nozzle, specifically the TCP output processor, to confirm Splunk nozzle is correctly forwarding:
-
-  ```
-  index=_internal host="splunk-nozzle_*" sourcetype=splunkd component=TcpOutputProc
-  ```
-  A correct setup will show an event as follows:
-
-  *11-04-2016 20:24:13.702 +0000 INFO  TcpOutputProc - Connected to idx=<redacted>:9997 using ACK.*
-
-  If no such event is found, then no data is being forwarded from nozzle. This can be due to mis-configured indexer(s) firewall, or mis-configured SSL settings of either nozzle (forwarder) or indexer(s). Search internal logs of Splunk indexer(s) for any errors:
-
-  ```
-  index=_internal sourcetype=splunkd component=TcpInputProc ERROR
-  ```
-
-  An example error would be:
-  *11-03-2016 22:23:00.046 +0000 ERROR TcpInputProc - Error encountered for connection from src=<redacted>:55713. error:140760FC:SSL routines:SSL23_GET_CLIENT_HELLO:unknown protocol*
-
-  Whether you are using self-signed certificates or certificates signed by a third party, ensure to follow these [instructions](http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/HowtoprepareyoursignedcertificatesforSplunk) to provide your signed certificates details in correct format when configuring the tile. For more details on troubleshooting and validating your forwarder/receiver connection, refer to the following Splunk Docs resources:
-
-  * http://docs.splunk.com/Documentation/Splunk/6.5.0/Forwarding/Receiverconnection
-  * http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/Validateyourconfiguration
-  * http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/Troubleshootyouforwardertoindexerauthentication
-
-##### 3) Ensure Splunk nozzle is forwarding events from the firehose:
-
-  Search application logs of nozzle to confirm correct behavior:
-
-  ```
-  sourcetype="cf:splunknozzle"
-  ```
-
-  A correct setup will log number of firehose events logged as JSON objects, for example:
-
-  ```json
-  {
-    "ip": "localhost",
-    "job": "splunk-nozzle",
-    "job_index": "-1",
-    "log_level": 1,
-    "logger_source": "splunk-nozzle-logger",
-    "message": "splunk-nozzle-logger.Posting 635 events",
-    "origin": "splunk_nozzle"
-  }
-  ```
-
-  Search application logs of nozzle for any errors:
-
-  ```
-  sourcetype="cf:splunknozzle" data.error=*
-  ```
-  Errors will be logged with corresponding message and stacktrace.
-
-##### 4) Additional troubleshooting from nozzle VMs
-
-In most cases, you would only need to troubleshoot from Splunk which is recommended as shown above. However, if you don't have access to Splunk or the Splunk nozzle is still not forwarding any data (which includes internal logs), the second alternative is to access Splunk nozzle directly. The pre-requisite for this section is [connecting to the PCF deployment's bosh](http://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html)
-
-Having done that, the [bosh logs](https://bosh.io/docs/job-logs.html)
-command is a useful place to start debugging.
-
-```
-bosh logs splunk-nozzle 0
-```
-
-This will download a local copy of the nozzle's logs and the control script that starts
-the Splunk forwarder deamon. This could illuminate issues. For example, seeing
-
-```
-goroutine 28 [running]:
-...
-panic: Non-ok response code [503] from splunk: {"text":"Server is busy","code":9}
-...
-```
-
-would point an operator toward failure in the communication between the nozzle and
-its co-located Splunk forwarder.
-
-To view the Splunk forwarder's internal logs, look through
-`/var/vcap/packages/splunk/var/log` on the nozzle's vms.
