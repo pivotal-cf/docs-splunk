@@ -39,9 +39,9 @@ One situation in which this might be useful is differentiating logs from multipl
 
 1. **Splunk SSL Settings**:
   * **Enable Splunk SSL**: When true, the Splunk forwarder part of the nozzle uses HTTPS for secure connection with Splunk indexers; highly recommended for a production environment.
-  * **Client certificate**: Properly concatenated client certificate, client private key and public certificate as single PEM file. Refer to Splunk docs for [how to prepare your signed certificates into single PEM file](http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/HowtoprepareyoursignedcertificatesforSplunk).
+  * **Client certificate**: Properly concatenated client certificate, client private key and public certificate as single PEM file. Refer to Splunk docs for [how to prepare your signed certificates into single PEM file](http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/HowtoprepareyoursignedcertificatesforSplunk).
   * **Client certificate password**: Passphrase for client private key (if applicable)
-  * **Root CA certificate(s)**: One or more root CA certificates concatenated together. This is used to verify target Splunk indexer(s) certificates. Refer to Splunk docs for [how to configure certificate chains](http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/HowtoprepareyoursignedcertificatesforSplunk#How_to_configure_certificate_chains).
+  * **Root CA certificate(s)**: One or more root CA certificates concatenated together. This is used to verify target Splunk indexer(s) certificates. Refer to Splunk docs for [how to configure certificate chains](http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/HowtoprepareyoursignedcertificatesforSplunk#How_to_configure_certificate_chains).
   * **Common name(s) of server(s) certificates**: Comma-separated list of common names. The common name of Splunk server(s) certificates is checked against this list.
   * **Alternate name(s) of server(s) certificates**: Comma-separated list of alternate names. The alternate name of Splunk server(s) certificates is checked against this list.
 
