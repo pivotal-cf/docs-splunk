@@ -35,9 +35,9 @@ to install Splunk Firehose Nozzle for PCF tile.
 
 1. **Splunk SSL Settings**:
   * **Enable Splunk SSL**: when true, the Splunk forwarder part of the nozzle will use HTTPS for secure connection with Splunk indexers; highly recommended for a production environment.
-  * **Client certificate**: properly concatenated client certificate, client private key & public certificate as single PEM file. Refer to Splunk docs for [how to prepare your signed certificates into single PEM file](http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/HowtoprepareyoursignedcertificatesforSplunk).
+  * **Client certificate**: properly concatenated client certificate, client private key & public certificate as single PEM file. Refer to Splunk docs for [how to prepare your signed certificates into single PEM file](http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/HowtoprepareyoursignedcertificatesforSplunk).
   * **Client certificate password**: Passphrase for client private key (if applicable)
-  * **Root CA certificate(s)**: One or more root CA certificates concatenated together. This will be used to verify target Splunk indexer(s) certificates. Refer to Splunk docs for [how to configure certificate chains](http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/HowtoprepareyoursignedcertificatesforSplunk#How_to_configure_certificate_chains).
+  * **Root CA certificate(s)**: One or more root CA certificates concatenated together. This will be used to verify target Splunk indexer(s) certificates. Refer to Splunk docs for [how to configure certificate chains](http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/HowtoprepareyoursignedcertificatesforSplunk#How_to_configure_certificate_chains).
   * **Common name(s) of server(s) certificates**: Comma-separated list of common names. The common name of Splunk server(s) certificates will be checked against this list.
   * **Alternate name(s) of server(s) certificates**: Comma-separated list of alternate names. The alternate name of Splunk server(s) certificates will be checked against this list.
 
@@ -160,11 +160,11 @@ and the user-specified index for firehose events.
   An example error would be:
   *11-03-2016 22:23:00.046 +0000 ERROR TcpInputProc - Error encountered for connection from src=<redacted>:55713. error:140760FC:SSL routines:SSL23_GET_CLIENT_HELLO:unknown protocol*
 
-  Whether you are using self-signed certificates or certificates signed by a third party, ensure to follow these [instructions](http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/HowtoprepareyoursignedcertificatesforSplunk) to provide your signed certificates details in correct format when configuring the tile. For more details on troubleshooting and validating your forwarder/receiver connection, refer to the following Splunk Docs resources:
+  Whether you are using self-signed certificates or certificates signed by a third party, ensure to follow these [instructions](http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/HowtoprepareyoursignedcertificatesforSplunk) to provide your signed certificates details in correct format when configuring the tile. For more details on troubleshooting and validating your forwarder/receiver connection, refer to the following Splunk Docs resources:
 
-  * http://docs.splunk.com/Documentation/Splunk/6.5.0/Forwarding/Receiverconnection
-  * http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/Validateyourconfiguration
-  * http://docs.splunk.com/Documentation/Splunk/6.5.0/Security/Troubleshootyouforwardertoindexerauthentication
+  * http://docs.splunk.com/Documentation/Splunk/6.5.1/Forwarding/Receiverconnection
+  * http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/Validateyourconfiguration
+  * http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/Troubleshootyouforwardertoindexerauthentication
 
 ##### 3) Ensure Splunk nozzle is forwarding events from the firehose:
 
