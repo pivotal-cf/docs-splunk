@@ -38,12 +38,12 @@ These fields are indexed with every event payload, and are used as metadata for 
 One situation in which this might be useful is differentiating logs from multiple foundations draining into the same Splunk Enterprise index.
 
 1. **Splunk SSL Settings**:
-  * **Enable Splunk SSL**: when true, the Splunk forwarder part of the nozzle will use HTTPS for secure connection with Splunk indexers; highly recommended for a production environment.
-  * **Client certificate**: properly concatenated client certificate, client private key & public certificate as single PEM file. Refer to Splunk docs for [how to prepare your signed certificates into single PEM file](http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/HowtoprepareyoursignedcertificatesforSplunk).
+  * **Enable Splunk SSL**: When true, the Splunk forwarder part of the nozzle uses HTTPS for secure connection with Splunk indexers; highly recommended for a production environment.
+  * **Client certificate**: Properly concatenated client certificate, client private key and public certificate as single PEM file. Refer to Splunk docs for [how to prepare your signed certificates into single PEM file](http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/HowtoprepareyoursignedcertificatesforSplunk).
   * **Client certificate password**: Passphrase for client private key (if applicable)
-  * **Root CA certificate(s)**: One or more root CA certificates concatenated together. This will be used to verify target Splunk indexer(s) certificates. Refer to Splunk docs for [how to configure certificate chains](http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/HowtoprepareyoursignedcertificatesforSplunk#How_to_configure_certificate_chains).
-  * **Common name(s) of server(s) certificates**: Comma-separated list of common names. The common name of Splunk server(s) certificates will be checked against this list.
-  * **Alternate name(s) of server(s) certificates**: Comma-separated list of alternate names. The alternate name of Splunk server(s) certificates will be checked against this list.
+  * **Root CA certificate(s)**: One or more root CA certificates concatenated together. This is used to verify target Splunk indexer(s) certificates. Refer to Splunk docs for [how to configure certificate chains](http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/HowtoprepareyoursignedcertificatesforSplunk#How_to_configure_certificate_chains).
+  * **Common name(s) of server(s) certificates**: Comma-separated list of common names. The common name of Splunk server(s) certificates is checked against this list.
+  * **Alternate name(s) of server(s) certificates**: Comma-separated list of alternate names. The alternate name of Splunk server(s) certificates is checked against this list.
 
 1. **Cloud Foundry Settings**:
   * **Skip SSL validation**: Disables SSL certificate validation; inappropriate for a production environment
@@ -104,3 +104,4 @@ One situation in which this might be useful is differentiating logs from multipl
   for some suggestions on how to scale the loggregator system's components and measure message loss.
 
 1. **Stemcell**: Ensure the proper stemcell is available.
+
