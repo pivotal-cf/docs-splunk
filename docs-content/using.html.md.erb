@@ -3,23 +3,30 @@ title: Using Splunk Firehose Nozzle for PCF
 owner: Partners
 ---
 
-This topic describes how to use Splunk Firehose Nozzle for PCF. After installing & configuring Splunk Firehose Nozzle for PCF, PCF operators can then navigate in the browser to the URL of their existing Splunk Enterprise deployment to immediately search, report, visualize and alert on PCF Firehose data.
+This topic describes how to use Splunk Firehose Nozzle for PCF. 
 
-The following assumes basic familiarty on how to run searches, save reports, and create dashboards in Splunk Enterprise. If you're new to Splunk, start with the [Search Tutorial](https://docs.splunk.com/Documentation/Splunk/6.5.1/SearchTutorial/WelcometotheSearchTutorial) which will show you how to search data and create simple dashboards.
+After installing and configuring Splunk Firehose Nozzle for PCF, PCF operators can navigate in the 
+browser to the URL of their existing Splunk Enterprise deployment to immediately search, report, 
+visualize, and alert on PCF Firehose data.
 
-Here's an example Splunk dashboard to demonstrate how to achieve PCF operational intelligence:
+The following assumes basic familiarty on how to run searches, save reports, and create dashboards in Splunk Enterprise. 
+If you're new to Splunk, start with the [Search Tutorial](https://docs.splunk.com/Documentation/Splunk/6.5.1/SearchTutorial/WelcometotheSearchTutorial) which shows you how to search data and create simple dashboards.
+
+Here is an example Splunk dashboard to demonstrate how to achieve PCF operational intelligence:
 
 ![Report Example: Sample Ops Dashboard](images/dashboard-sample.png)
 
 <%#
-For a starter sample dashboard for operational intelligence, you can use community-supported [Splunk Add-on for Cloud Foundry](#add-on) which includes many pre-built panels and reports to help you quickly build your own custom dashboards to monitor the health of your foundation and the performance of your applications.
+For a starter sample dashboard for operational intelligence, you can use community-supported 
+[Splunk Add-on for Cloud Foundry](#add-on) which includes many pre-built panels and reports to 
+help you quickly build your own custom dashboards to monitor the health of your foundation and the performance of your apps.
 %>
 
 ##<a id='search'></a>Search Firehose Data
 
-The firehose event types forwared by the Splunk Nozzle are assigned the following Splunk sourcetypes by default:
+The Firehose event types forwarded by the Splunk Nozzle are assigned the following Splunk sourcetypes by default:
 
-  PCF Firehose event type | Splunk sourcetype
+  Firehose event type | Splunk sourcetype
   --- | ---
   Error | `cf:error`
   HttpStartStop | `cf:httpstartstop`
@@ -30,7 +37,9 @@ The firehose event types forwared by the Splunk Nozzle are assigned the followin
 
 In addition, logs from the nozzle itself are of sourcetype `cf:splunknozzle`.
 
-You can use these Splunk sourcetypes to search & retrieve the relevant events from the index, use statistical commands to calculate metrics and generate reports, search for specific conditions within a rolling time window, identify patterns in your data, predict future trends, and so on. For example:
+You can use these Splunk sourcetypes to search and retrieve the relevant events from the index, 
+use statistical commands to calculate metrics and generate reports, search for specific conditions within a rolling time window, 
+identify patterns in your data, predict future trends, and so on. For example:
 
   * Search for any errors from your foundation:
 
@@ -45,11 +54,13 @@ You can use these Splunk sourcetypes to search & retrieve the relevant events fr
     `sourcetype=cf:valuemetric name=CapacityRemainingDisk`
     `sourcetype=cf:valuemetric name=CapacityRemainingMemory`
 
-This assumes you have access to the index specified to receive these firehose events. You may need to explicitly specify the index in your search if that index is not part of the indexes searched by default for the Splunk role you belong to. These searches can then be saved as reports and used to power dashboard panels, as illustrated in the next section.
+This assumes you have access to the index specified to receive these Firehose events. 
+You might need to explicitly specify the index in your search if that index is not part of the indexes searched by default for the Splunk role you belong to. 
+These searches can then be saved as reports and used to power dashboard panels, as illustrated in the next section.
 
-##<a id='report'></a>Report & Visualize Firehose Data
+##<a id='report'></a>Report and Visualize Firehose Data
 
-To monitor your environment operational health, you can build on these same searches to generate reports & visualizations. For example:
+To monitor your environment operational health, you can build on these same searches to generate reports and visualizations. For example:
 
   * Report available memory per cell:
 
@@ -78,8 +89,9 @@ To monitor your environment operational health, you can build on these same sear
     ```
     ![Report Example: Total routes with trend](images/report-routes-total-with-trend.png)
 
-To learn more about searching & reporting with Splunk, refer to [Splunk Docs](https://docs.splunk.com/Documentation/Splunk)
-for complete list of manuals & references, from generating visualizations to creating alerts.
+For more information about searching and reporting with Splunk, 
+see [Splunk Docs](https://docs.splunk.com/Documentation/Splunk)
+for a complete list of manuals and references, from generating visualizations to creating alerts.
 
 
  

@@ -1,3 +1,21 @@
+## Style sheet for this repo
+
+Product name is Splunk Firehose Nozzle for PCF
+
+### House Grammar and Style
+
++ Use the serial comma.
++ Do not use contractions.
++ Use "and" not "&".
++ Keep lines short.
+
+### Terminology from the PCF Word List:
+
+“Firehose” (initial caps), use “Loggregator Firehose” (not PCF Firehose) in first use on each page.
+
+“app” consistently instead of “application”
+
+
 ## Pivotal Cloud Foundry Partners Template
 
 This template helps partners prepare documentation for Pivotal Cloud Foundry (PCF) partner services that appear on [Pivotal Network](https://network.pivotal.io/). 
