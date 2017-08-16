@@ -5,12 +5,11 @@ owner: Partners
 
 This topic describes how to use Splunk Firehose Nozzle for PCF. 
 
-After installing and configuring Splunk Firehose Nozzle for PCF, PCF operators can navigate in the 
-browser to the URL of their existing Splunk Enterprise deployment to immediately search, report, 
+After installing and configuring Splunk Firehose Nozzle for PCF, PCF operators can navigate to the URL of their existing Splunk Enterprise deployment to immediately search, report, 
 visualize, and alert on PCF Firehose data.
 
 The following assumes basic familiarty on how to run searches, save reports, and create dashboards in Splunk Enterprise. 
-If you're new to Splunk, start with the [Search Tutorial](https://docs.splunk.com/Documentation/Splunk/6.5.1/SearchTutorial/WelcometotheSearchTutorial) which shows you how to search data and create simple dashboards.
+If you are new to Splunk, start with the [Search Tutorial](https://docs.splunk.com/Documentation/Splunk/6.5.1/SearchTutorial/WelcometotheSearchTutorial) which shows you how to search data and create simple dashboards.
 
 Here is an example Splunk dashboard to demonstrate how to achieve PCF operational intelligence:
 
@@ -54,9 +53,9 @@ identify patterns in your data, predict future trends, and so on. For example:
     `sourcetype=cf:valuemetric name=CapacityRemainingDisk`
     `sourcetype=cf:valuemetric name=CapacityRemainingMemory`
 
-This assumes you have access to the index specified to receive these Firehose events. 
-You might need to explicitly specify the index in your search if that index is not part of the indexes searched by default for the Splunk role you belong to. 
-These searches can then be saved as reports and used to power dashboard panels, as illustrated in the next section.
+This assumes that you have access to the index specified to receive these Firehose events. 
+You might need to explicitly specify the index in your search if that index is not part of the indexes searched by default for your Splunk role. 
+These searches can be saved as reports and used to power dashboard panels, as shown in the next section.
 
 ##<a id='report'></a>Report and Visualize Firehose Data
 
@@ -91,7 +90,6 @@ To monitor your environment operational health, you can build on these same sear
 
 For more information about searching and reporting with Splunk, 
 see [Splunk Docs](https://docs.splunk.com/Documentation/Splunk)
-for a complete list of manuals and references, from generating visualizations to creating alerts.
-
+for a complete list of manuals. 
 
  
