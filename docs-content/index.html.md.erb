@@ -4,9 +4,9 @@ owner: Partners
 ---
 
 This documentation describes the Splunk Nozzle for Pivotal Cloud Foundry (PCF) Firehose. 
-The Splunk Nozzle integrates with PCF [Loggregator](http://docs.pivotal.io/pivotalcf/1-8/loggregator/index.html) 
-and forwards to Splunk Enterprise streaming logs and metrics from the user apps and system components of Cloud Foundry. 
-PCF operators can then gain operational visibility over their PCF infrastructure including the health and performance of 
+Splunk Nozzle integrates with PCF [Loggregator](http://docs.pivotal.io/pivotalcf/1-8/loggregator/index.html) 
+and forwards streaming logs and metrics from user apps and system components of Cloud Foundry to Splunk Enterprise.
+PCF operators can then gain operational visibility over their PCF infrastructure, including the health and performance of their
 apps and system components.
 
 ## <a id="overview"></a>Overview
@@ -14,15 +14,15 @@ apps and system components.
 After installing the Splunk Firehose Nozzle for PCF tile, PCF streaming logs and metrics are forwarded 
 to user-specified Splunk Enterprise indexers configured to receive data. 
 PCF operators and Splunk users can then immediately search and analyze PCF Firehose data from their 
-Splunk Enterprise deployment and build reports, dashboards, and alerts on the health of their foundation 
-and the performance of the apps.
+Splunk Enterprise deployment and build reports, dashboards, and alerts on the health 
+and performance of their apps.
 
 Splunk Firehose Nozzle for PCF includes the following key features:
 
 * Setup with out-of-the-box data parsing and enrichment for various PCF event types
 * Reliable event delivery by leveraging Splunk Forwarder capabilities from indexer acknowledgement, 
 buffering, and load balancing
-* Secure forwarding from PCF into external Splunk environment using user-provided SSL certificates
+* Secure forwarding from PCF into external Splunk environments using user-provided SSL certificates
 * Scales up and out to meet increasing data volume and number of apps
 
 ## <a id="snapshot"></a>Product Snapshot
@@ -43,7 +43,7 @@ buffering, and load balancing
 
 Splunk Firehose Nozzle for PCF has the following requirements:
 
-+ An external Splunk Enterprise deployment configured to receive data from a Splunk Forwarder
++ An external Splunk Enterprise or Splunk Cloud 6.5+ deployment configured to receive data from a Splunk Forwarder.
 
 ## <a id="limitations"></a>Limitations
 

@@ -7,6 +7,11 @@ This topic describes how to install and configure Splunk Firehose Nozzle for PCF
 
 ##<a id='install'></a> Install and Configure Splunk Firehose Nozzle for PCF
 
+###Prerequisites
++ For detailed information adding PCF products, see [Adding Products](https://docs.pivotal.io/pivotalcf/1-11/customizing/add-delete.html)
+
+###Steps
+
 1. Download the product file from [Pivotal Network](https://network.pivotal.io/).
 
 1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to
@@ -32,7 +37,7 @@ to install Splunk Firehose Nozzle for PCF tile.
   * **Remote Splunk server(s)**: Comma-separated list of Splunk indexers to send data to. 
 Each Splunk server is specified as `<address>:<port>`, where `<address>` is either FQDN or IP address, 
 and `<port>` is the port on which Splunk indexer is listening.
-  * **Index**: Splunk index to use for indexing Firehose events
+  * **Index**: Splunk index to use for indexing Firehose events.
   * **Additional fields for metadata**: Arbitrary set of key:value pairs in the form "key1:value1,key2:value2,key3:value3" that do not occur in event payload itself. 
 These fields are indexed with every event payload, and are used as metadata for indexing and searching. 
 One situation in which this might be useful is differentiating logs from multiple foundations draining into the same Splunk Enterprise index.
@@ -72,7 +77,7 @@ One situation in which this might be useful is differentiating logs from multipl
       1. `uaac -t user add splunk-nozzle --password password123 --emails na`
       1. `uaac -t member add cloud_controller.admin_read_only splunk-nozzle`
       1. `uaac -t member add doppler.firehose splunk-nozzle`
-  * **Event types**: Chose which events the nozzle forwards to the Splunk indexer(s). See the
+  * **Event types**: Choose which events that the nozzle forwards to the Splunk indexer(s). See 
   [dropsonde-protocol](https://github.com/cloudfoundry/dropsonde-protocol/tree/master/events)
   for more information about these individual events:
       * HttpStartStop
@@ -85,8 +90,8 @@ One situation in which this might be useful is differentiating logs from multipl
 1. **Advanced**
   * **Admin user/Admin password**: The tile creates VMs which includes a Splunk Forwarder co-located
   with the nozzle. These are the admin credentials used on these machines.
-  Only useful in a debugging context.
-  * **HEC Token**: This HTTP Event Collector (HEC) token is used internally by the nozzle to connect to its co-located
+  This is only useful in a debugging context.
+  * **HEC Token**: The HTTP Event Collector (HEC) token is used by the nozzle to connect to its co-located
   Splunk Forwarder. Only useful in a debugging context.
   * **Firehose subscription id**: The loggregator will round-robin events across connections
   having the same id. An operator would only need to change this if some other connection
@@ -101,7 +106,7 @@ One situation in which this might be useful is differentiating logs from multipl
   listen to and if **add app info** is turned on. A good starting point is to have
   one nozzle for every 10,000 messages per second. See
   [this mailing list thread](https://lists.cloudfoundry.org/archives/list/cf-dev@lists.cloudfoundry.org/message/F3JF2UNPFHXMY23NLDZBAOYNRBMATODT/)
-  for some suggestions on how to scale the loggregator system's components and measure message loss.
+  for some suggestions on scaling the loggregator system's components and measuring message loss.
 
 1. **Stemcell**: Ensure the proper stemcell is available.
 

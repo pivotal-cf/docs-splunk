@@ -7,7 +7,7 @@ This topic describes how to troubleshoot Splunk Firehose Nozzle for PCF.
 
 ## <a id='architecture'></a> Architecture Overview
 
-Before troubleshooting, it is useful to understand exactly what the tile installs.
+Before troubleshooting, it is useful to understand what the tile installs.
 Each VM contains two jobs:
 
 * **splunk-nozzle**: This job is a small app that listens to the Cloud Foundry
@@ -64,7 +64,7 @@ and the user-specified index for Firehose events.
   An example error would be:
   *11-03-2016 22:23:00.046 +0000 ERROR TcpInputProc - Error encountered for connection from src=<redacted>:55713. error:140760FC:SSL routines:SSL23_GET_CLIENT_HELLO:unknown protocol*
 
-  Whether you are using self-signed certificates or certificates signed by a third party, ensure to follow these [instructions](http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/HowtoprepareyoursignedcertificatesforSplunk) to provide your signed certificates details in correct format when configuring the tile. For more details on troubleshooting and validating your forwarder/receiver connection, refer to the following Splunk Docs resources:
+  Whether you are using self-signed certificates or certificates signed by a third party, ensure to follow these [instructions](http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/HowtoprepareyoursignedcertificatesforSplunk) to provide your signed certificates details in correct format when configuring the tile. For more details on troubleshooting and validating your forwarder/receiver connection, see:
 
   * http://docs.splunk.com/Documentation/Splunk/6.5.1/Forwarding/Receiverconnection
   * http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/Validateyourconfiguration
@@ -101,7 +101,7 @@ and the user-specified index for Firehose events.
 
 ### 4. Additional troubleshooting from nozzle VMs
 
-In most cases, you would only need to troubleshoot from Splunk which is recommended as shown above. However, if you don't have access to Splunk or the Splunk nozzle is still not forwarding any data (which includes internal logs), the second alternative is to access Splunk nozzle directly. The pre-requisite for this section is [connecting to the PCF deployment's bosh](http://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html)
+It is recommended that you troubleshoot from Splunk, as shown above. However, if you do not have access to Splunk or the Splunk nozzle is still not forwarding any data (including internal logs), the second alternative is to access Splunk nozzle directly. The pre-requisite for this section is [connecting to the PCF deployment's bosh](http://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html)
 
 Having done that, the [bosh logs](https://bosh.io/docs/job-logs.html)
 command is a useful place to start debugging.
@@ -111,7 +111,7 @@ bosh logs splunk-nozzle 0
 ```
 
 This downloads a local copy of the nozzle's logs and the control script that starts
-the Splunk forwarder deamon. This could illuminate issues. For example, seeing
+the Splunk forwarder deamon. You can analyze the logs for errors. For example, seeing
 
 ```
 goroutine 28 [running]:
