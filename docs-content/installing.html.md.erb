@@ -12,7 +12,7 @@ This topic describes how to install and configure Splunk Firehose Nozzle for PCF
 
 ###Steps
 
-1. Download the product file from [Pivotal Network](https://network.pivotal.io/).
+1. Download the product file from [Pivotal Network](https://network.pivotal.io/products/splunk-nozzle/).
 
 1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to
 upload the product file.
@@ -21,6 +21,8 @@ upload the product file.
 Manager **Available Products** view to add it to your staging area.
 
 1. Click the newly added **Splunk Firehose Nozzle for PCF** tile.
+![Report Example: Ops Manager Dashboard View](images/ops-manager-dashboard.png)
+
 
 1. [Configure the tile](#configure) as described below.
 
@@ -29,33 +31,30 @@ Manager **Available Products** view to add it to your staging area.
 1. Return to the Ops Manager Installation Dashboard and click **Apply Changes**
 to install Splunk Firehose Nozzle for PCF tile.
 
+
+
 ##<a id='configure'></a> Configuration
 
-1. **Assign AZs and Networks**: choose placement.
+**1. Assign AZs and Networks**: choose placement.
 
-1. **Splunk Destination**
-  * **Remote Splunk server(s)**: Comma-separated list of Splunk indexers to send data to. 
-Each Splunk server is specified as `<address>:<port>`, where `<address>` is either FQDN or IP address, 
-and `<port>` is the port on which Splunk indexer is listening.
-  * **Index**: Splunk index to use for indexing Firehose events.
-  * **Additional fields for metadata**: Arbitrary set of key:value pairs in the form "key1:value1,key2:value2,key3:value3" that do not occur in event payload itself. 
-These fields are indexed with every event payload, and are used as metadata for indexing and searching. 
-One situation in which this might be useful is differentiating logs from multiple foundations draining into the same Splunk Enterprise index.
+**2. Splunk Settings:**
+    ![Report Example: Tile Splunk Settings](images/tile-splunk-settings.png)
 
-1. **Splunk SSL Settings**:
-  * **Enable Splunk SSL**: When true, the Splunk forwarder part of the nozzle uses HTTPS for secure connection with Splunk indexers; highly recommended for a production environment.
-  * **Client certificate**: Properly concatenated client certificate, client private key and public certificate as single PEM file. Refer to Splunk docs for [how to prepare your signed certificates into single PEM file](http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/HowtoprepareyoursignedcertificatesforSplunk).
-  * **Client certificate password**: Passphrase for client private key (if applicable)
-  * **Root CA certificate(s)**: One or more root CA certificates concatenated together. This is used to verify target Splunk indexer(s) certificates. Refer to Splunk docs for [how to configure certificate chains](http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/HowtoprepareyoursignedcertificatesforSplunk#How_to_configure_certificate_chains).
-  * **Common name(s) of server(s) certificates**: Comma-separated list of common names. The common name of Splunk server(s) certificates is checked against this list.
-  * **Alternate name(s) of server(s) certificates**: Comma-separated list of alternate names. The alternate name of Splunk server(s) certificates is checked against this list.
+  * **HTTP Event Collector Endpoint (HEC) URL**: HTTP Event Collector endpoint URL.`<address>:<port>`, where `<address>` is either FQDN or IP address,
+and `<port>` is the port on which Splunk HEC is listening.
+  * **HTTP Event Collector (HEC) Token**: Splunk generated HEC token. [More Information](http://docs.splunk.com/Documentation/SplunkCloud/6.6.1/Data/UsetheHTTPEventCollector)
+  * **Skip SSL validation**: Skip SSL certificate validation for connections to Splunk. Secure communications will not check SSL certificates against a trusted Certificate Authority.
+Inappropriate for a production environment.
+  * **Index**: The Splunk index events will be sent to.
 
-1. **Cloud Foundry Settings**:
-  * **Skip SSL validation**: Disables SSL certificate validation; inappropriate for a production environment
-  * **Add app info**: When true, the nozzle connects back to the Cloud Foundry API and query events that
-  have an app GUID to add additional information (app name, space name, space GUID, organization name,
-  organization GUID). This increases load on the API machines in step with the number of running apps,
-  because each Nozzle populates a cache of app metadata.
+  **Warning:** Setting an invalid index will cause events to be lost. This index must match one of the selected indexes for the Splunk HTTP event collector token used for the HTTP Event Collector Token parameter.
+
+
+
+**3. Cloud Foundry Settings**:
+    ![Report Example: Cloud Foundry Settings View](images/tile-cf-settings.png)
+
+  * **API Endpoint**: Cloud Foundry API endpoint.
   * **API user/API password**: The nozzle's credentials. Best practice is to provide a user in
   keeping with "Rotate, Repave, Repair," so that credentials that can be easily deactivated, rotated,
   and have minimal access privileges. The nozzle's user needs
@@ -77,7 +76,9 @@ One situation in which this might be useful is differentiating logs from multipl
       1. `uaac -t user add splunk-nozzle --password password123 --emails na`
       1. `uaac -t member add cloud_controller.admin_read_only splunk-nozzle`
       1. `uaac -t member add doppler.firehose splunk-nozzle`
-  * **Event types**: Choose which events that the nozzle forwards to the Splunk indexer(s). See 
+  * **Skip SSL validation**: Skip SSL certificate validation for connections to Cloud Foundry. Secure communications will not check SSL certificates against a trusted Certificate Authority.
+      Inappropriate for a production environment.
+  * **Event Types**: Choose which events that the nozzle forwards to the Splunk indexer(s). See
   [dropsonde-protocol](https://github.com/cloudfoundry/dropsonde-protocol/tree/master/events)
   for more information about these individual events:
       * HttpStartStop
@@ -87,26 +88,26 @@ One situation in which this might be useful is differentiating logs from multipl
       * Error
       * ContainerMetric
 
-1. **Advanced**
-  * **Admin user/Admin password**: The tile creates VMs which includes a Splunk Forwarder co-located
-  with the nozzle. These are the admin credentials used on these machines.
-  This is only useful in a debugging context.
-  * **HEC Token**: The HTTP Event Collector (HEC) token is used by the nozzle to connect to its co-located
-  Splunk Forwarder. Only useful in a debugging context.
-  * **Firehose subscription id**: The loggregator will round-robin events across connections
+
+
+**4. Advanced**
+    ![Report Example: Cloud Foundry Settings View](images/tile-advanced-settings.png)
+
+  * **Scale Out Nozzle**: Scale out Splunk nozzle. Recommendation:Run 2 or more nozzles for high availability.
+  * **Firehose subscription ID**: The loggregator will round-robin events across connections
   having the same id. An operator would only need to change this if some other connection
   is also using the default value.
+  * **Additional Fields**: Arbitrary set of key:value pairs in the form `key1:value1,key2:value2,key3:value3` that do not occur in event payload itself.
+  These fields are indexed with every event payload, and are used as metadata for indexing and searching.
+  One situation in which this might be useful is differentiating logs from multiple foundations draining into the same Splunk Enterprise index.
+  * **Add App Information**: When true, the nozzle connects back to the Cloud Foundry API and query events that
+  have an app GUID to add additional information (app name, space name, space GUID, organization name,
+  organization GUID). This increases load on the API machines in step with the number of running apps,
+  because each Nozzle populates a cache of app metadata.
+  * **Enable Event Tracing**: Enables event trace logging. Splunk events will now contain a UUID, Splunk Nozzle Event Counts, and a Subscription-ID for Splunk correlation searches.
 
-1. **Resource config**:
-  * To prevent message loss, a minimum of two `splunk-nozzle` instances should be used.
-  The loggregator system will round robin events across connections having the same subscription id, so
-  to prevent message loss during actions that create and destroy VMs (stemcell upgrades, for example),
-  a second instance is needed.
-  * The VM size and instance count vary depending on which **event types** the nozzle is configured to
-  listen to and if **add app info** is turned on. A good starting point is to have
-  one nozzle for every 10,000 messages per second. See
-  [this mailing list thread](https://lists.cloudfoundry.org/archives/list/cf-dev@lists.cloudfoundry.org/message/F3JF2UNPFHXMY23NLDZBAOYNRBMATODT/)
-  for some suggestions on scaling the loggregator system's components and measuring message loss.
 
-1. **Stemcell**: Ensure the proper stemcell is available.
+**5. Resource Config**: Select default options.
+
+**6. Stemcell**: Ensure the proper stemcell is available.
 

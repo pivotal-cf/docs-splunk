@@ -7,23 +7,28 @@ This topic describes how to troubleshoot Splunk Firehose Nozzle for PCF.
 
 ## <a id='architecture'></a> Architecture Overview
 
+The Splunk Firehose Nozzle for PCF has been developed as a Cloud Foundry Elastic Runtime application.
+The nozzle subscribes to the Cloud Foundry Loggregator endpoint and writes events to an external Splunk environment.
+
+![Report Example: Basic Nozzle Architecture](images/overview.png)
+<strong><center>Figure 1: Basic Nozzle Architecture</center></strong>
+
+<strong>Inside each nozzle:</strong>
+
+* A Golang routine is subscribed to collect events from the PCF Loggregator endpoint.
+* An in memory queue will buffer events to make available for multiple Splunk HTTP Event Collector clients.
+* The Splunk HTTP Event Collector clients run as their own Golang Routines consuming events from the queue enriching PCF events by attaching
+metadata fields.
+* Finally the events are batched together and sent to Splunk via the HEC Endpoint in the Splunk environment.
+
+![Report Example: Internal Nozzle Architecture](images/nozzle-internals-large.png)
+<strong><center>Figure 2: Nozzle Internal Architecture</center></strong>
+
+
+
+
 Before troubleshooting, it is useful to understand what the tile installs.
-Each VM contains two jobs:
 
-* **splunk-nozzle**: This job is a small app that listens to the Cloud Foundry
-[Loggregator Firehose](https://github.com/cloudfoundry/loggregator). When configured
-to, the nozzle also connects back to the Cloud Foundry API to collect and cache app metadata
-(enriching events with additional information).
-* **splunk-forwarder**: This job is a Splunk
-[heavy forwarder](https://docs.splunk.com/Splexicon:Heavyforwarder). It sets up a local
-[HTTP event collector](http://dev.splunk.com/view/event-collector/SP-CAAAE6M) to
-receive events from the nozzle and then sends them on to the user-specified pre-configured indexer(s).
-
-The logging system will round-robin events across the `splunk-nozzle` VM instances. Each
-`splunk-nozzle` job sends the events it received locally to the co-located `splunk-forwarder`
-
-**Splunk Firehose Nozzle** (or shorthand **Splunk Nozzle**) refers to
-both `splunk-nozzle` and `splunk-forwarder` jobs as one entity in this context.
 
 ## <a id='walkthrough'></a> Troubleshooting Walkthrough
 
@@ -99,32 +104,4 @@ and the user-specified index for Firehose events.
   ```
   Errors are logged with corresponding message and stacktrace.
 
-### 4. Additional troubleshooting from nozzle VMs
 
-Splunk recommends that you troubleshoot from Splunk, as shown above.
-However, if you do not have access to Splunk or the Splunk nozzle is still not forwarding any data (including internal logs),
-the second alternative is to access Splunk nozzle directly.
-The pre-requisite for this section is [connecting to the PCF deployment's bosh](http://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html).
-
-Having done that, the [bosh logs](https://bosh.io/docs/job-logs.html)
-command is a useful place to start debugging.
-
-```
-bosh logs splunk-nozzle 0
-```
-
-This downloads a local copy of the nozzle's logs and the control script that starts
-the Splunk forwarder deamon. You can analyze the logs for errors. For example, seeing
-
-```
-goroutine 28 [running]:
-...
-panic: Non-ok response code [503] from splunk: {"text":"Server is busy","code":9}
-...
-```
-
-would point an operator toward failure in the communication between the nozzle and
-its co-located Splunk forwarder.
-
-To view the Splunk forwarder's internal logs, look through
-`/var/vcap/packages/splunk/var/log` on the nozzle's VMs.

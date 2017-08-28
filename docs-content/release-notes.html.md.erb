@@ -3,10 +3,14 @@ title: Splunk Firehose Nozzle for PCF Release Notes
 owner: Partners
 ---
 
-### v0.2.0
+### v1.0.0
+Splunk Supported Release
 
-December 5, 2016
+Features:
 
-Initial beta release
+* Scale out capability. Deploy more than one nozzle to your cloud foundry environment for High Availability.
+* Events streamed efficiently and in a secure manner to Splunk via the HTTP Event Collector (HEC).
+* Nozzle is running multiple clients sending to HEC for concurrent streaming into Splunk for increased event throughput.
+* Custom event metadata can be sent along with PCF events for enriching data inside Splunk.
+* Log tracing feature allows correlation searching and improved results inside Splunk.
 
-* A Loggregator nozzle and Splunk forwarder that sends data to an external Splunk indexer.
