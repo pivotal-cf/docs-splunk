@@ -102,6 +102,31 @@ and the user-specified index for Firehose events.
   ```
   sourcetype="cf:splunknozzle" data.error=*
   ```
+
   Errors are logged with corresponding message and stacktrace.
 
+### 4. Check for dropped events due to HTTP Event Collector availability:
+
+  As the Splunk Firehose Nozzle is sending data to splunk via HTTPS using the HTTP Event Collector it is also susceptible to any network issues across the network path from point to point. Run the following search to determine if Splunk has indexed any events indicating issues with the HEC Endpoint.
+
+
+  ```
+  sourcetype="cf:splunknozzle" "dropping events"
+  ```
+
+### 5. Check for data loss inside the Splunk Firehose Nozzle :
+
+
+  If "Event Tracing" is enabled, extra meta-data will be attached to events allowing searches to calculate the percentage of data loss inside the Splunk Firehose Nozzle, if any.
+
+  Each instance of the Splunk Firehose Nozzle will run with a randomly generated UUID. First determine the UUIDs of the Nozzles:
+
+  ```
+  index=main sourcetype="cf:*" | stats values(uuid)
+  ```
+  After returning the UUID's ingesting events into Splunk substitute <uuid> into the below query to return te percentage of events handled and indexed by Splunk.
+
+  ```
+  index=main uuid::<uuid> | stats count as total_events , max(nozzle-event-counter) as max_number | eval total=(total_events/max_number) * 100 | table total
+  ```
 
