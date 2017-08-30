@@ -29,6 +29,15 @@ metadata fields.
 
 Before troubleshooting, it is useful to understand what the tile installs.
 
+To view the nozzle's logs running on Pivotal Cloud Foundry
+
+1. Login via the cli using the admin user.
+1. Target the org created by the tile
+  * `cf target -o splunk-nozzle-org`
+1. View the recent app Splunk Nozzle logs (the version number installed by the tile will vary)
+  * `cf logs --recent splunk-firehose-nozzle-1.0.0`
+1. Or stream the app logs as they're emitted
+  * `cf logs splunk-firehose-nozzle-1.0.0`
 
 ## <a id='walkthrough'></a> Troubleshooting Walkthrough
 
