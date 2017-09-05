@@ -5,30 +5,6 @@ owner: Partners
 
 This topic describes how to troubleshoot Splunk Firehose Nozzle for PCF.
 
-## <a id='architecture'></a> Architecture Overview
-
-The Splunk Firehose Nozzle for PCF has been developed as a Cloud Foundry Elastic Runtime application.
-The nozzle subscribes to the Cloud Foundry Loggregator endpoint and writes events to an external Splunk environment.
-
-![Report Example: Basic Nozzle Architecture](images/overview.png)
-<strong><center>Figure 1: Basic Nozzle Architecture</center></strong>
-
-<strong>Inside each nozzle:</strong>
-
-* A Golang routine is subscribed to collect events from the PCF Loggregator endpoint.
-* An in memory queue will buffer events to make available for multiple Splunk HTTP Event Collector clients.
-* The Splunk HTTP Event Collector clients run as their own Golang Routines consuming events from the queue enriching PCF events by attaching
-metadata fields.
-* Finally the events are batched together and sent to Splunk via the HEC Endpoint in the Splunk environment.
-
-![Report Example: Internal Nozzle Architecture](images/nozzle-internals-large.png)
-<strong><center>Figure 2: Nozzle Internal Architecture</center></strong>
-
-
-
-
-Before troubleshooting, it is useful to understand what the tile installs.
-
 To view the nozzle's logs running on Pivotal Cloud Foundry
 
 1. Login via the cli using the admin user.
@@ -44,7 +20,7 @@ To view the nozzle's logs running on Pivotal Cloud Foundry
 The following assumes you have access to Splunk to run basic searches against index `_internal`
 and the user-specified index for Firehose events.
 
-### 1. Ensure Splunk indexer(s) are listening to data on configured port
+### 1. Ensure Splunk indexer(s) are listening to data on configured port:
 
   Search internal logs of indexer(s), specifically the TCP input processor, as follows:
 
@@ -56,9 +32,9 @@ and the user-specified index for Firehose events.
 
   *10-13-2016 17:31:16.226 +0000 INFO  TcpInputProc - Creating fwd data Acceptor for IPv4 port 9997 with SSL*
 
-### 2. Ensure Splunk nozzle is connected to Splunk indexer(s):
+### 2. Ensure Splunk Nozzle is connected to Splunk indexer(s):
 
-  Search internal logs of nozzle, specifically the TCP output processor, to confirm Splunk nozzle is correctly forwarding:
+  Search internal logs of nozzle, specifically the TCP output processor, to confirm that the Splunk Nozzle is correctly forwarding:
 
   ```
   index=_internal host="splunk-nozzle_*" sourcetype=splunkd component=TcpOutputProc
@@ -67,8 +43,8 @@ and the user-specified index for Firehose events.
 
   *11-04-2016 20:24:13.702 +0000 INFO  TcpOutputProc - Connected to idx=<redacted>:9997 using ACK.*
 
-  If no such event is found, then no data is being forwarded from nozzle. 
-  This can be due to mis-configured indexer(s) firewall, or mis-configured SSL settings of either nozzle (forwarder) or indexer(s). 
+  If no such event is found, then no data is being forwarded from the Nozzle.
+  This can be due to misconfigured indexer(s) firewall, or misconfigured SSL settings of either Nozzle (forwarder) or indexer(s).
   Search internal logs of Splunk indexer(s) for any errors:
 
   ```
@@ -78,15 +54,15 @@ and the user-specified index for Firehose events.
   An example error would be:
   *11-03-2016 22:23:00.046 +0000 ERROR TcpInputProc - Error encountered for connection from src=<redacted>:55713. error:140760FC:SSL routines:SSL23_GET_CLIENT_HELLO:unknown protocol*
 
-  Whether you are using self-signed certificates or certificates signed by a third party, ensure to follow these [instructions](http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/HowtoprepareyoursignedcertificatesforSplunk) to provide your signed certificates details in correct format when configuring the tile. For more details on troubleshooting and validating your forwarder/receiver connection, see:
+  Whether you are using self-signed certificates or certificates signed by a third party, follow these [instructions](http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/HowtoprepareyoursignedcertificatesforSplunk) to provide your signed certificates details in a correct format when configuring the tile. For more details on troubleshooting and validating your forwarder/receiver connection, see:
 
   * http://docs.splunk.com/Documentation/Splunk/6.5.1/Forwarding/Receiverconnection
   * http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/Validateyourconfiguration
   * http://docs.splunk.com/Documentation/Splunk/6.5.1/Security/Troubleshootyouforwardertoindexerauthentication
 
-### 3. Ensure Splunk nozzle is forwarding events from the Firehose:
+### 3. Ensure Splunk Nozzle is forwarding events from the Firehose:
 
-  Search app logs of nozzle to confirm correct behavior:
+  Search app logs of the Nozzle to confirm correct behavior:
 
   ```
   sourcetype="cf:splunknozzle"
@@ -106,7 +82,7 @@ and the user-specified index for Firehose events.
   }
   ```
 
-  Search app logs of nozzle for any errors:
+  Search app logs of the Nozzle for any errors:
 
   ```
   sourcetype="cf:splunknozzle" data.error=*
@@ -116,17 +92,17 @@ and the user-specified index for Firehose events.
 
 ### 4. Check for dropped events due to HTTP Event Collector availability:
 
-  As the Splunk Firehose Nozzle is sending data to splunk via HTTPS using the HTTP Event Collector it is also susceptible to any network issues across the network path from point to point. Run the following search to determine if Splunk has indexed any events indicating issues with the HEC Endpoint.
+  As the Splunk Firehose Nozzle is sending data to Splunk via HTTPS using the HTTP Event Collector it is also susceptible to any network issues across the network path from point to point. Run the following search to determine if Splunk has indexed any events indicating issues with the HEC Endpoint.
 
 
   ```
   sourcetype="cf:splunknozzle" "dropping events"
   ```
 
-### 5. Check for data loss inside the Splunk Firehose Nozzle :
+### 5. Check for data loss inside the Splunk Firehose Nozzle:
 
 
-  If "Event Tracing" is enabled, extra meta-data will be attached to events allowing searches to calculate the percentage of data loss inside the Splunk Firehose Nozzle, if any.
+  If "Event Tracing" is enabled, extra metadata will be attached to events allowing searches to calculate the percentage of data loss inside the Splunk Firehose Nozzle, if any.
 
   Each instance of the Splunk Firehose Nozzle will run with a randomly generated UUID. The below query will display the message success rate for each UUID.
 

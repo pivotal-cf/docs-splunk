@@ -8,11 +8,11 @@ This topic describes how to install and configure Splunk Firehose Nozzle for PCF
 ##<a id='install'></a> Install and Configure Splunk Firehose Nozzle for PCF
 
 ###Prerequisites
-+ For detailed information about adding PCF products, see [Adding Products](https://docs.pivotal.io/pivotalcf/1-11/customizing/add-delete.html).
++ For information on the Ops Manager Installation Dashboard, see [Using Ops Manager](http://docs.pivotal.io/pivotalcf/1-11/customizing/)
 
 ###Steps
 
-1. Download the product file from [Pivotal Network](https://network.pivotal.io/products/splunk-nozzle/).
+1. Download the Splunk file from [Pivotal Network](https://network.pivotal.io/products/splunk-nozzle/).
 
 1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to
 upload the product file.
@@ -35,7 +35,7 @@ to install Splunk Firehose Nozzle for PCF tile.
 
 ##<a id='configure'></a> Configuration
 
-**1. Assign AZs and Networks**: choose placement.
+**1. Assign AZs and Networks**: Choose placement accordingly.
 
 **2. Splunk Settings:**
     ![Report Example: Tile Splunk Settings](images/tile-splunk-settings.png)
@@ -44,8 +44,8 @@ to install Splunk Firehose Nozzle for PCF tile.
 and `<port>` is the port on which Splunk HEC is listening.
   * **HTTP Event Collector (HEC) Token**: Splunk generated HEC token. [More Information](http://docs.splunk.com/Documentation/SplunkCloud/6.6.1/Data/UsetheHTTPEventCollector)
   * **Skip SSL validation**: Skip SSL certificate validation for connections to Splunk. Secure communications will not check SSL certificates against a trusted Certificate Authority.
-Inappropriate for a production environment.
-  * **Index**: The Splunk index events will be sent to.
+Do not use for a production environment.
+  * **Index**: The Splunk index that events are sent to.
 
   **Warning:** Setting an invalid index will cause events to be lost. This index must match one of the selected indexes for the Splunk HTTP event collector token used for the HTTP Event Collector Token parameter.
 
@@ -55,11 +55,14 @@ Inappropriate for a production environment.
     ![Report Example: Cloud Foundry Settings View](images/tile-cf-settings.png)
 
   * **API Endpoint**: Cloud Foundry API endpoint.
-  * **API user/API password**: The nozzle's credentials. Best practice is to provide a user in
-  keeping with "Rotate, Repave, Repair," so that credentials that can be easily deactivated, rotated,
-  and have minimal access privileges. The nozzle's user needs
+  * **API user/API password**: Splunk Nozzle's credentials. Best practice is providing a user with "Rotate, Repave, Repair"
+  credentials, so that credentials can be easily deactivated, rotated, and have minimal access privileges.
+  The Nozzle's user needs
+
   scopes `cloud_controller.admin_read_only` and `doppler.firehose` (older releases without
   `cloud_controller.admin_read_only` would have to use `cloud_controller.admin`).
+
+=======
 
   For ERT versions newer than v1.8.9 and v1.7.29, a `splunk-firehose` user is pre-created. Look up
   this user by:
@@ -79,7 +82,7 @@ Inappropriate for a production environment.
   1. `uaac -t member add doppler.firehose splunk-nozzle`
 
   * **Skip SSL validation**: Skip SSL certificate validation for connections to Cloud Foundry. Secure communications will not check SSL certificates against a trusted Certificate Authority.
-      Inappropriate for a production environment.
+      Do not use for a production environment.
   * **Event Types**: Choose which events that the nozzle forwards to the Splunk indexer(s). See
   [dropsonde-protocol](https://github.com/cloudfoundry/dropsonde-protocol/tree/master/events)
   for more information about these individual events:
@@ -95,19 +98,18 @@ Inappropriate for a production environment.
 **4. Advanced**
     ![Report Example: Cloud Foundry Settings View](images/tile-advanced-settings.png)
 
-  * **Scale Out Nozzle**: Scale out Splunk nozzle. Recommendation: run 2 or more nozzles for high availability.
-  * **Firehose subscription ID**: The loggregator will round-robin events across connections
+  * **Scale Out Nozzle**: Scale out Splunk Nozzle. Recommendation: run 2 or more nozzles for high availability.
+  * **Firehose Subscription ID**: The Loggregator will round-robin events across connections
   having the same id. An operator would only need to change this if some other connection
   is also using the default value.
   * **Additional Fields**: Arbitrary set of key:value pairs in the form `key1:value1,key2:value2,key3:value3` that do not occur in event payload itself.
   These fields are indexed with every event payload, and are used as metadata for indexing and searching.
-  One situation in which this might be useful is differentiating logs from multiple foundations draining into the same Splunk Enterprise index.
-  * **Add App Information**: When true, the nozzle connects back to the Cloud Foundry API and query events that
-  have an app GUID to add additional information (app name, space name, space GUID, organization name,
-  organization GUID). This increases load on the API machines in step with the number of running apps,
+  One situation in which this might be useful is differentiating logs from multiple foundations going into the same Splunk Enterprise index.
+  * **Add App Information**: When true, the nozzle calls back to the Cloud Foundry API and queries events that
+  have an app GUID to add additional information, such as app name, space name, space GUID, organization name,
+  organization GUID. This causes a one-time load increase on the API machines proportional the number of running apps,
   because each Nozzle populates a cache of app metadata.
   * **Enable Event Tracing**: Enables event trace logging. Splunk events will now contain a UUID, Splunk Nozzle Event Counts, and a Subscription-ID for Splunk correlation searches.
-
 
 **5. Resource Config**: Select default options.
 
