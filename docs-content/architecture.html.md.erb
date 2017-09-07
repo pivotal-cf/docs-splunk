@@ -20,3 +20,23 @@ The Nozzle subscribes to the Cloud Foundry Loggregator endpoint and writes event
 
 ![Report Example: Internal Nozzle Architecture](images/nozzle-internals-large.png)
 <strong><center>Figure 2: Nozzle Internal Architecture</center></strong>
+
+## <a id='performance'></a> Performance and Sizing Guide
+
+We have tested the Splunk Firehose Nozzle running as a single deployed nozzle on the AWS instance type c4.4xlarge.
+This EC2 instance type has 8 CPU and 32 GB memory. Storage is EBS-Only and has dedicated EBS Bandwidth of 2,000 Mbps.
+
+Tests were performed with Structured and Unstructured data with 2 different event sizes 256 and 1024 bytes.
+Averaged performance metrics over an extended period of time resulted in the following results
+
+Tests | Events Per Second(EPS) | Mbps | Nozzle Cpu (%) | Nozzle Mem Total (MB)
+  --- | --- | --- | --- | ---
+  Structured Data(JSON) - 256 byte event size        | `9444`|`7.30`|`530.6`|`57.2`
+  Structured Data(JSON) - 1024 byte event size       | `6775`|`10.90`|`567.9`|`79.9`
+  Unstructured Data     - 256  byte event size       |`11189`|`9.10`|`502.3`|`58.3`
+  Unstructured Data 	- 1024 byte event size       | `9487`|`16.03`|`491.5`|`82.8`
+
+Factoring these optimal testing numbers we recommend the system used to run a single splunk nozzle instance has at least minimum 8 CPUs and 300MB RAM.
+
+<strong>Note:</strong> Performance results should be taken as a guide only as different configurations and environments may vary results.
+
