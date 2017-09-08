@@ -3,18 +3,18 @@
   ".": 
 :production_host: hello
 :subnav_templates:
-  myservice: myservice_subnav
+  splunk: splunk_subnav
 :template_variables: 
-:local_repo_dir: "/Users/mcholick/projects/splunk/docs-splunk"
+:local_repo_dir: "/Users/dtregonning/Development/PCF/new-docs-splunk/docs-splunk"
 :workspace: !ruby/object:Pathname
-  path: "/Users/mcholick/projects/splunk/docs-splunk/docs-book/output/master_middleman/source"
+  path: "/Users/dtregonning/Development/PCF/new-docs-splunk/docs-splunk/docs-book/output/master_middleman/source"
 :feedback_enabled: 
 :repo_link_enabled: true
 :repo_links:
-  myservice:
+  splunk:
     repo: docs-content
     ref: master
     at_path: 
 :product_info:
-  myservice: {}
+  splunk: {}
 :elastic_search: false

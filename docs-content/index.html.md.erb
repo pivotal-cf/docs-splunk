@@ -1,5 +1,5 @@
 ---
-title: Splunk Firehose Nozzle for PCF (BETA)
+title: Splunk Firehose Nozzle for PCF
 owner: Partners
 ---
 
@@ -11,27 +11,26 @@ apps and system components.
 
 ## <a id="overview"></a>Overview
 
-After installing the Splunk Firehose Nozzle for PCF tile, PCF streaming logs and metrics are forwarded 
-to user-specified Splunk Enterprise indexers configured to receive data. 
-PCF operators and Splunk users can then immediately search and analyze PCF Firehose data from their 
-Splunk Enterprise deployment and build reports, dashboards, and alerts on the health 
+The Splunk Firehose Nozzle for PCF Tile streams logs and metrics from PCF and forwards them
+to user-specified Splunk Enterprise indexers configured to receive data via [HTTP Event Collector](http://docs.splunk.com/Documentation/SplunkCloud/6.6.1/Data/UsetheHTTPEventCollector).
+PCF operators and Splunk users can immediately search and analyze PCF Firehose data from their
+Splunk Enterprise deployment to build reports, dashboards, and alerts on the health
 and performance of their apps.
 
 Splunk Firehose Nozzle for PCF includes the following key features:
 
-* Setup with out-of-the-box data parsing and enrichment for various PCF event types
-* Reliable event delivery by leveraging Splunk Forwarder capabilities from indexer acknowledgement, 
-buffering, and load balancing
-* Secure forwarding from PCF into external Splunk environments using user-provided SSL certificates
-* Scales up and out to meet increasing data volume and number of apps
+* Setup with out-of-the-box data parsing and enrichment for various PCF event types.
+* Reliable event delivery by leveraging Splunk's HTTP Event Collector endpoint.
+* Secure forwarding from PCF into external Splunk environments using user-provided SSL certificates.
+* Scales out to meet increasing data volume and number of apps.
 
-## <a id="snapshot"></a>Product Snapshot
+
+## <a id="snapshot"></a>Product Details
 
 <dl>
-<dt>Splunk Firehose Nozzle for PCF Details:</dt>
-<dd><strong>Version</strong>: v0.2.0 </dd>
-<dd><strong>Release Date</strong>: December 5, 2016</dd>
-<dd><strong>Software component version</strong>: Splunk Enterprise v6.5.1</dd>
+<dt>Splunk Firehose Nozzle for PCF Details</dt>
+<dd><strong>Version</strong>: v1.0.0 </dd>
+<dd><strong>Release Date</strong>: August 31st, 2017</dd>
 <dd><strong>Compatible Ops Manager Version(s)</strong>: v1.9.x, v1.10.x, v1.11.x</dd>
 <dd><strong>Compatible Elastic Runtime Version(s)</strong>: v1.9.x, v1.10.x, v1.11.x</dd>
 <dd><strong>vSphere support?</strong> Yes</dd>
@@ -41,9 +40,16 @@ buffering, and load balancing
 
 ## <a id="reqs"></a>Requirements
 
-Splunk Firehose Nozzle for PCF has the following requirements:
+Splunk Firehose Nozzle for PCF has the following requirements.
 
-+ An external Splunk Enterprise or Splunk Cloud 6.5+ deployment configured to receive data from a Splunk Forwarder.
++ An external Splunk Enterprise or Splunk Cloud 6.x deployment configured with a HTTP Event Collector token to receive data.
+
+## <a id="ecosystem"></a>Splunk and Pivotal Cloud Foundry Ecosystem
+There are currently many projects involving Splunk and Pivotal Cloud Foundry. Included are links to these projects:
+
+* [Splunk Firehose Nozzle for PCF Tile](https://network.pivotal.io/products/splunk-nozzle/) - Elastic Runtime App deployed via PCF Ops Manager
+* [Splunk Firehose Nozzle project](https://github.com/cloudfoundry-community/splunk-firehose-nozzle/) - Open source project location of Splunk Firehose Nozzle
+* [Splunk Add-on for Cloud Foundry](https://splunkbase.splunk.com/app/3417/) - Splunk Add-on for Cloud Foundry is used to parse, analyze and visualize Cloud Foundry Firehose data
 
 ## <a id="limitations"></a>Limitations
 
@@ -52,5 +58,4 @@ No known limitations.
 ## <a id="feedback"></a>Feedback
 
 Please provide any bugs, feature requests, or questions to
-the [Pivotal Cloud Foundry Feedback](mailto:pivotal-cf-feedback@pivotal.io) or to [Splunk](mailto:support@splunk.com).
-
+the [Pivotal Cloud Foundry Feedback](mailto:pivotal-cf-feedback@pivotal.io) or to [Splunk](https://github.com/cloudfoundry-community/splunk-firehose-nozzle/) via the github project page.

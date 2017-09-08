@@ -8,10 +8,10 @@ This topic describes how to use Splunk Firehose Nozzle for PCF.
 After installing and configuring Splunk Firehose Nozzle for PCF, PCF operators can navigate to the URL of their existing Splunk Enterprise deployment to immediately search, report, 
 visualize, and alert on PCF Firehose data.
 
-The following assumes basic familiarty on how to run searches, save reports, and create dashboards in Splunk Enterprise. 
+The following assumes basic familiarity on how to run searches, save reports, and create dashboards in Splunk Enterprise.
 If you are new to Splunk, start with the [Search Tutorial](https://docs.splunk.com/Documentation/Splunk/6.5.1/SearchTutorial/WelcometotheSearchTutorial) which shows you how to search data and create simple dashboards.
 
-Here is an example Splunk dashboard to demonstrate how to achieve PCF operational intelligence:
+The following is an example Splunk dashboard for operational intelligence.
 
 ![Report Example: Sample Ops Dashboard](images/dashboard-sample.png)
 
@@ -34,11 +34,11 @@ The Firehose event types forwarded by the Splunk Nozzle are assigned the followi
   CounterEvent | `cf:counterevent`
   ValueMetric | `cf:valuemetric`
 
-In addition, logs from the nozzle itself are of sourcetype `cf:splunknozzle`.
+In addition, logs from the Nozzle are of sourcetype `cf:splunknozzle`.
 
 You can use these Splunk sourcetypes to search and retrieve the relevant events from the index, 
 use statistical commands to calculate metrics and generate reports, search for specific conditions within a rolling time window, 
-identify patterns in your data, predict future trends, and so on. For example:
+identify patterns in your data, predict future trends, and so on. Here are some sample search commands that you can use:
 
   * Search for any errors from your foundation:
 
@@ -53,7 +53,7 @@ identify patterns in your data, predict future trends, and so on. For example:
     `sourcetype=cf:valuemetric name=CapacityRemainingDisk`
     `sourcetype=cf:valuemetric name=CapacityRemainingMemory`
 
-This assumes that you have access to the index specified to receive these Firehose events. 
+You must have access to the index specified to receive these Firehose events.
 You might need to explicitly specify the index in your search if that index is not part of the indexes searched by default for your Splunk role. 
 These searches can be saved as reports and used to power dashboard panels, as shown in the next section.
 
