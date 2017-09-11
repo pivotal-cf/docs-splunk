@@ -58,9 +58,7 @@ Do not use for a production environment.
   * **API Endpoint**: Cloud Foundry API endpoint.
   * **API user/API password**: Splunk Nozzle's credentials. Best practice is providing a user with "Rotate, Repave, Repair"
   credentials, so that credentials can be easily deactivated, rotated, and have minimal access privileges.
-  The Nozzle's user needs
-
-  scopes `cloud_controller.admin_read_only` and `doppler.firehose` (older releases without
+  The Nozzle's user needs scopes `cloud_controller.admin_read_only` and `doppler.firehose` (older releases without
   `cloud_controller.admin_read_only` would have to use `cloud_controller.admin`).
 
 =======
@@ -115,4 +113,3 @@ Do not use for a production environment.
 **5. Resource Config**: Select default options.
 
 **6. Stemcell**: Ensure the proper stemcell is available.
-

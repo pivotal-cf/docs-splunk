@@ -15,7 +15,7 @@ The Nozzle subscribes to the Cloud Foundry Loggregator endpoint and writes event
 
 * A Golang routine collects events from the PCF Loggregator endpoint.
 * An in-memory queue buffers events for availability to multiple Splunk HTTP Event Collector clients.
-* The Splunk HTTP Event Collector clients run with their own Golang routines that consumes events from the queue to enrich PCF events by attaching metadata fields.
+* The Splunk HTTP Event Collector clients run with their own Golang routines that consume events from the queue to enrich PCF events by attaching metadata fields.
 * Finally, the events are batched together and sent to Splunk via the HEC Endpoint.
 
 ![Report Example: Internal Nozzle Architecture](images/nozzle-internals-large.png)
@@ -39,4 +39,3 @@ Tests | Events Per Second(EPS) | Mbps | Nozzle Cpu (%) | Nozzle Mem Total (MB)
 Factoring these optimal testing numbers we recommend the system used to run a single splunk nozzle instance has at least minimum 8 CPUs and 300MB RAM.
 
 <strong>Note:</strong> Performance results should be taken as a guide only as different configurations and environments may vary results.
-
