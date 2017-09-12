@@ -68,18 +68,46 @@ and the user-specified index for Firehose events.
   sourcetype="cf:splunknozzle"
   ```
 
-  A correct setup logs number of Firehose events logged as JSON objects, for example:
+  A correct setup logs a start message with configuration parameters of the Nozzle logged as a JSON object, for example:
 
-  ```json
-  {
-    "ip": "localhost",
-    "job": "splunk-nozzle",
-    "job_index": "-1",
-    "log_level": 1,
-    "logger_source": "splunk-nozzle-logger",
-    "message": "splunk-nozzle-logger.Posting 635 events",
-    "origin": "splunk_nozzle"
+  ```
+  data:	{
+     add-app-info: true
+     api-endpoint: https://api.endpoint.com
+     app-cache-ttl: 0
+     app-limits: 0
+     batch-size: 1000
+     boltdb-path: cache.db
+     branch: null
+     buildos: null
+     commit: null
+     debug:	 false
+     extra-fields:
+     flush-interval: 5000000000
+     hec-workers: 8
+     ignore-missing-apps: true
+     job-host:
+     job-index: -1
+     job-name: splunk-nozzle
+     keep-alive: 25000000000
+     missing-app-cache-ttl:	 0
+     queue-size: 10000
+     retries: 2
+     skip-ssl: true
+     splunk-host: http://localhost:8088
+     splunk-index: atomic
+     splunk-version: 6.6
+     subscription-id: splunk-firehose
+     trace-logging: true
+     version:
+     wanted-events: ValueMetric,CounterEvent,Error,LogMessage,HttpStartStop,ContainerMetric
   }
+  ip: 10.0.0.0
+  log_level: 1
+  logger_source: splunk-nozzle-logger
+  message: splunk-nozzle-logger.Running splunk-firehose-nozzle with following configuration variables
+  origin: splunk_nozzle
+
   ```
 
   Search app logs of the Nozzle for any errors:

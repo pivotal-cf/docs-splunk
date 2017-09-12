@@ -42,7 +42,8 @@ to install Splunk Firehose Nozzle for PCF tile.
     ![Report Example: Tile Splunk Settings](images/tile-splunk-settings.png)
 
   * **HTTP Event Collector Endpoint (HEC) URL**: HTTP Event Collector endpoint URL.`<address>:<port>`, where `<address>` is either FQDN or IP address,
-and `<port>` is the port on which Splunk HEC is listening.
+and `<port>` is the port on which Splunk HEC is listening. In a clustered environment this can also be the address and port of a load balancer that is distributed requests
+to multiple configured HEC endpoints. These endpoints can be across both Splunk Heavy Forwarders or Splunk Indexers.
   * **HTTP Event Collector (HEC) Token**: Splunk generated HEC token. [More Information](http://docs.splunk.com/Documentation/SplunkCloud/6.6.1/Data/UsetheHTTPEventCollector)
   * **Skip SSL validation**: Skip SSL certificate validation for connections to Splunk. Secure communications will not check SSL certificates against a trusted Certificate Authority.
 Do not use for a production environment.
