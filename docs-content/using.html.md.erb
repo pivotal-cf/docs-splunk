@@ -3,9 +3,9 @@ title: Using Splunk Firehose Nozzle for PCF
 owner: Partners
 ---
 
-This topic describes how to use Splunk Firehose Nozzle for PCF. 
+This topic describes how to use Splunk Firehose Nozzle for Pivotal Cloud Foundry (PCF).
 
-After installing and configuring Splunk Firehose Nozzle for PCF, PCF operators can navigate to the URL of their existing Splunk Enterprise deployment to immediately search, report, 
+After installing and configuring Splunk Firehose Nozzle for PCF, PCF operators can navigate to the URL of their existing Splunk Enterprise deployment to immediately search, report,
 visualize, and alert on PCF Firehose data.
 
 The following assumes basic familiarity on how to run searches, save reports, and create dashboards in Splunk Enterprise.
@@ -16,8 +16,8 @@ The following is an example Splunk dashboard for operational intelligence.
 ![Report Example: Sample Ops Dashboard](images/dashboard-sample.png)
 
 <%#
-For a starter sample dashboard for operational intelligence, you can use community-supported 
-[Splunk Add-on for Cloud Foundry](#add-on) which includes many pre-built panels and reports to 
+For a starter sample dashboard for operational intelligence, you can use community-supported
+[Splunk Add-on for Cloud Foundry](#add-on) which includes many pre-built panels and reports to
 help you quickly build your own custom dashboards to monitor the health of your foundation and the performance of your apps.
 %>
 
@@ -36,11 +36,11 @@ The Firehose event types forwarded by the Splunk Nozzle are assigned the followi
 
 In addition, logs from the Nozzle are of sourcetype `cf:splunknozzle`.
 
-You can use these Splunk sourcetypes to search and retrieve the relevant events from the index, 
-use statistical commands to calculate metrics and generate reports, search for specific conditions within a rolling time window, 
+You can use these Splunk sourcetypes to search and retrieve the relevant events from the index,
+use statistical commands to calculate metrics and generate reports, search for specific conditions within a rolling time window,
 identify patterns in your data, predict future trends, and so on. Here are some sample search commands that you can use:
 
-  * Search for any errors from your foundation:
+  * Search for any errors from your deployment:
 
     `sourcetype=cf:error`
 
@@ -54,7 +54,7 @@ identify patterns in your data, predict future trends, and so on. Here are some 
     `sourcetype=cf:valuemetric name=CapacityRemainingMemory`
 
 You must have access to the index specified to receive these Firehose events.
-You might need to explicitly specify the index in your search if that index is not part of the indexes searched by default for your Splunk role. 
+You might need to explicitly specify the index in your search if that index is not part of the indexes searched by default for your Splunk role.
 These searches can be saved as reports and used to power dashboard panels, as shown in the next section.
 
 ##<a id='report'></a>Report and Visualize Firehose Data
@@ -74,8 +74,8 @@ To monitor your environment operational health, you can build on these same sear
   * Report available memory per cell over time:
 
     ```
-    sourcetype=cf:valuemetric name=CapacityRemainingMemory 
-      | eval valueGB=round(case(unit=="MiB", value/1024, unit=="KiB", value/(1024*1024), unit=="GiB", value),2) 
+    sourcetype=cf:valuemetric name=CapacityRemainingMemory
+      | eval valueGB=round(case(unit=="MiB", value/1024, unit=="KiB", value/(1024*1024), unit=="GiB", value),2)
       | timechart min(valueGB) by job_instance
     ```
     ![Report Example: Available mem per cell over time](images/report-available-memory-per-cell-over-time.png)
@@ -88,8 +88,5 @@ To monitor your environment operational health, you can build on these same sear
     ```
     ![Report Example: Total routes with trend](images/report-routes-total-with-trend.png)
 
-For more information about searching and reporting with Splunk, 
+For more information about searching and reporting with Splunk,
 see [Splunk Docs](https://docs.splunk.com/Documentation/Splunk)
-for a complete list of manuals. 
-
- 
