@@ -50,7 +50,9 @@ and `<port>` is the port on which Splunk HEC is listening.
 Do not use for a production environment.
   * **Index**: The Splunk index that events are sent to.
 
-<p class="note">**Warning:** Setting an invalid index will cause events to be lost. This index must match one of the selected indexes for the Splunk HTTP event collector token used for the HTTP Event Collector Token parameter.</p>
+<p class="note warning"><strong>WARNING</strong>: Setting an invalid index causes events to be lost.
+This index must match one of the selected indexes for the Splunk HTTP event collector token used
+for the HTTP Event Collector Token parameter.</p>
 
 
 1. Click Cloud Foundry Settings**:
