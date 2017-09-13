@@ -21,6 +21,16 @@ The Nozzle subscribes to the Loggregator endpoint and writes events to an extern
 ![Report Example: Internal Nozzle Architecture](images/nozzle-internals-large.png)
 <strong><center>Figure 2: Nozzle Internal Architecture</center></strong>
 
+## <a id='load-balancing'></a> Splunk Load Balancing Overview
+
+In Splunk environments with multiple servers, each with their own configured HEC endpoints; a mechanism needs to be used
+to distribute these requests to all the necessary Splunk servers. The collection of HEC endpoints can reside on either a
+cluster of Splunk Heavy Forwarders or Splunk Indexers depending on the specific environment configuration.
+
+A physical or logical load balancer is used to perform this function. If using a load balancer, the address of the
+load balancer needs to be configured in the setting for HTTP Event Collector Endpoint (HEC) URL found on the
+Splunk Settings configuration page.
+
 ## <a id='performance'></a> Performance and Sizing Guide
 
 Splunk has tested the Splunk Firehose Nozzle running as a single deployed nozzle on the AWS instance type c4.4xlarge.
@@ -36,6 +46,7 @@ Tests | Events Per Second(EPS) | Mbps | Nozzle Cpu (%) | Nozzle Mem Total (MB)
   Unstructured Data     - 256  byte event size       |`11189`|`9.10`|`502.3`|`58.3`
   Unstructured Data 	- 1024 byte event size       | `9487`|`16.03`|`491.5`|`82.8`
 
-Factoring these optimal testing numbers we recommend the system used to run a single splunk nozzle instance has at least minimum 8 CPUs and 300MB RAM.
+<p class="note"><strong>Note:</strong> Nozzle CPU (%) - 100% refers to a single core being wholly dedicated to the Nozzle. 500% - 5 cores wholly dedicated.
+Factoring these optimal testing numbers we recommend the system used to run a single splunk nozzle instance has at least minimum 8 CPUs and 300MB RAM.</p>
 
 <p class="note"><strong>Note:</strong> Performance results should be taken as a guide only as different configurations and environments may vary results.</p>
