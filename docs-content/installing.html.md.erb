@@ -43,10 +43,15 @@ to install Splunk Firehose Nozzle for PCF tile.
 
 Complete the fields as follows:
 
-  * **HTTP Event Collector Endpoint (HEC) URL**: HTTP Event Collector endpoint URL.`<address>:<port>`, where `<address>` is either FQDN or IP address,
-and `<port>` is the port on which Splunk HEC is listening.
-  * **HTTP Event Collector (HEC) Token**: Splunk generated HEC token. [More Information](http://docs.splunk.com/Documentation/SplunkCloud/6.6.1/Data/UsetheHTTPEventCollector)
-  * **Skip SSL validation**: Skip SSL certificate validation for connections to Splunk. Secure communications do not check SSL certificates against a trusted Certificate Authority.
+  * **HTTP Event Collector Endpoint (HEC) URL**: HTTP Event Collector endpoint URL.`<address>:<port>`,
+     where `<address>` is either FQDN or IP address,
+     and `<port>` is the port on which Splunk HEC is listening.
+     In a clustered environment this can also be the address and port of a load balancer that distributes requests
+to multiple configured HEC endpoints. These endpoints can be across both Splunk Heavy Forwarders or Splunk Indexers.
+  * **HTTP Event Collector (HEC) Token**: Splunk generated HEC token.
+    [More Information](http://docs.splunk.com/Documentation/SplunkCloud/latest/Data/UsetheHTTPEventCollector)
+  * **Skip SSL validation**: Skip SSL certificate validation for connections to Splunk.
+    Secure communications will not check SSL certificates against a trusted Certificate Authority.
 Do not use for a production environment.
   * **Index**: The Splunk index that events are sent to.
 
@@ -55,7 +60,7 @@ This index must match one of the selected indexes for the Splunk HTTP event coll
 for the HTTP Event Collector Token parameter.</p>
 
 
-1. Click Cloud Foundry Settings**:
+1. Click **Cloud Foundry Settings**:
     ![Report Example: Cloud Foundry Settings View](images/tile-cf-settings.png)
 
 Complete the fields as follows:
@@ -65,8 +70,6 @@ Complete the fields as follows:
   credentials, so that credentials can be easily deactivated, rotated, and have minimal access privileges.
   The Nozzle's user needs scopes `cloud_controller.admin_read_only` and `doppler.firehose` (older releases without
   `cloud_controller.admin_read_only` have to use `cloud_controller.admin`).
-
-=======
 
   For Elastic Runtime versions later than v1.8.9 and v1.7.29, a `splunk-firehose` user is pre-created. Look up
   this user by:
