@@ -23,7 +23,7 @@ The Nozzle subscribes to the Cloud Foundry Loggregator endpoint and writes event
 
 ## <a id='load-balancing'></a> Splunk Load Balancing Overview
 
-In Splunk environments with multiple servers, each with their own configured HEC endpoints; A mechanism needs to be used
+In Splunk environments with multiple servers, each with their own configured HEC endpoints; a mechanism needs to be used
 to distribute these requests to all the necessary Splunk servers. The collection of HEC endpoints can reside on either a
 cluster of Splunk Heavy Forwarders or Splunk Indexers depending on the specific environment configuration.
 
@@ -46,8 +46,8 @@ Tests | Events Per Second(EPS) | Mbps | Nozzle Cpu (%) | Nozzle Mem Total (MB)
   Unstructured Data     - 256  byte event size       |`11189`|`9.10`|`502.3`|`58.3`
   Unstructured Data 	- 1024 byte event size       | `9487`|`16.03`|`491.5`|`82.8`
 
-<strong>Note:</strong> Nozzle CPU (%) - 100% refers to a single core being wholly dedicated to the Nozzle. 500% - 5 cores wholly dedicated.
-Factoring these optimal testing numbers we recommend the system used to run a single splunk nozzle instance has at least minimum 8 CPUs and 300MB RAM.
+<p class="note"><strong>Note:</strong> Nozzle CPU (%) - 100% refers to a single core being wholly dedicated to the Nozzle. 500% - 5 cores wholly dedicated.
+Factoring these optimal testing numbers we recommend the system used to run a single splunk nozzle instance has at least minimum 8 CPUs and 300MB RAM.</p>
 
-<strong>Note:</strong> Performance results should be taken as a guide only as different configurations and environments may vary results.
+<p class="note"><strong>Note:</strong> Performance results should be taken as a guide only as different configurations and environments may vary results.</p>
 
