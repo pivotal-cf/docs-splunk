@@ -11,7 +11,7 @@ The Nozzle subscribes to the Loggregator endpoint and writes events to an extern
 ![Report Example: Basic Nozzle Architecture](images/overview.png)
 <strong><center>Figure 1: Basic Nozzle Architecture</center></strong>
 
-<strong>Inside each nozzle:</strong><%# Should we change these bullets to numbers#%>
+<strong>Inside each nozzle:</strong>
 
 * A Golang routine collects events from the Loggregator endpoint.
 * An in-memory queue buffers events for availability to multiple Splunk HTTP Event Collector clients.
