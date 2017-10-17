@@ -20,47 +20,7 @@ To view the nozzle's logs running on PCF do the following:
 The following assumes you have access to Splunk to run basic searches against index `_internal`
 and the user-specified index for Firehose events.
 
-### 1. Ensure Splunk indexer(s) are listening to data on configured port:
-
-  Search internal logs of indexer(s), specifically the TCP input processor, as follows:
-
-  ```
-  index=_internal sourcetype=splunkd component=TcpInputProc 
-  ```
-
-  A correct setup shows a following event at startup time:
-
-  *10-13-2016 17:31:16.226 +0000 INFO  TcpInputProc - Creating fwd data Acceptor for IPv4 port 9997 with SSL*
-
-### 2. Ensure Splunk Nozzle is connected to Splunk indexer(s):
-
-  Search internal logs of nozzle, specifically the TCP output processor, to confirm that the Splunk Nozzle is correctly forwarding:
-
-  ```
-  index=_internal host="splunk-nozzle_*" sourcetype=splunkd component=TcpOutputProc
-  ```
-  A correct setup shows an event as follows:
-
-  *11-04-2016 20:24:13.702 +0000 INFO  TcpOutputProc - Connected to idx=<redacted>:9997 using ACK.*
-
-  If no such event is found, then no data is being forwarded from the Nozzle.
-  This can be due to misconfigured indexer(s) firewall, or misconfigured SSL settings of either Nozzle (forwarder) or indexer(s).
-  Search internal logs of Splunk indexer(s) for any errors:
-
-  ```
-  index=_internal sourcetype=splunkd component=TcpInputProc ERROR
-  ```
-
-  An example error would be:
-  *11-03-2016 22:23:00.046 +0000 ERROR TcpInputProc - Error encountered for connection from src=<redacted>:55713. error:140760FC:SSL routines:SSL23_GET_CLIENT_HELLO:unknown protocol*
-
-  Whether you are using self-signed certificates or certificates signed by a third party, follow these [instructions](http://docs.splunk.com/Documentation/Splunk/latest/Security/HowtoprepareyoursignedcertificatesforSplunk) to provide your signed certificates details in a correct format when configuring the tile. For more details on troubleshooting and validating your forwarder/receiver connection, see:
-
-  * http://docs.splunk.com/Documentation/Splunk/latest/Forwarding/Receiverconnection
-  * http://docs.splunk.com/Documentation/Splunk/latest/Security/Validateyourconfiguration
-  * http://docs.splunk.com/Documentation/Splunk/latest/Security/Troubleshootyouforwardertoindexerauthentication
-
-### 3. Ensure Splunk Nozzle is forwarding events from the Firehose:
+### 1. Ensure Splunk Nozzle is forwarding events from the Firehose:
 
   Search app logs of the Nozzle to confirm correct behavior:
 
@@ -118,7 +78,7 @@ and the user-specified index for Firehose events.
 
   Errors are logged with corresponding message and stacktrace.
 
-### 4. Check for dropped events due to HTTP Event Collector availability:
+### 2. Check for dropped events due to HTTP Event Collector availability:
 
   As the Splunk Firehose Nozzle is sending data to Splunk via HTTPS using the HTTP Event Collector it is also susceptible to any network issues across the network path from point to point. Run the following search to determine if Splunk has indexed any events indicating issues with the HEC Endpoint.
 
@@ -127,7 +87,7 @@ and the user-specified index for Firehose events.
   sourcetype="cf:splunknozzle" "dropping events"
   ```
 
-### 5. Check for data loss inside the Splunk Firehose Nozzle:
+### 3. Check for data loss inside the Splunk Firehose Nozzle:
 
 
   If "Event Tracing" is enabled, extra metadata will be attached to events allowing searches to calculate the percentage of data loss inside the Splunk Firehose Nozzle, if any.
