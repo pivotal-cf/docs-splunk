@@ -31,45 +31,45 @@ To view the nozzle's logs running on PCF do the following:
 1. Or stream the app logs as they're emitted
   * `cf logs splunk-firehose-nozzle-1.0.0`
 
-  Here are few common error and their possible resolution
+  Here are a few common errors and their possible resolutions:
 
-  * Splunk configruation related:
+  * Splunk configruation related errors:
 
-    1. `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Post http://localhost:8088/services/collector: read tcp 10.0.0.0:62931-\u003elocalhost:8088: read: connection reset by peer"}}`
+  1.  `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Post http://localhost:8088/services/collector: read tcp 10.0.0.0:62931-\u003elocalhost:8088: read: connection reset by peer"}}`
 
-      When SSL is enabled on Splunk HEC endpoint, please make sure to use 'https' in the Splunk HEC URL.
+     This usually occurs when SSL is enabled on the Splunk HEC endpoint, please make sure to use 'https' in the Splunk HEC URL.
 
 
-    2. `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Non-ok response code [400] from splunk: {\"text\":\"Incorrect index\",\"code\":7,\"invalid-event-number\":1}"}}`
+  2.  `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Non-ok response code [400] from splunk: {\"text\":\"Incorrect index\",\"code\":7,\"invalid-event-number\":1}"}}`
 
-      The index value specified in the configuration doesn't exist on Splunk Host, please make sure to use the correct Splunk index value.
+      This usually means the index value specified in the configuration doesn't exist on Splunk Host, please make sure to use the correct Splunk index value.
 
   
-    3. `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Non-ok response code [403] from splunk: {\"text\":\"Invalid token\",\"code\":4}"}}`
+  3.  `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Non-ok response code [403] from splunk: {\"text\":\"Invalid token\",\"code\":4}"}}`
 
-      Splunk HEC Token value is invalid. Please use a valid token.
-
-
-    4. `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Post https://localhost:8088/services/collector: x509: cannot validate certificate for localhost because it doesn't contain any IP SANs"}}`
-
-      No valid SSL certificate found. Please provide a valid SSL certificate for Splunk server or set 'Skip SSL Validation' to true under Splunk settings (Not recommended for production env).
+      This can occur when the Splunk HEC Token value is invalid. Please use a valid token.
 
 
-    5. `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Post https://localhost:8088/services/collector: dial tcp localhost:8088: getsockopt: connection refused"}}`
+  4.  `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Post https://localhost:8088/services/collector: x509: cannot validate certificate for localhost because it doesn't contain any IP SANs"}}`
 
-      Splunk server is down or the configured Splunk HEC URL is not valid. Please make sure that Splunk server is up and use a valid URL. 
-
-
-  * Cloud Foundry configuration related:
-
-    6. `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Failed to run splunk-firehose-nozzle","log_level":2,"data":{"error":"Error getting token: oauth2: cannot fetch token: 401 Unauthorized\nResponse: {\"error\":\"unauthorized\",\"error_description\":\"Bad credentials\"}"}}`
-
-      Credentials provided for CF env are invalid. Please make sure API User and API Password have access to the CF env. 
+      This usually means that there was no valid SSL certificate found. Please provide a valid SSL certificate for Splunk server or set 'Skip SSL Validation' to true under Splunk settings (Not recommended for production env).
 
 
-    7. `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Failed to run splunk-firehose-nozzle","log_level":2,"data":{"error":"Could not get api /v2/info: Get https://api.cfendpoint.com/v2/info: x509: certificate signed by unknown authority"}}`
+  5.  `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Post https://localhost:8088/services/collector: dial tcp localhost:8088: getsockopt: connection refused"}}`
 
-      No valid SSL certificate found. Please provide a valid SSL certificate for Cloud Foundry or set 'Skip SSL Validation' to true under Cloud Foundry Settings (Not recommended for production environment).
+      This can occur when the Splunk server is down or when the configured Splunk HEC URL is not valid. Please make sure that Splunk server is up and use a valid URL. 
+
+
+  * Cloud Foundry configuration related errors:
+
+  6.  `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Failed to run splunk-firehose-nozzle","log_level":2,"data":{"error":"Error getting token: oauth2: cannot fetch token: 401 Unauthorized\nResponse: {\"error\":\"unauthorized\",\"error_description\":\"Bad credentials\"}"}}`
+
+     This means the credentials provided for CF env are invalid. Please make sure the API User and API Password have access to the CF env. 
+
+
+  7.  `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Failed to run splunk-firehose-nozzle","log_level":2,"data":{"error":"Could not get api /v2/info: Get https://api.cfendpoint.com/v2/info: x509: certificate signed by unknown authority"}}`
+
+     This means that no valid SSL certificate found. Please provide a valid SSL certificate for Cloud Foundry or set 'Skip SSL Validation' to true under Cloud Foundry Settings (Not recommended for production environment).
 
 
 
