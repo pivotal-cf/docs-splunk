@@ -9,74 +9,78 @@ This topic describes how to troubleshoot Splunk Firehose Nozzle for Pivotal Clou
 
 ### 1. I can't find my data!
 
-  Are you searching for events and not finding them or looking at a dashboard and seeing "No result found"? Please check Splunk Nozzle app logs.
+  Are you searching for events and not finding them or looking at a dashboard and seeing "No result found"? Check Splunk Nozzle app logs.
 
   To view the nozzle's logs running on PCF do the following:
 
-1. Login via the cli using the admin user.
-1. Target the org created by the tile
-  * `cf target -o splunk-nozzle-org`
-1. View the recent app Splunk Nozzle logs (the version number installed by the tile will vary)
-  * `cf logs --recent splunk-firehose-nozzle-1.0.0`
-1. Or stream the app logs as they're emitted
-  * `cf logs splunk-firehose-nozzle-1.0.0`
+<ol>
+  <li>Log in as an admin via the CLI.</li>
+  <li>Target the org created by the tile.<br/>
+  <pre class="terminal">cf target -o SPLUNK-NOZZLE-ORG</pre>
+  </li>
+  <li>View the recent app Splunk Nozzle logs (the version number installed by the tile will vary).<br/>
+  <pre class="terminal">cf logs --recent splunk-firehoze-nozzle-1.0.0</pre>
+  </li>
+  <li>Alternatively, you can stream the app logs as they're emitted.<br/>
+  <pre class="terminal">cf logs splunk-firehose-nozzle-1.0.0</pre>
+  </li>
+</ol>
 
-  Here are a few common errors and their possible resolutions:
+Here are a few common errors and possible resolutions:
 
-  * Splunk configruation related errors:
+#### Splunk configuration related errors:
 
-  1.  `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Post http://localhost:8088/services/collector: read tcp 10.0.0.0:62931-\u003elocalhost:8088: read: connection reset by peer"}}`
+<pre class="terminal">{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Post http://localhost:8088/services/collector: read tcp 10.0.0.0:62931-\u003elocalhost:8088: read: connection reset by peer"}}</pre>
 
-     This usually occurs when SSL is enabled on the Splunk HEC endpoint, please make sure to use 'https' in the Splunk HEC URL.
+This error usually occurs when SSL is enabled on the Splunk HEC endpoint. Confirm that you're using https' in the Splunk HEC URL.
 
 
-  2.  `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Non-ok response code [400] from splunk: {\"text\":\"Incorrect index\",\"code\":7,\"invalid-event-number\":1}"}}`
+<pre class="terminal">{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Non-ok response code [400] from splunk: {\"text\":\"Incorrect index\",\"code\":7,\"invalid-event-number\":1}"}}</pre>
 
-      This usually means the index value specified in the configuration doesn't exist on Splunk Host, please make sure to use the correct Splunk index value.
+This usually means the index value specified in the configuration doesn't exist on Splunk Host. Confirm that you're using the correct Splunk index value.
 
   
-  3.  `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Non-ok response code [403] from splunk: {\"text\":\"Invalid token\",\"code\":4}"}}`
+<pre class="terminal">{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Non-ok response code [403] from splunk: {\"text\":\"Invalid token\",\"code\":4}"}}</pre>
 
-      This can occur when the Splunk HEC Token value is invalid. Please use a valid token.
+This can occur when the Splunk HEC Token value is invalid. Confirm that you're using a valid token.
 
+<pre class="terminal">{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Post https://localhost:8088/services/collector: x509: cannot validate certificate for localhost because it doesn't contain any IP SANs"}}</pre>
 
-  4.  `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Post https://localhost:8088/services/collector: x509: cannot validate certificate for localhost because it doesn't contain any IP SANs"}}`
+This usually means that there was no valid SSL certificate found. Confirm that you're using a valid SSL certificate for the Splunk server, or set 'Skip SSL Validation' to `true` under Splunk settings.
 
-      This usually means that there was no valid SSL certificate found. Please provide a valid SSL certificate for Splunk server or set 'Skip SSL Validation' to true under Splunk settings (Not recommended for production env).
-
-
-  5.  `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Post https://localhost:8088/services/collector: dial tcp localhost:8088: getsockopt: connection refused"}}`
-
-      This can occur when the Splunk server is down or when the configured Splunk HEC URL is not valid. Please make sure that Splunk server is up and use a valid URL. 
+<p class="note"><strong>Note:</strong>Disabling SSL validation is not recommended for production environments.</p>
 
 
-  * Cloud Foundry configuration related errors:
+<pre class="terminal">{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Post https://localhost:8088/services/collector: dial tcp localhost:8088: getsockopt: connection refused"}}</pre>
 
-  6.  `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Failed to run splunk-firehose-nozzle","log_level":2,"data":{"error":"Error getting token: oauth2: cannot fetch token: 401 Unauthorized\nResponse: {\"error\":\"unauthorized\",\"error_description\":\"Bad credentials\"}"}}`
+This error can occur when the Splunk server is offline or when the Splunk HEC URL is not valid. Confirm that both the Splunk server is running and that you're using a valid URL. 
 
-     This means the credentials provided for CF env are invalid. Please make sure the API User and API Password have access to the CF env. 
+#### Cloud Foundry configuration related errors:
 
+<pre class="terminal">{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Failed to run splunk-firehose-nozzle","log_level":2,"data":{"error":"Error getting token: oauth2: cannot fetch token: 401 Unauthorized\nResponse: {\"error\":\"unauthorized\",\"error_description\":\"Bad credentials\"}"}}</pre>
 
-  7.  `{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Failed to run splunk-firehose-nozzle","log_level":2,"data":{"error":"Could not get api /v2/info: Get https://api.cfendpoint.com/v2/info: x509: certificate signed by unknown authority"}}`
-
-     This means that no valid SSL certificate found. Please provide a valid SSL certificate for Cloud Foundry or set 'Skip SSL Validation' to true under Cloud Foundry Settings (Not recommended for production environment).
-
+This error can occur when the credentials provided for CF environment are invalid. Confirm that the API User and API Password each have access to the CF environment. 
 
 
-The following assumes you have access to Splunk to run basic searches against index `_internal`
-and the user-specified index for Firehose events.
+<pre class="terminal">{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Failed to run splunk-firehose-nozzle","log_level":2,"data":{"error":"Could not get api /v2/info: Get https://api.cfendpoint.com/v2/info: x509: certificate signed by unknown authority"}}</pre>
+
+This means that no valid SSL certificate was found. To remediate this error, provide a valid SSL certificate for Cloud Foundry or set 'Skip SSL Validation' to true under Cloud Foundry Settings.
+
+<p class="note"><strong>Note:</strong>Disabling SSL validation is not recommended for production environments.</p>
+
+The following troubleshooting tips assume you have access to Splunk to run basic searches against index `_internal` and the user-specified index for Firehose events.
 
 ### 2. Ensure Splunk Nozzle is forwarding events from the Firehose:
 
-  Search app logs of the Nozzle to confirm correct behavior:
+Search app logs of the Nozzle to confirm correct behavior:
 
-  ```
-  sourcetype="cf:splunknozzle"
-  ```
+<pre class="terminal">
+sourcetype="cf:splunknozzle"
+</pre>
 
-  A correct setup logs a start message with configuration parameters of the Nozzle logged as a JSON object, for example:
+A correct setup logs a start message with configuration parameters of the Nozzle logged as a JSON object, for example:
 
-  ```
+<pre class="terminal">
   data:	{
      add-app-info: true
      api-endpoint: https://api.endpoint.com
@@ -113,34 +117,29 @@ and the user-specified index for Firehose events.
   logger_source: splunk-nozzle-logger
   message: splunk-nozzle-logger.Running splunk-firehose-nozzle with following configuration variables
   origin: splunk_nozzle
-
-  ```
+</pre>
 
   Search app logs of the Nozzle for any errors:
+<pre class="terminal">
+sourcetype="cf:splunknozzle" data.error=*
+</pre>
 
-  ```
-  sourcetype="cf:splunknozzle" data.error=*
-  ```
-
-  Errors are logged with corresponding message and stacktrace.
+Errors are logged with corresponding message and stacktrace.
 
 ### 3. Check for dropped events due to HTTP Event Collector availability:
 
-  As the Splunk Firehose Nozzle is sending data to Splunk via HTTPS using the HTTP Event Collector it is also susceptible to any network issues across the network path from point to point. Run the following search to determine if Splunk has indexed any events indicating issues with the HEC Endpoint.
+As the Splunk Firehose Nozzle sends data to Splunk via HTTPS using the HTTP Event Collector, it is also susceptible to any network issues across the network path from point to point. Run the following search to determine if Splunk has indexed any events indicating issues with the HEC Endpoint.
 
-
-  ```
+<pre class="terminal">
   sourcetype="cf:splunknozzle" "dropping events"
-  ```
+</pre>
 
 ### 4. Check for data loss inside the Splunk Firehose Nozzle:
 
+If "Event Tracing" is enabled, extra metadata will be attached to events. This allows searches to calculate the percentage of data loss inside the Splunk Firehose Nozzle, if applicable.
 
-  If "Event Tracing" is enabled, extra metadata will be attached to events allowing searches to calculate the percentage of data loss inside the Splunk Firehose Nozzle, if any.
+Each instance of the Splunk Firehose Nozzle will run with a randomly generated UUID. The query below will display the message success rate for each UUID.
 
-  Each instance of the Splunk Firehose Nozzle will run with a randomly generated UUID. The below query will display the message success rate for each UUID.
-
-  ```
-  index=main | stats count as total_events , max(nozzle-event-counter) as max_number by uuid | eval success_percentage=(total_events/max_number) * 100 | table success_percentage
-  ```
-
+<pre class="terminal">
+index=main | stats count as total_events , max(nozzle-event-counter) as max_number by uuid | eval success_percentage=(total_events/max_number) * 100 | table success_percentage
+</pre>
