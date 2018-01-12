@@ -69,13 +69,13 @@ to install Splunk Firehose Nozzle for PCF tile.
       The Nozzle's user needs scopes `cloud_controller.admin_read_only` and `doppler.firehose` (older releases without
       `cloud_controller.admin_read_only` have to use `cloud_controller.admin`).
 
-        * For Elastic Runtime versions v1.8.9 and v1.7.29 and later, a `splunk-firehose` user is pre-created. Look up
+        * For Pivotal Application Service versions v1.8.9 and v1.7.29 and later, a `splunk-firehose` user is pre-created. Look up
   this user by:
    <ol>
-       <li> In the Elastic Runtime tile in Ops Manager, click the "Credentials" tab.</li>
+       <li> In the Pivotal Application Service tile in Ops Manager, click the "Credentials" tab.</li>
        <li> In the UAA section, retrieve the **"Splunk Firehose Credentials"**</li></ol>
 
-        * For earlier versions of Elastic Runtime, use the
+        * For earlier versions of Pivotal Application Service, use the
           [uaac](https://github.com/cloudfoundry/cf-uaac) tool to create the appropriate user. The `uaac`
           commands to add a user are as follows:
 
