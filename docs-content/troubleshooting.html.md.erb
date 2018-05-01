@@ -138,8 +138,8 @@ As the Splunk Firehose Nozzle sends data to Splunk via HTTPS using the HTTP Even
 
 If "Event Tracing" is enabled, extra metadata will be attached to events. This allows searches to calculate the percentage of data loss inside the Splunk Firehose Nozzle, if applicable.
 
-Each instance of the Splunk Firehose Nozzle will run with a randomly generated UUID. The query below will display the message success rate for each UUID.
+Each instance of the Splunk Firehose Nozzle will run with a randomly generated UUID. The query below will display the message success rate for each UUID (Please update the index value based on your nozzle configuration).
 
 <pre class="terminal">
-index=main | stats count as total_events , max(nozzle-event-counter) as max_number by uuid | eval success_percentage=(total_events/max_number) * 100 | table success_percentage
+index=main | stats count as total_events, min(nozzle-event-counter) as min_number, max(nozzle-event-counter) as max_number by uuid | eval event_number =  max_number - min_number | eval success_percentage = total_events/event_number*100 | stats max(success_percentage) by uuid
 </pre>

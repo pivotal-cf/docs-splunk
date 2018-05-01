@@ -99,7 +99,7 @@ to install Splunk Firehose Nozzle for PCF tile.
       * ContainerMetric
 
 4. Click **Advanced**.
-    ![Report Example: Cloud Foundry Settings View](images/tile-advanced-settings.png)
+    ![Report Example: Cloud Foundry Settings View](images/tile-advanced-config-settings.png)
 
     Complete the fields as follows:
     * **Scale Out Nozzle**: Scale out Splunk Nozzle. Splunk recommends running two or more nozzles for high availability.
@@ -115,5 +115,21 @@ to install Splunk Firehose Nozzle for PCF tile.
   because each Nozzle populates a cache of app metadata.
   * **Enable Event Tracing**: Enables event trace logging.
       Splunk events now contain a UUID, Splunk Nozzle Event Counts, and a Subscription-ID for Splunk correlation searches.
+  * **HEC Retries**: The retry count for sending events to the Splunk platform.
+      Events not successfully sent after this number of retries will be dropped, causing data loss.
+  * **HEC Batch Size**: The number of events per batch sent to Splunk HTTP Event Collector.
+  * **HEC Workers**: The number of concurrent workers sending data to Splunk HTTP Event Collector.
+      Scale this number to your Splunk platform data collection capacity accordingly.
+  * **Consumer Queue Size**: The internal consumer queue buffer size. Events will be sent to your Splunk platform after queue is full.
+  * **Flush Interval**: Time interval (in sec) for flushing queue to the Splunk platform regardless of Consumer Queue Size.
+      Prevents stale events in low throughput systems.
+  * **Missing App Cache Invalidate TTL**: Time interval (in sec) between refreshing the missing app info cache.
+      Set to 0 to maintain cache until nozzle restart.
+  * **App Cache Invalidate TTL**: Time interval (in sec) between refreshing the app info local cache.
+      Set to 0 to only populate the cache during startup or restart of the nozzle.
+  * **App Limits**: The number of apps for which metadata is gathered when refreshing the app metadata cache (order based on app creation date).
+      Set to 0 to remove limit.
+  * **Ignore Missing App**: Enables event trace logging.
+      Do not trigger an app metadata refresh when encountering data from an app without info in the app metadata cache.
 1. **Resource Config**: Select default options.
 1. **Stemcell**: Ensure the proper stemcell is available.
