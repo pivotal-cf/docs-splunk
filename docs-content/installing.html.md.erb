@@ -15,15 +15,13 @@ This topic describes how to install and configure Splunk Firehose Nozzle for PCF
 
 1. Download the Splunk file from [Pivotal Network](https://network.pivotal.io/products/splunk-nozzle/).
 
-1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to
-upload the product file.
+1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file.
 
 1. Click **Add** next to the uploaded Splunk Firehose Nozzle for PCF tile in the Ops
 Manager **Available Products** view to add it to your staging area.
 
 1. Click the newly added **Splunk Firehose Nozzle for PCF** tile.
 ![Report Example: Ops Manager Dashboard View](images/ops-manager-dashboard.png)
-
 
 1. [Configure the tile](#configure) as described below.
 
@@ -33,14 +31,12 @@ Manager **Available Products** view to add it to your staging area.
 to install Splunk Firehose Nozzle for PCF tile.
 
 
-
 ##<a id='configure'></a> Configuration
 
 1. Click **Assign AZs and Networks**: Choose placement accordingly.
 
 1. Click Splunk Settings:
     ![Report Example: Tile Splunk Settings](images/tile-splunk-settings.png)
-
     Complete the fields as follows:
     * **HTTP Event Collector Endpoint (HEC) URL**: HTTP Event Collector endpoint URL.`<http(s)>://<address>:<port>`,
      where `<address>` is either FQDN or IP address,
@@ -53,7 +49,6 @@ to install Splunk Firehose Nozzle for PCF tile.
     Secure communications will not check SSL certificates against a trusted Certificate Authority.
     Do not use for a production environment.
     * **Index**: The Splunk index that events are sent to.
-
     <p class="note warning"><strong>WARNING</strong>: Setting an invalid index causes events to be lost.
     This index must match one of the selected indexes for the Splunk HTTP event collector token used
     for the HTTP Event Collector Token parameter.</p>
@@ -61,24 +56,20 @@ to install Splunk Firehose Nozzle for PCF tile.
 
 1. Click **Cloud Foundry Settings**:
     ![Report Example: Cloud Foundry Settings View](images/tile-cf-settings.png)
-
     Complete the fields as follows:
     * **API Endpoint**: Cloud Foundry API endpoint.
     * **API user/API password**: Splunk Nozzle's credentials. Best practice is providing a user with "Rotate, Repave, Repair"
       credentials, so that credentials can be easily deactivated, rotated, and have minimal access privileges.
       The Nozzle's user needs scopes `cloud_controller.admin_read_only` and `doppler.firehose` (older releases without
       `cloud_controller.admin_read_only` have to use `cloud_controller.admin`).
-
         * For Pivotal Application Service versions v1.8.9 and v1.7.29 and later, a `splunk-firehose` user is pre-created. Look up
   this user by:
    <ol>
        <li> In the Pivotal Application Service tile in Ops Manager, click the "Credentials" tab.</li>
        <li> In the UAA section, retrieve the **"Splunk Firehose Credentials"**</li></ol>
-
         * For earlier versions of Pivotal Application Service, use the
           [uaac](https://github.com/cloudfoundry/cf-uaac) tool to create the appropriate user. The `uaac`
           commands to add a user are as follows:
-
         <ol>
           <li><code>uaac target https://uaa.[system domain url]</code></li>
           <li> <code>uaac token client get admin -s [admin client credentials secret]</code></li>
@@ -100,7 +91,6 @@ to install Splunk Firehose Nozzle for PCF tile.
 
 4. Click **Advanced**.
     ![Report Example: Cloud Foundry Settings View](images/tile-advanced-config-settings.png)
-
     Complete the fields as follows:
     * **Scale Out Nozzle**: Scale out Splunk Nozzle. Splunk recommends running two or more nozzles for high availability.
   * **Firehose Subscription ID**: The Loggregator does a round-robin of events across connections
@@ -121,11 +111,11 @@ to install Splunk Firehose Nozzle for PCF tile.
   * **HEC Workers**: The number of concurrent workers sending data to Splunk HTTP Event Collector.
       Scale this number to your Splunk platform data collection capacity accordingly.
   * **Consumer Queue Size**: The internal consumer queue buffer size. Events will be sent to your Splunk platform after queue is full.
-  * **Flush Interval**: Time interval (in sec) for flushing queue to the Splunk platform regardless of Consumer Queue Size.
+  * **Flush Interval**: Time interval (in seconds) for flushing queue to the Splunk platform regardless of Consumer Queue Size.
       Prevents stale events in low throughput systems.
-  * **Missing App Cache Invalidate TTL**: Time interval (in sec) between refreshing the missing app info cache.
+  * **Missing App Cache Invalidate TTL**: Time interval (in seconds) between refreshing the missing app info cache.
       Set to 0 to maintain cache until nozzle restart.
-  * **App Cache Invalidate TTL**: Time interval (in sec) between refreshing the app info local cache.
+  * **App Cache Invalidate TTL**: Time interval (in seconds) between refreshing the app info local cache.
       Set to 0 to only populate the cache during startup or restart of the nozzle.
   * **App Limits**: The number of apps for which metadata is gathered when refreshing the app metadata cache (order based on app creation date).
       Set to 0 to remove limit.
