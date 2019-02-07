@@ -3,6 +3,11 @@ title: Splunk Firehose Nozzle for PCF
 owner: Partners
 ---
 
+<p class="note warning"><strong> WARNING:</strong>
+This tile requires a Trusty stemcell.
+The end of life date for Ubuntu Trusty Tahr is April 2019.
+If a security vulnerability is found on this stemcell after April, it will not be fixed.</p>
+
 This documentation describes the Splunk Nozzle for Pivotal Cloud Foundry (PCF) Firehose.
 Splunk Nozzle integrates with PCF [Loggregator](http://docs.pivotal.io/pivotalcf/1-8/loggregator/index.html)
 and forwards streaming logs and metrics from user apps and system components of Cloud Foundry to Splunk Enterprise.
@@ -45,12 +50,15 @@ Splunk Firehose Nozzle for PCF includes the following key features:
     <td>Compatible Pivotal Application Service (formerly known as Elastic Runtime) version(s)</td>
     <td>v2.0.x, v2.1.x, v2.2.x, and v2.3.x</td>
   </tr>
+    <tr>
+       <td>BOSH stemcell version</td>
+       <td>Ubuntu Trusty</td>
+    </tr>
   <tr>
     <td>IaaS Support</td>
     <td>vSphere, OpenStack, and AWS</td>
   </tr>
 </table>
-\* As of PCF v2.0, <em>Elastic Runtime</em> is renamed <em>Pivotal Application Service (PAS)</em>. 
 
 ## <a id="reqs"></a>Requirements
 

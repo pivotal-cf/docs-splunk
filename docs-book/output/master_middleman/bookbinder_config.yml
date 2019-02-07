@@ -5,9 +5,9 @@
 :subnav_templates:
   splunk: splunk_subnav
 :template_variables: 
-:local_repo_dir: "/Users/dtregonning/Development/PCF/new-docs-splunk/docs-splunk"
+:local_repo_dir: "/Users/jacobknostman/workspace/docs-splunk"
 :workspace: !ruby/object:Pathname
-  path: "/Users/dtregonning/Development/PCF/new-docs-splunk/docs-splunk/docs-book/output/master_middleman/source"
+  path: "/Users/jacobknostman/workspace/docs-splunk/docs-book/output/master_middleman/source"
 :feedback_enabled: 
 :repo_link_enabled: true
 :repo_links:
