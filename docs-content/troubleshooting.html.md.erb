@@ -143,3 +143,10 @@ Each instance of the Splunk Firehose Nozzle will run with a randomly generated U
 <pre class="terminal">
 index=main | stats count as total_events, min(nozzle-event-counter) as min_number, max(nozzle-event-counter) as max_number by uuid | eval event_number =  max_number - min_number | eval success_percentage = total_events/event_number*100 | stats max(success_percentage) by uuid
 </pre>
+
+### 4. Additional Resources 
+
+Checkout [Troubleshoot HTTP Event Collector](https://docs.splunk.com/Documentation/Splunk/7.2.6/Data/TroubleshootHTTPEventCollector) for troubleshooting issues related to HTTP Event Collector
+
+Checkout [Splunk Answers](https://answers.splunk.com/)
+Users often find solutions on Splunk Answers, avoiding the need to file a Support case. Using the forum can save you time!

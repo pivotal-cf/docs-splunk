@@ -117,9 +117,11 @@ to install Splunk Firehose Nozzle for PCF tile.
       Set to 0 to maintain cache until nozzle restart.
   * **App Cache Invalidate TTL**: Time interval (in seconds) between refreshing the app info local cache.
       Set to 0 to only populate the cache during startup or restart of the nozzle.
+  * **Org Space Cache Invalidate TTL**: Time interval (in seconds) between refreshing the org and space cache.
+  * **Ignore Missing App**: If the application is missing, then stop repeatedly querying application info from Cloud Foundry.   
   * **App Limits**: The number of apps for which metadata is gathered when refreshing the app metadata cache (order based on app creation date).
       Set to 0 to remove limit.
-  * **Nozzle Memory**: Nozzle memory in MB.
+  * **Nozzle Memory**: Configure memory for Splunk Firehose Nozzle application in MB.
 
 1. **Resource Config**: Select default options.
 1. **Stemcell**: Ensure the proper stemcell is available.

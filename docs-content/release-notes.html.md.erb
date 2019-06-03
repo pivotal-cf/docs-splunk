@@ -3,6 +3,18 @@ title: Splunk Firehose Nozzle for PCF Release Notes
 owner: Partners
 ---
 
+### v1.1.0
+**Release Date:** June 3rd, 2019
+
+Features:
+
+* Per application index routing: This feature enables applications developers/ users to send their application data to a specific index in Splunk. A `SPLUNK_INDEX` environment variable could be set within application manifest for the application which will then override the default SPLUNK_INDEX of the nozzle and send specific application data to specific index. 
+* Caching system refactoring for better performance. Adds `Org Space Cache Invalidate TTL` advnace configuration parameter to the tile to update org and space cache directly.
+* Exponential backoff for HTTP Event Collector retry mechanism.
+* Removes `Splunk Version` configuration paramerer from the tile as its no longer required. Please see [Limitations](index.html#limitations) for more information. 
+
+
+
 ### v1.0.2
 **Release Date:** February 27th, 2019
 
@@ -31,7 +43,7 @@ Splunk Supported Release
 
 Features:
 
-* Scale out capability. Deploy more than one nozzle to your Pivotal Cloud Foundry (PCF) environment for High Availability.
+* Scale out capability: Deploy more than one nozzle to your Pivotal Cloud Foundry (PCF) environment for High Availability.
 * Events streamed efficiently and in a secure manner to Splunk via the HTTP Event Collector (HEC).
 * Nozzle is running multiple clients sending to HEC for concurrent streaming into Splunk for increased event throughput.
 * Custom event metadata can be sent along with PCF events for enriching data inside Splunk.
