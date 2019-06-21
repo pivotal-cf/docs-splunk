@@ -3,6 +3,17 @@ title: Splunk Firehose Nozzle for PCF Release Notes
 owner: Partners
 ---
 
+### v1.1.1
+**Release Date:** June 21st, 2019
+
+Features:
+
+* Upgrade cfclient and dependencies.
+* Allows configuration of keep alive duration `Firehose Keep Alive` for the firehose consumer from within the tile.
+  For more information, see [Configuration](installing.html#configure).
+* Updated default value for `Org Space Cache Invalidate TTL` configuration parameter.
+* Updated tile with latest CF-CLI version to address a high CVE.
+
 ### v1.1.0
 **Release Date:** June 3rd, 2019
 
@@ -12,7 +23,6 @@ Features:
 * Caching system refactoring for better performance. Adds `Org Space Cache Invalidate TTL` advnace configuration parameter to the tile to update org and space cache directly.
 * Exponential backoff for HTTP Event Collector retry mechanism.
 * Removes `Splunk Version` configuration paramerer from the tile as its no longer required. Please see [Limitations](index.html#limitations) for more information. 
-
 
 
 ### v1.0.2
