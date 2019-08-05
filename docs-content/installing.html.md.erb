@@ -58,24 +58,16 @@ to install Splunk Firehose Nozzle for PCF tile.
     ![Report Example: Cloud Foundry Settings View](images/tile-cf-settings.png)
     Complete the fields as follows:
     * **API Endpoint**: Cloud Foundry API endpoint.
-    * **API user/API password**: Splunk Nozzle's credentials. Best practice is providing a user with "Rotate, Repave, Repair"
-      credentials, so that credentials can be easily deactivated, rotated, and have minimal access privileges.
-      The Nozzle's user needs scopes `cloud_controller.admin_read_only` and `doppler.firehose` (older releases without
-      `cloud_controller.admin_read_only` have to use `cloud_controller.admin`).
-        * For Pivotal Application Service versions v1.8.9 and v1.7.29 and later, a `splunk-firehose` user is pre-created. Look up
-  this user by:
-   <ol>
-       <li> In the Pivotal Application Service tile in Ops Manager, click the "Credentials" tab.</li>
-       <li> In the UAA section, retrieve the **"Splunk Firehose Credentials"**</li></ol>
-        * For earlier versions of Pivotal Application Service, use the
-          [uaac](https://github.com/cloudfoundry/cf-uaac) tool to create the appropriate user. The `uaac`
-          commands to add a user are as follows:
+    * **Client ID/ Client Secret**: UAA client-id and client-secret.
+        The client needs scopes `cloud_controller.admin_read_only` and `doppler.firehose` and grant tpyes `client_credentials` and `refresh_token`.        
+        Use the [uaac](https://github.com/cloudfoundry/cf-uaac) tool to create the appropriate client. The `uaac` commands to add a client are as follows:
         <ol>
           <li><code>uaac target https://uaa.[system domain url]</code></li>
           <li> <code>uaac token client get admin -s [admin client credentials secret]</code></li>
-          <li> <code>uaac -t user add splunk-nozzle --password password123 --emails na</code></li>
-          <li><code>uaac -t member add cloud_controller.admin_read_only splunk-nozzle</code></li>
-          <li> <code>uaac -t member add doppler.firehose splunk-nozzle</code></li>
+          <li> <code>uaac client add splunk-nozzle --name splunk-nozzle</code></li>
+          <li><code>uaac client add splunk-nozzle --secret [your_client_secret]</code></li>
+          <li> <code>uaac client add splunk-nozzle --authorized_grant_types client_credentials,refresh_token</code></li>
+          <li> <code>uaac client add splunk-nozzle --authorities doppler.firehose,cloud_controller.admin_read_only</code></li>
         </ol>
     * **Skip SSL validation**: Skip SSL certificate validation for connections to Cloud Foundry. Secure communications do not check SSL certificates against a trusted Certificate Authority.
       Do not use for a production environment.
