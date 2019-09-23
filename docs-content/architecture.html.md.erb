@@ -1,11 +1,11 @@
 ---
-title: Splunk Firehose Nozzle for PCF Architecture
+title: Splunk Firehose Nozzle for Pivotal Platform Architecture
 owner: Partners
 ---
 
 ## <a id='architecture'></a> Architecture Overview
 
-The Splunk Firehose Nozzle for Pivotal Cloud Foundry (PCF) has been developed as a Pivotal Application Service app.
+The Splunk Firehose Nozzle for Pivotal Platform has been developed as a Pivotal Application Service app.
 The Nozzle subscribes to the Loggregator endpoint and writes events to an external Splunk environment.
 
 ![Report Example: Basic Nozzle Architecture](images/overview.png)
@@ -15,7 +15,7 @@ The Nozzle subscribes to the Loggregator endpoint and writes events to an extern
 
 * A Golang routine collects events from the Loggregator endpoint.
 * An in-memory queue buffers events for availability to multiple Splunk HTTP Event Collector clients.
-* The Splunk HTTP Event Collector clients run with their own Golang routines that consume events from the queue to enrich PCF events by attaching metadata fields.
+* The Splunk HTTP Event Collector clients run with their own Golang routines that consume events from the queue to enrich Pivotal Platform events by attaching metadata fields.
 * Finally, the events are batched together and sent to Splunk via the HEC endpoint.
 
 ![Report Example: Internal Nozzle Architecture](images/nozzle-internals-large.png)

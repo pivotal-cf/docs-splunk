@@ -1,27 +1,27 @@
 ---
-title: Splunk Firehose Nozzle for PCF
+title: Splunk Firehose Nozzle for Pivotal Platform
 owner: Partners
 ---
 
-This documentation describes the Splunk Firehose Nozzle for Pivotal Cloud Foundry (PCF).
-Splunk Firehose Nozzle integrates with PCF [Loggregator](http://docs.pivotal.io/pivotalcf/1-8/loggregator/index.html)
+This documentation describes the Splunk Firehose Nozzle for Pivotal Platform.
+Splunk Firehose Nozzle integrates with Pivotal Platform [Loggregator](http://docs.pivotal.io/pivotalcf/1-8/loggregator/index.html)
 and forwards streaming logs and metrics from user apps and system components of Cloud Foundry to Splunk Enterprise.
-PCF operators can then gain operational visibility over their PCF infrastructure, including the health and performance of their
+Pivotal Platform operators can then gain operational visibility over their Pivotal Platform infrastructure, including the health and performance of their
 apps and system components.
 
 ## <a id="overview"></a>Overview
 
-The Splunk Firehose Nozzle for PCF Tile streams logs and metrics from PCF and forwards them
+The Splunk Firehose Nozzle for Pivotal Platform Tile streams logs and metrics from Pivotal Platform and forwards them
 to user-specified Splunk Enterprise indexers configured to receive data via [HTTP Event Collector](http://docs.splunk.com/Documentation/Splunk/latest/Data/UsetheHTTPEventCollector).
-PCF operators and Splunk users can immediately search and analyze PCF Firehose data from their
+Pivotal Platform operators and Splunk users can immediately search and analyze Pivotal Platform Firehose data from their
 Splunk Enterprise deployment to build reports, dashboards, and alerts on the health
 and performance of their apps.
 
-Splunk Firehose Nozzle for PCF includes the following key features:
+Splunk Firehose Nozzle for Pivotal Platform includes the following key features:
 
-* Setup with out-of-the-box data parsing and enrichment for various PCF event types.
+* Setup with out-of-the-box data parsing and enrichment for various Pivotal Platform event types.
 * Reliable event delivery by leveraging Splunk's HTTP Event Collector endpoint.
-* Secure forwarding from PCF into external Splunk environments using user-provided SSL certificates.
+* Secure forwarding from Pivotal Platform into external Splunk environments using user-provided SSL certificates.
 * Scales out to meet increasing data volume and number of apps.
 
 
@@ -58,14 +58,14 @@ Splunk Firehose Nozzle for PCF includes the following key features:
 
 ## <a id="reqs"></a>Requirements
 
-Splunk Firehose Nozzle for PCF has the following requirements.
+Splunk Firehose Nozzle for Pivotal Platform has the following requirements.
 
 + An external Splunk Enterprise or Splunk Cloud 6.x deployment configured with a HTTP Event Collector token to receive data.
 
-## <a id="ecosystem"></a>Splunk and the PCF Ecosystem
-There are currently many projects involving Splunk and Pivotal Cloud Foundry. Included are links to these projects:
+## <a id="ecosystem"></a>Splunk and the Pivotal Platform Ecosystem
+There are currently many projects involving Splunk and Pivotal Platform. Included are links to these projects:
 
-* [Splunk Firehose Nozzle for PCF Tile](https://network.pivotal.io/products/splunk-nozzle/) - Pivotal Application deployed via PCF Ops Manager
+* [Splunk Firehose Nozzle for Pivotal Platform Tile](https://network.pivotal.io/products/splunk-nozzle/) - Pivotal Application deployed via Pivotal Platform Ops Manager
 * [Splunk Firehose Nozzle project](https://github.com/cloudfoundry-community/splunk-firehose-nozzle/) - Open source project location of Splunk Firehose Nozzle
 * [Splunk Add-on for Cloud Foundry](https://splunkbase.splunk.com/app/3417/) - Splunk Add-on for Cloud Foundry is used to parse, analyze and visualize Firehose data
 
@@ -76,4 +76,4 @@ There are currently many projects involving Splunk and Pivotal Cloud Foundry. In
 
 ## <a id="feedback"></a>Feedback
 
-Splunk Firehose Nozzle project is supported through Splunk <s></s>upport assuming the customer has a current Splunk support entitlement.  For customers that do not have a current Splunk support entitlement, please provide any bugs, feature requests, or questions to the [Pivotal Cloud Foundry Feedback](mailto:pivotal-cf-feedback@pivotal.io) or [here](https://github.com/cloudfoundry-community/splunk-firehose-nozzle/issues/new/choose) via the github project page.
+Splunk Firehose Nozzle project is supported through Splunk <s></s>upport assuming the customer has a current Splunk support entitlement.  For customers that do not have a current Splunk support entitlement, please provide any bugs, feature requests, or questions to the [Pivotal Platform Feedback](mailto:pivotal-cf-feedback@pivotal.io) or [here](https://github.com/cloudfoundry-community/splunk-firehose-nozzle/issues/new/choose) via the github project page.
