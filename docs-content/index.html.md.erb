@@ -1,12 +1,12 @@
 ---
-title: Splunk Firehose Nozzle for Pivotal Platform
+title: Splunk Firehose Nozzle for VMware Tanzu
 owner: Partners
 ---
 
-This documentation describes the Splunk Firehose Nozzle for Pivotal Platform.
-Splunk Firehose Nozzle integrates with Pivotal Platform Loggregator and forwards streaming logs and
+This documentation describes the Splunk Firehose Nozzle for VMware Tanzu.
+Splunk Firehose Nozzle integrates with VMware Tanzu Loggregator and forwards streaming logs and
 metrics from user apps and system components of Cloud Foundry to Splunk Enterprise.
-Pivotal Platform operators can then gain operational visibility over their Pivotal Platform
+VMware Tanzu operators can then gain operational visibility over their VMware Tanzu
 infrastructure, including the health and performance of their apps and system components.
 
 For more information about Loggregator, see 
@@ -14,17 +14,17 @@ For more information about Loggregator, see
 
 ## <a id="overview"></a>Overview
 
-The Splunk Firehose Nozzle for Pivotal Platform Tile streams logs and metrics from Pivotal Platform and forwards them
+The Splunk Firehose Nozzle for VMware Tanzu Tile streams logs and metrics from VMware Tanzu and forwards them
 to user-specified Splunk Enterprise indexers configured to receive data via [HTTP Event Collector](http://docs.splunk.com/Documentation/Splunk/latest/Data/UsetheHTTPEventCollector).
-Pivotal Platform operators and Splunk users can immediately search and analyze Pivotal Platform Firehose data from their
+VMware Tanzu operators and Splunk users can immediately search and analyze VMware Tanzu Firehose data from their
 Splunk Enterprise deployment to build reports, dashboards, and alerts on the health
 and performance of their apps.
 
-Splunk Firehose Nozzle for Pivotal Platform includes the following key features:
+Splunk Firehose Nozzle for VMware Tanzu includes the following key features:
 
-* Setup with out-of-the-box data parsing and enrichment for various Pivotal Platform event types.
+* Setup with out-of-the-box data parsing and enrichment for various VMware Tanzu event types.
 * Reliable event delivery by leveraging Splunk's HTTP Event Collector endpoint.
-* Secure forwarding from Pivotal Platform into external Splunk environments using user-provided SSL certificates.
+* Secure forwarding from VMware Tanzu into external Splunk environments using user-provided SSL certificates.
 * Scales out to meet increasing data volume and number of apps.
 
 
@@ -45,7 +45,7 @@ Splunk Firehose Nozzle for Pivotal Platform includes the following key features:
     <td>v2.4.x, v2.5.x, v2.6.x, v2.7.x and v2.8.x</td>
   </tr>
   <tr>
-    <td>Compatible Pivotal Application Service (formerly known as Elastic Runtime) versions</td>
+    <td>Compatible VMware Tanzu Application Service for VMs (formerly known as Elastic Runtime) versions</td>
     <td>v2.4.x, v2.5.x, v2.6.x, v2.7.x and v2.8.x</td>
   </tr>
     <tr>
@@ -61,14 +61,14 @@ Splunk Firehose Nozzle for Pivotal Platform includes the following key features:
 
 ## <a id="reqs"></a>Requirements
 
-Splunk Firehose Nozzle for Pivotal Platform has the following requirements.
+Splunk Firehose Nozzle for VMware Tanzu has the following requirements.
 
 + An external Splunk Enterprise or Splunk Cloud 6.x deployment configured with a HTTP Event Collector token to receive data.
 
-## <a id="ecosystem"></a>Splunk and the Pivotal Platform Ecosystem
-There are currently many projects involving Splunk and Pivotal Platform. Included are links to these projects:
+## <a id="ecosystem"></a>Splunk and the VMware Tanzu Ecosystem
+There are currently many projects involving Splunk and VMware Tanzu. Included are links to these projects:
 
-* [Splunk Firehose Nozzle for Pivotal Platform Tile](https://network.pivotal.io/products/splunk-nozzle/) - Pivotal Application deployed via Pivotal Platform Ops Manager
+* [Splunk Firehose Nozzle for VMware Tanzu Tile](https://network.pivotal.io/products/splunk-nozzle/) - Pivotal Application deployed via VMware Tanzu Ops Manager
 * [Splunk Firehose Nozzle project](https://github.com/cloudfoundry-community/splunk-firehose-nozzle/) - Open source project location of Splunk Firehose Nozzle
 
 ## <a id="limitations"></a>Limitations
@@ -78,4 +78,4 @@ There are currently many projects involving Splunk and Pivotal Platform. Include
 
 ## <a id="feedback"></a>Feedback
 
-Splunk Firehose Nozzle project is supported through Splunk support assuming the customer has a current Splunk support entitlement.  For customers that do not have a current Splunk support entitlement, please provide any bugs, feature requests, or questions to the [Pivotal Platform Feedback](mailto:pivotal-cf-feedback@pivotal.io) or to the [splunk-firehose-nozzle](https://github.com/cloudfoundry-community/splunk-firehose-nozzle/issues/new/choose) GitHub project.
+Splunk Firehose Nozzle project is supported through Splunk support assuming the customer has a current Splunk support entitlement.  For customers that do not have a current Splunk support entitlement, please provide any bugs, feature requests, or questions to the [VMware Tanzu Feedback](mailto:pivotal-cf-feedback@pivotal.io) or to the [splunk-firehose-nozzle](https://github.com/cloudfoundry-community/splunk-firehose-nozzle/issues/new/choose) GitHub project.
