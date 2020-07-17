@@ -13,7 +13,7 @@ This topic describes how to install and configure Splunk Firehose Nozzle for VMw
 
 ###Steps
 
-1. Download the Splunk file from [Pivotal Network](https://network.pivotal.io/products/splunk-nozzle/).
+1. Download the Splunk Firehose Nozzle file from [Pivotal Network](https://network.pivotal.io/products/splunk-nozzle/).
 
 1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file.
 
@@ -59,7 +59,7 @@ to install Splunk Firehose Nozzle for VMware Tanzu tile.
     Complete the fields as follows:
     * **API Endpoint**: Cloud Foundry API endpoint.
     * **Client ID/ Client Secret**: UAA client-id and client-secret.
-        The client needs scopes `cloud_controller.admin_read_only` and `doppler.firehose` and grant tpyes `client_credentials` and `refresh_token`.        
+        The client needs scopes `cloud_controller.admin_read_only` and `doppler.firehose` and grant tpyes `client_credentials` and `refresh_token`.
         Use the [uaac](https://github.com/cloudfoundry/cf-uaac) tool to create the appropriate client. The `uaac` commands to add a client are as follows:
         <ol>
           <li><code>uaac target https://uaa.[system domain url]</code></li>
@@ -91,14 +91,16 @@ to install Splunk Firehose Nozzle for VMware Tanzu tile.
   * **Additional Fields**: Arbitrary set of key:value pairs in the form `key1:value1,key2:value2,key3:value3` that do not occur in event payload itself.
   These fields are indexed with every event payload, and are used as metadata for indexing and searching.
   One situation in which this might be useful is differentiating logs from multiple foundations going into the same Splunk Enterprise index.
-  * **Add App Information**: When true, the nozzle calls back to the Cloud Foundry API and queries events that
-  have an app GUID to add additional information, such as app name, space name, space GUID, organization name,
-  organization GUID. This causes a one-time load increase on the API machines proportional the number of running apps,
+  * **Add App Information**: Enriches raw events with app metadata fields - app name, org name, org GUID, space name, space GUID.
+  When configured, the nozzle calls back to the Cloud Foundry API and queries events that
+  have an app GUID to add additional information. This causes a one-time load increase on the API machines proportional the number of running apps,
   because each Nozzle populates a cache of app metadata.
   * **Enable Event Tracing**: Enables event trace logging.
       Splunk events now contain a UUID, Splunk Nozzle Event Counts, and a Subscription-ID for Splunk correlation searches.
+  * **Monitor Queue Pressure**: Time interval for monitoring memory queue pressure to help with back-pressure insights.
   * **HEC Retries**: The retry count for sending events to the Splunk platform.
       Events not successfully sent after this number of retries will be dropped, causing data loss.
+  * **RLP Gateway Retries**: The retry count for connecting to RLP gateway.
   * **HEC Batch Size**: The number of events per batch sent to Splunk HTTP Event Collector.
   * **HEC Workers**: The number of concurrent workers sending data to Splunk HTTP Event Collector.
       Scale this number to your Splunk platform data collection capacity accordingly.
@@ -110,7 +112,7 @@ to install Splunk Firehose Nozzle for VMware Tanzu tile.
   * **App Cache Invalidate TTL**: Time interval (in seconds) between refreshing the app info local cache.
       Set to 0 to only populate the cache during startup or restart of the nozzle.
   * **Org Space Cache Invalidate TTL**: Time interval (in seconds) between refreshing the org and space cache.
-  * **Ignore Missing App**: If the application is missing, then stop repeatedly querying application info from Cloud Foundry.   
+  * **Ignore Missing App**: If the application is missing, then stop repeatedly querying application info from Cloud Foundry.
   * **App Limits**: The number of apps for which metadata is gathered when refreshing the app metadata cache (order based on app creation date).
       Set to 0 to remove limit.
   * **Nozzle Memory**: Configure memory for Splunk Firehose Nozzle application in MB.

@@ -1,21 +1,23 @@
+
+
 ---
 title: Splunk Firehose Nozzle for VMware Tanzu
 owner: Partners
 ---
 
 This documentation describes the Splunk Firehose Nozzle for VMware Tanzu.
-Splunk Firehose Nozzle integrates with VMware Tanzu Loggregator and forwards streaming logs and
+Splunk Firehose Nozzle integrates with the VMware Tanzu Loggregator and forwards streaming logs and
 metrics from user apps and system components of Cloud Foundry to Splunk Enterprise.
 VMware Tanzu operators can then gain operational visibility over their VMware Tanzu
 infrastructure, including the health and performance of their apps and system components.
 
-For more information about Loggregator, see 
-[Loggregator Architecture](https://docs.pivotal.io/platform/application-service/loggregator/architecture.html).
+For more information about Loggregator, see the 
+[Loggregator Architecture](https://docs.pivotal.io/platform/application-service/loggregator/architecture.html) topic in the Pivotal documentation.
 
 ## <a id="overview"></a>Overview
 
 The Splunk Firehose Nozzle for VMware Tanzu Tile streams logs and metrics from VMware Tanzu and forwards them
-to user-specified Splunk Enterprise indexers configured to receive data via [HTTP Event Collector](http://docs.splunk.com/Documentation/Splunk/latest/Data/UsetheHTTPEventCollector).
+to user-specified Splunk Enterprise indexers that are configured to receive data via [HTTP Event Collector](http://docs.splunk.com/Documentation/Splunk/latest/Data/UsetheHTTPEventCollector).
 VMware Tanzu operators and Splunk users can immediately search and analyze VMware Tanzu Firehose data from their
 Splunk Enterprise deployment to build reports, dashboards, and alerts on the health
 and performance of their apps.
@@ -26,6 +28,7 @@ Splunk Firehose Nozzle for VMware Tanzu includes the following key features:
 * Reliable event delivery by leveraging Splunk's HTTP Event Collector endpoint.
 * Secure forwarding from VMware Tanzu into external Splunk environments using user-provided SSL certificates.
 * Scales out to meet increasing data volume and number of apps.
+* Comes with events tracing and memory queue pressure monitoring capabilities for back-pressure insights.
 
 
 ## <a id="snapshot"></a>Product Snapshot
@@ -34,19 +37,19 @@ Splunk Firehose Nozzle for VMware Tanzu includes the following key features:
   <th>Details</th>
   <tr>
     <td>Tile Version</td>
-    <td>v1.1.2</td>
+    <td>v2.0.0</td>
   </tr>
   <tr>
     <td>Release Date</td>
-    <td>August 7th, 2019</td>
+    <td>July 20th, 2020</td>
   </tr>
   <tr>
     <td>Compatible Ops Manager Versions</td>
-    <td>v2.4.x, v2.5.x, v2.6.x, v2.7.x and v2.8.x</td>
+    <td>v2.5.x, v2.6.x, v2.7.x, v2.8.x, and v2.9.x</td>
   </tr>
   <tr>
     <td>Compatible VMware Tanzu Application Service for VMs (formerly known as Elastic Runtime) versions</td>
-    <td>v2.4.x, v2.5.x, v2.6.x, v2.7.x and v2.8.x</td>
+    <td>v2.5.x, v2.6.x, v2.7.x, v2.8.x, and v2.9.x</td>
   </tr>
     <tr>
        <td>BOSH stemcell version</td>
@@ -54,26 +57,26 @@ Splunk Firehose Nozzle for VMware Tanzu includes the following key features:
     </tr>
   <tr>
     <td>IaaS Support</td>
-    <td>vSphere, OpenStack, and AWS</td>
+    <td>vSphere, OpenStack, GCP, and AWS</td>
   </tr>
 </table>
 
 
 ## <a id="reqs"></a>Requirements
 
-Splunk Firehose Nozzle for VMware Tanzu has the following requirements.
+Splunk Firehose Nozzle for VMware Tanzu has the following system requirements.
 
-+ An external Splunk Enterprise or Splunk Cloud 6.x deployment configured with a HTTP Event Collector token to receive data.
++ An external Splunk Enterprise or Splunk Cloud 6.x or above deployment, configured with a HTTP Event Collector (HEC) token to receive data.
 
 ## <a id="ecosystem"></a>Splunk and the VMware Tanzu Ecosystem
-There are currently many projects involving Splunk and VMware Tanzu. Included are links to these projects:
+See the following links to learn more about projects involving Splunk and VMware Tanzu:
 
 * [Splunk Firehose Nozzle for VMware Tanzu Tile](https://network.pivotal.io/products/splunk-nozzle/) - Pivotal Application deployed via VMware Tanzu Ops Manager
 * [Splunk Firehose Nozzle project](https://github.com/cloudfoundry-community/splunk-firehose-nozzle/) - Open source project location of Splunk Firehose Nozzle
 
 ## <a id="limitations"></a>Limitations
 
-* Tile only support deployment for Splunk version 6.4 or above.
+* Tile only support deployment for Splunk versions 6.4 or above.
   For Splunk version 6.3 or below, see [https://github.com/cloudfoundry-community/splunk-firehose-nozzle/tree/master#please-note](https://github.com/cloudfoundry-community/splunk-firehose-nozzle/tree/master#please-note) for deployment instructions.
 
 ## <a id="feedback"></a>Feedback

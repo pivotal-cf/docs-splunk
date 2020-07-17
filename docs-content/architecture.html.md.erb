@@ -5,15 +5,15 @@ owner: Partners
 
 ## <a id='architecture'></a> Architecture Overview
 
-The Splunk Firehose Nozzle for VMware Tanzu has been developed as a VMware Tanzu Application Service for VMs app.
-The Nozzle subscribes to the Loggregator endpoint and writes events to an external Splunk environment.
+The Splunk Firehose Nozzle for VMware Tanzu is a VMware Tanzu Application Service for virtual machines (VMs) app.
+The nozzle subscribes to the Loggregator endpoint and writes events to an external Splunk platform environment.
 
 ![Report Example: Basic Nozzle Architecture](images/overview.png)
 <strong><center>Figure 1: Basic Nozzle Architecture</center></strong>
 
 <strong>Inside each nozzle:</strong>
 
-* A Golang routine collects events from the Loggregator endpoint.
+* A Golang routine collects events from the Loggregator v2 RLP gateway endpoint .
 * An in-memory queue buffers events for availability to multiple Splunk HTTP Event Collector clients.
 * The Splunk HTTP Event Collector clients run with their own Golang routines that consume events from the queue to enrich VMware Tanzu events by attaching metadata fields.
 * Finally, the events are batched together and sent to Splunk via the HEC endpoint.
@@ -23,17 +23,14 @@ The Nozzle subscribes to the Loggregator endpoint and writes events to an extern
 
 ## <a id='load-balancing'></a> Splunk Load Balancing Overview
 
-In Splunk environments with multiple servers, each with their own configured HEC endpoints; a mechanism needs to be used
-to distribute these requests to all the necessary Splunk servers. The collection of HEC endpoints can reside on either a
-cluster of Splunk Heavy Forwarders or Splunk Indexers depending on the specific environment configuration.
+In Splunk platform environments with multiple servers, each with their own configured HEC endpoints; a physical or logical load balancer is needed to distribute each request to each Splunk platform server. The collection of HEC endpoints can reside on either a
+cluster of Splunk heavy forwarders or Splunk indexers, depending on the specific environment configuration.
 
-A physical or logical load balancer is used to perform this function. If using a load balancer, the address of the
-load balancer needs to be configured in the setting for HTTP Event Collector Endpoint (HEC) URL found on the
-Splunk Settings configuration page.
+If you use a load balancer, the address of the load balancer needs to be configured in the setting for HTTP Event Collector Endpoint (HEC) URL found on the Splunk Settings configuration page.
 
 ## <a id='performance'></a> Performance and Sizing Guide
 
-Splunk has tested the Splunk Firehose Nozzle running as a single deployed nozzle on the AWS instance type c4.4xlarge.
+Splunk Inc. has tested the Splunk Firehose Nozzle for VMware Tanzu Architecture running as a single deployed nozzle on the AWS instance type c4.4xlarge.
 This EC2 instance type has 8 CPU and 32 GB memory. Storage is EBS-Only and has dedicated EBS Bandwidth of 2,000 Mbps.
 
 Tests were performed with structured and unstructured data with 2 different event sizes 256 and 1024 bytes.
@@ -52,3 +49,84 @@ Tests | Events per Second (EPS) | Mbps | Nozzle CPU (%) | Nozzle Mem Total (MB)
    you use a system with at least 8 CPUs and 300&nbsp;MB RAM.</p>
 
 <p class="note"><strong>Note:</strong> Performance results should be taken as a guide only as different configurations and environments may vary results.</p>
+
+###<a id='indexrouting'></a> Index routing
+
+Use index routing to send different Cloud Foundry logs to different indexes for better Audit Command Language (ACL) and data retention control in your Splunk platform deployment.
+
+1. Configure application index routing via application manifest
+Navigate to your deployment's your app manifest, and provide an environment variable named `SPLUNK_INDEX` and assign it the index you would like to send the app data to
+
+```
+applications:
+- name: console
+  memory: 256M
+  disk_quota: 256M
+  host: console
+  timeout: 180
+  buildpack: https://github.com/SUSE/stratos-buildpack
+  health-check-type: port
+  env:
+    SPLUNK_INDEX: testing_index
+    <note>Verify SPLUNK_INDEX exists on your Splunk platform deployment. Otherwise data will be lost.</note>
+```
+
+1. Index routing via Splunk configuration
+
+Logs can be routed using fields such as app ID/name, space ID/name or org ID/name.
+
+Configure the Splunk configuration files props.conf and transforms.conf on your Splunk platform indexers or Splunk platform heavy forwarders, if deployed.
+
+The following are example index routing configurations:
+
+<span>1. </span> Example: Route data from application ID `95930b4e-c16c-478e-8ded-5c6e9c5981f8` to a Splunk `prod` index:
+
+*$SPLUNK_HOME/etc/system/local/props.conf*
+```
+[cf:logmessage]
+TRANSFORMS-index_routing = route_data_to_index_by_field_cf_app_id
+```
+
+
+*$SPLUNK_HOME/etc/system/local/transforms.conf*
+```
+[route_data_to_index_by_field_cf_app_id]
+REGEX = "(\w+)":"95930b4e-c16c-478e-8ded-5c6e9c5981f8"
+DEST_KEY = _MetaData:Index
+FORMAT = prod
+```
+
+
+<span>2.</span> Example: Route application logs from any Cloud Foundry organizations whose names are prefixed with `sales` to a Splunk software `sales` index.
+
+*$SPLUNK_HOME/etc/system/local/props.conf*
+```
+[cf:logmessage]
+TRANSFORMS-index_routing = route_data_to_index_by_field_cf_org_name
+
+```
+
+*$SPLUNK_HOME/etc/system/local/transforms.conf*
+```
+[route_data_to_index_by_field_cf_org_name]
+REGEX = "cf_org_name":"(sales.*)"
+DEST_KEY = _MetaData:Index
+FORMAT = sales
+```
+
+<span>3.</span> Example: Route data from sourcetype `cf:splunknozzle` to index `new_index`:
+
+*$SPLUNK_HOME/etc/system/local/props.conf*
+```
+[cf:splunknozzle]
+TRANSFORMS-route_to_new_index = route_to_new_index
+```
+
+*$SPLUNK_HOME/etc/system/local/transforms.conf*
+```
+[route_to_new_index]
+SOURCE_KEY = MetaData:Sourcetype
+DEST_KEY =_MetaData:Index
+REGEX = (sourcetype::cf:splunknozzle)
+FORMAT = new_index
+```
