@@ -2,21 +2,18 @@
 title: Splunk Firehose Nozzle for VMware Tanzu Release Notes
 owner: Partners
 ---
-### v2.0.0
-**Release Date:** July 20th, 2020
+### v1.2.0
+**Release Date:** July 27th, 2020
 
 Features:
 
-* Update nozzle to use V2 api via RLP gateway mechanism.
-* Updated authentication client.
-* Added consumer queue monitoring capabilities in the nozzle to help with back-pressure insights.
-* Adding app cache (Add App Info) now contains a comma separated list of metadata fields to choose from.
-* Updated tile with recent stemcell i.e, 621.
-* Clean up un-supported CF eventtypes in V2(HttpStart/ HttpStop) and firehose web-socket implementation.
-* Added V2 adapter for v2-v1 mapping.
-* Updated vendor libs per v2 update.
+* Added consumer queue monitoring capabilities in the nozzle to help with back-pressure insights with events received vs sent count.
 * Updated logging to include retry counter during HEC retries.
-* Updated ci to include functional tests.
+* Updated app metadata configuration:
+   * Add-app-info configuration now allows users to select interested app metadata fields (List includes: AppName, OrgName, OrgGuid, SpaceName, SpaceGuid).
+   * Removed cf_origin and cf_ignored_app fields from app metadata.
+* Updated CI to include functional tests.
+* Updated tile with recent stemcell i.e, 621.
 
 
 ### v1.1.2

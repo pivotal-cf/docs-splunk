@@ -97,26 +97,25 @@ to install Splunk Firehose Nozzle for VMware Tanzu tile.
   because each Nozzle populates a cache of app metadata.
   * **Enable Event Tracing**: Enables event trace logging.
       Splunk events now contain a UUID, Splunk Nozzle Event Counts, and a Subscription-ID for Splunk correlation searches.
-  * **Monitor Queue Pressure**: Time interval for monitoring memory queue pressure to help with back-pressure insights.
+  * **Monitor Queue Pressure**: Time interval (in s/m/h. For example, 3600s or 60m or 1h) for monitoring memory queue pressure. Use to help with back-pressure insights. (Increases CPU load. Use for insights purposes only) Default is 0s (Disabled).
   * **HEC Retries**: The retry count for sending events to the Splunk platform.
       Events not successfully sent after this number of retries will be dropped, causing data loss.
-  * **RLP Gateway Retries**: The retry count for connecting to RLP gateway.
   * **HEC Batch Size**: The number of events per batch sent to Splunk HTTP Event Collector.
   * **HEC Workers**: The number of concurrent workers sending data to Splunk HTTP Event Collector.
       Scale this number to your Splunk platform data collection capacity accordingly.
   * **Consumer Queue Size**: The internal consumer queue buffer size. Events will be sent to your Splunk platform after queue is full.
-  * **Flush Interval**: Time interval (in seconds) for flushing queue to the Splunk platform regardless of Consumer Queue Size.
+  * **Flush Interval**: Time interval (in s/m/h. For example, 3600s or 60m or 1h) for flushing queue to the Splunk platform regardless of Consumer Queue Size.
       Prevents stale events in low throughput systems.
-  * **Missing App Cache Invalidate TTL**: Time interval (in seconds) between refreshing the missing app info cache.
+  * **Missing App Cache Invalidate TTL**: Time interval (in s/m/h. For example, 3600s or 60m or 1h) between refreshing the missing app info cache.
       Set to 0 to maintain cache until nozzle restart.
-  * **App Cache Invalidate TTL**: Time interval (in seconds) between refreshing the app info local cache.
+  * **App Cache Invalidate TTL**: Time interval (in s/m/h. For example, 3600s or 60m or 1h) between refreshing the app info local cache.
       Set to 0 to only populate the cache during startup or restart of the nozzle.
-  * **Org Space Cache Invalidate TTL**: Time interval (in seconds) between refreshing the org and space cache.
+  * **Org Space Cache Invalidate TTL**: Time interval (in s/m/h. For example, 3600s or 60m or 1h) between refreshing the org and space cache.
   * **Ignore Missing App**: If the application is missing, then stop repeatedly querying application info from Cloud Foundry.
   * **App Limits**: The number of apps for which metadata is gathered when refreshing the app metadata cache (order based on app creation date).
       Set to 0 to remove limit.
   * **Nozzle Memory**: Configure memory for Splunk Firehose Nozzle application in MB.
-  * **Firehose Keep Alive**: Keep alive duration (in seconds) for the firehose consumer.
+  * **Firehose Keep Alive**: Keep alive duration (in s/m/h. For example, 3600s or 60m or 1h) for the firehose consumer.
 
 1. **Resource Config**: Select default options.
 1. **Stemcell**: Ensure the proper stemcell is available.

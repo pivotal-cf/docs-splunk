@@ -13,7 +13,7 @@ The nozzle subscribes to the Loggregator endpoint and writes events to an extern
 
 <strong>Inside each nozzle:</strong>
 
-* A Golang routine collects events from the Loggregator v2 RLP gateway endpoint .
+* A Golang routine collects events from the Loggregator endpoint using v1 api.
 * An in-memory queue buffers events for availability to multiple Splunk HTTP Event Collector clients.
 * The Splunk HTTP Event Collector clients run with their own Golang routines that consume events from the queue to enrich VMware Tanzu events by attaching metadata fields.
 * Finally, the events are batched together and sent to Splunk via the HEC endpoint.
@@ -64,7 +64,7 @@ applications:
   disk_quota: 256M
   host: console
   timeout: 180
-  buildpack: https://github.com/SUSE/stratos-buildpack
+  buildpack: go
   health-check-type: port
   env:
     SPLUNK_INDEX: testing_index
