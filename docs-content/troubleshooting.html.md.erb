@@ -39,7 +39,7 @@ This error usually occurs when SSL is enabled on the Splunk HEC endpoint. Confir
 
 This usually means the index value specified in the configuration doesn't exist on Splunk Host. Confirm that you're using the correct Splunk index value.
 
-  
+
 <pre class="terminal">{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Non-ok response code [403] from splunk: {\"text\":\"Invalid token\",\"code\":4}"}}</pre>
 
 This can occur when the Splunk HEC Token value is invalid. Confirm that you're using a valid token.
@@ -53,13 +53,13 @@ This usually means that there was no valid SSL certificate found. Confirm that y
 
 <pre class="terminal">{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Unable to talk to Splunk","log_level":2,"data":{"error":"Post https://localhost:8088/services/collector: dial tcp localhost:8088: getsockopt: connection refused"}}</pre>
 
-This error can occur when the Splunk server is offline or when the Splunk HEC URL is not valid. Confirm that both the Splunk server is running and that you're using a valid URL. 
+This error can occur when the Splunk server is offline or when the Splunk HEC URL is not valid. Confirm that both the Splunk server is running and that you're using a valid URL.
 
 #### Cloud Foundry configuration related errors:
 
 <pre class="terminal">{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Failed to run splunk-firehose-nozzle","log_level":2,"data":{"error":"Error getting token: oauth2: cannot fetch token: 401 Unauthorized\nResponse: {\"error\":\"unauthorized\",\"error_description\":\"Bad credentials\"}"}}</pre>
 
-This error can occur when the credentials provided for CF environment are invalid. Confirm that the API User and API Password each have access to the CF environment. 
+This error can occur when the credentials provided for CF environment are invalid. Confirm that the API User and API Password each have access to the CF environment.
 
 
 <pre class="terminal">{"timestamp":"<time>","source":"splunk-nozzle-logger","message":"splunk-nozzle-logger.Failed to run splunk-firehose-nozzle","log_level":2,"data":{"error":"Could not get api /v2/info: Get https://api.cfendpoint.com/v2/info: x509: certificate signed by unknown authority"}}</pre>
@@ -144,7 +144,7 @@ Each instance of the Splunk Firehose Nozzle will run with a randomly generated U
 index=main | stats count as total_events, min(nozzle-event-counter) as min_number, max(nozzle-event-counter) as max_number by uuid | eval event_number =  max_number - min_number | eval success_percentage = total_events/event_number*100 | stats max(success_percentage) by uuid
 </pre>
 
-### 4. Additional Resources 
+### 4. Additional Resources
 
 Checkout [Troubleshoot HTTP Event Collector](https://docs.splunk.com/Documentation/Splunk/7.2.6/Data/TroubleshootHTTPEventCollector) for troubleshooting issues related to HTTP Event Collector.
 
