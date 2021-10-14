@@ -3,6 +3,18 @@ title: Splunk Firehose Nozzle for VMware Tanzu Release Notes
 owner: Partners
 ---
 
+### v1.2.3
+**Release Date:** Oct 15th, 2021
+
+Features:
+
+* Added tags (tbd)
+* Updated Splunk HEC retry counter default
+* Updated Tile migration script (to fix config getting reset on nozzle upgrade)
+* Updated logic to drop event when sink buffer is full to prevent passing back-pressure back to doppler, which was causing disconnects ([BUG] - Spunk nozzle transfers backpreassure upstream, resulting in client disconnects and doppler drops #285)
+* Updated cache logic to fetch app info from BoltDB database if it is not found in in-memory cache or remote
+* Upgraded go version to go1.17 and migrated from Glide to Go Modules
+
 ### v1.2.2
 **Release Date:** May 7th, 2021
 
