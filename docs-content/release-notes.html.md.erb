@@ -8,7 +8,7 @@ owner: Partners
 
 Features:
 
-* Added tags (tbd)
+* Added option to forward envelope tags to splunk event [#278](https://github.com/cloudfoundry-community/splunk-firehose-nozzle/issues/278)
 * Updated Splunk HEC retry counter default
 * Updated Tile migration script (to fix config getting reset on nozzle upgrade)
 * Updated logic to drop event when sink buffer is full to prevent passing back-pressure back to doppler, which was causing disconnects ([BUG] - Spunk nozzle transfers backpreassure upstream, resulting in client disconnects and doppler drops #285)
