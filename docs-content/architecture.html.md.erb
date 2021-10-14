@@ -55,7 +55,7 @@ Tests | Events per Second (EPS) | Mbps | Nozzle CPU (%) | Nozzle Mem Total (MB)
 Use index routing to send different Cloud Foundry logs to different indexes for better Audit Command Language (ACL) and data retention control in your Splunk platform deployment.
 
 1. Configure application index routing via application manifest
-Navigate to your deployment's your app manifest, and provide an environment variable named `SPLUNK_INDEX` and assign it the index you would like to send the app data to
+Navigate to your deployment's your app manifest, and provide an environment variable named `SPLUNK_INDEX` and assign it the index you would like to send the app data to. Make sure Splunk nozzle is configured with `Add App Info` (Select at least one of AppName,OrgName,OrgGuid,SpaceName,SpaceGuid) to enable app info caching.
 
 ```
 applications:
