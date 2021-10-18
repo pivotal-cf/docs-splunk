@@ -134,7 +134,17 @@ As the Splunk Firehose Nozzle sends data to Splunk via HTTPS using the HTTP Even
   sourcetype="cf:splunknozzle" "dropping events"
 </pre>
 
-### 4. Check for data loss inside the Splunk Firehose Nozzle:
+### 4. Check for dropped events due to slow downstream(Network/Splunk):
+
+If the nozzle emits the ‘dropped events’ warning saying that downstream is slow, then the network or Splunk environment might needs to be scaled. (eg. Splunk HEC receiver node, Splunk Indexer, LB etc)
+
+Run the following search to determine if Splunk has indexed any events indicating such issues.
+
+<pre class="terminal">
+  sourcetype="cf:splunknozzle" "dropped Total of"
+</pre>
+
+### 5. Check for data loss inside the Splunk Firehose Nozzle:
 
 If "Event Tracing" is enabled, extra metadata will be attached to events. This allows searches to calculate the percentage of data loss inside the Splunk Firehose Nozzle, if applicable.
 

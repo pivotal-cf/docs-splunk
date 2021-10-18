@@ -95,6 +95,7 @@ to install Splunk Firehose Nozzle for VMware Tanzu tile.
   When configured, the nozzle calls back to the Cloud Foundry API and queries events that
   have an app GUID to add additional information. This causes a one-time load increase on the API machines proportional the number of running apps,
   because each Nozzle populates a cache of app metadata.
+  * **Add Tags**: Add additional tags from envelope to splunk event. (Default: false) (Please note: Adding tags / Enabling this feature may slightly impact the performance due to the increased event size)
   * **Enable Event Tracing**: Enables event trace logging.
       Splunk events now contain a UUID, Splunk Nozzle Event Counts, and a Subscription-ID for Splunk correlation searches.
   * **Monitor Queue Pressure**: Time interval (in s/m/h. For example, 3600s or 60m or 1h) for monitoring memory queue pressure. Use to help with back-pressure insights. (Increases CPU load. Use for insights purposes only) Default is 0s (Disabled).
@@ -116,6 +117,7 @@ to install Splunk Firehose Nozzle for VMware Tanzu tile.
       Set to 0 to remove limit.
   * **Nozzle Memory**: Configure memory for Splunk Firehose Nozzle application in MB.
   * **Firehose Keep Alive**: Keep alive duration (in s/m/h. For example, 3600s or 60m or 1h) for the firehose consumer.
+  * **Drop Warn Threshold**: Threshold for the count of dropped events in case the downstream is slow. Based on the threshold, the errors will be logged.
 
 1. **Resource Config**: Select default options.
 1. **Stemcell**: Ensure the proper stemcell is available.
