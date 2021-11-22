@@ -59,7 +59,7 @@ to install Splunk Firehose Nozzle for VMware Tanzu tile.
     Complete the fields as follows:
     * **API Endpoint**: Cloud Foundry API endpoint.
     * **Client ID/ Client Secret**: UAA client-id and client-secret.
-        The client needs scopes `cloud_controller.admin_read_only` and `doppler.firehose` and grant tpyes `client_credentials` and `refresh_token`.
+        The client needs authorities `cloud_controller.admin_read_only` and `doppler.firehose` and grant tpyes `client_credentials` and `refresh_token`.
         Use the [uaac](https://github.com/cloudfoundry/cf-uaac) tool to create the appropriate client. The `uaac` commands to add a client are as follows:
         <ol>
           <li><code>uaac target https://uaa.[system domain url]</code></li>
