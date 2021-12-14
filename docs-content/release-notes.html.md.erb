@@ -3,6 +3,18 @@ title: Splunk Firehose Nozzle for VMware Tanzu Release Notes
 owner: Partners
 ---
 
+### v1.2.4
+**Release Date:** Dec 20th, 2021
+
+Features:
+
+* Fixed OAuth dependency issue, which caused auth failure when special characters were used in client secret (https://github.com/cloudfoundry-community/splunk-firehose-nozzle/issues/302)
+* Updated web socket dependency to fix vulnerabilities 
+* Fixed keep-alive connection implementation to reuse the connections (while sending events to HEC)
+* Improved unit-testing code coverage
+* Improved debug mode to add more event details while printing to stdout
+* Added support for TAS 2.12.x
+
 ### v1.2.3
 **Release Date:** Oct 18th, 2021
 
