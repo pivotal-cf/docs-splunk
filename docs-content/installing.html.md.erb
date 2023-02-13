@@ -5,13 +5,14 @@ owner: Partners
 
 This topic describes how to install and configure Splunk Firehose Nozzle for VMware Tanzu.
 
-##<a id='install'></a> Install and Configure Splunk Firehose Nozzle for VMware Tanzu
+## <a id='install'></a> Install and Configure Splunk Firehose Nozzle for VMware Tanzu
 
-###Prerequisites
-+ For information about the Ops Manager Installation Dashboard, see [Using Ops Manager](http://docs.pivotal.io/pivotalcf/1-11/customizing/).
+### Prerequisites
+
++ For information about the Ops Manager Installation Dashboard, see [Using Ops Manager](https://docs.vmware.com/en/VMware-Tanzu-Operations-Manager/3.0/vmware-tanzu-ops-manager/pcf-interface.html).
 + There is no upgrade path from the previous release of Splunk Nozzle for VMware Tanzu (Beta). Install this version to an environment without the Splunk Firehose Nozzle for VMware Tanzu (Beta).
 
-###Steps
+### Steps
 
 1. Download the Splunk Firehose Nozzle file from [Pivotal Network](https://network.pivotal.io/products/splunk-nozzle/).
 
@@ -21,7 +22,7 @@ This topic describes how to install and configure Splunk Firehose Nozzle for VMw
 Manager **Available Products** view to add it to your staging area.
 
 1. Click the newly added **Splunk Firehose Nozzle for VMware Tanzu** tile.
-![Report Example: Ops Manager Dashboard View](images/ops-manager-dashboard.png)
+![alt-text="Report Example: Ops Manager Dashboard View"](images/ops-manager-dashboard.png)
 
 1. [Configure the tile](#configure) as described below.
 
@@ -31,12 +32,12 @@ Manager **Available Products** view to add it to your staging area.
 to install Splunk Firehose Nozzle for VMware Tanzu tile.
 
 
-##<a id='configure'></a> Configuration
+## <a id='configure'></a> Configuration
 
 1. Click **Assign AZs and Networks**: Choose placement accordingly.
 
 1. Click Splunk Settings:
-    ![Report Example: Tile Splunk Settings](images/tile-splunk-settings.png)
+    ![alt-text="Report Example: Tile Splunk Settings"](images/tile-splunk-settings.png)
     Complete the fields as follows:
     * **HTTP Event Collector Endpoint (HEC) URL**: HTTP Event Collector endpoint URL.`<http(s)>://<address>:<port>`,
      where `<address>` is either FQDN or IP address,
@@ -53,22 +54,23 @@ to install Splunk Firehose Nozzle for VMware Tanzu tile.
     This index must match one of the selected indexes for the Splunk HTTP event collector token used
     for the HTTP Event Collector Token parameter.</p>
 
-
 1. Click **Cloud Foundry Settings**:
-    ![Report Example: Cloud Foundry Settings View](images/tile-cf-settings.png)
+    ![alt-text="Report Example: Cloud Foundry Settings View"](images/tile-cf-settings.png)
     Complete the fields as follows:
     * **API Endpoint**: Cloud Foundry API endpoint.
     * **Client ID/ Client Secret**: UAA client-id and client-secret.
         The client needs authorities `cloud_controller.admin_read_only` and `doppler.firehose` and grant tpyes `client_credentials` and `refresh_token`.
         Use the [uaac](https://github.com/cloudfoundry/cf-uaac) tool to create the appropriate client. The `uaac` commands to add a client are as follows:
-        <ol>
-          <li><code>uaac target https://uaa.[system domain url]</code></li>
-          <li> <code>uaac token client get admin -s [admin client credentials secret]</code></li>
-          <li> <code>uaac client add splunk-nozzle --name splunk-nozzle</code></li>
-          <li><code>uaac client add splunk-nozzle --secret [your_client_secret]</code></li>
-          <li> <code>uaac client add splunk-nozzle --authorized_grant_types client_credentials,refresh_token</code></li>
-          <li> <code>uaac client add splunk-nozzle --authorities doppler.firehose,cloud_controller.admin_read_only</code></li>
-        </ol>
+
+        ```
+          uaac target https://uaa.[system domain url]
+          uaac token client get admin -s [admin client credentials secret]
+          uaac client add splunk-nozzle --name splunk-nozzle
+          uaac client add splunk-nozzle --secret [your_client_secret]
+          uaac client add splunk-nozzle --authorized_grant_types client_credentials,refresh_token
+          uaac client add splunk-nozzle --authorities doppler.firehose,cloud_controller.admin_read_only
+        ```
+
     * **Skip SSL validation**: Skip SSL certificate validation for connections to Cloud Foundry. Secure communications do not check SSL certificates against a trusted Certificate Authority.
       Do not use for a production environment.
     * **Event Types**: Choose which events the nozzle forwards to the Splunk indexer(s).
@@ -81,8 +83,8 @@ to install Splunk Firehose Nozzle for VMware Tanzu tile.
       * Error
       * ContainerMetric
 
-4. Click **Advanced**.
-    ![Report Example: Cloud Foundry Settings View](images/tile-advanced-config-settings.png)
+2. Click **Advanced**.
+    ![alt-text="Report Example: Cloud Foundry Settings View"](images/tile-advanced-config-settings.png)
     Complete the fields as follows:
     * **Scale Out Nozzle**: Scale out Splunk Nozzle. Splunk recommends running two or more nozzles for high availability.
   * **Firehose Subscription ID**: The Loggregator does a round-robin of events across connections
@@ -119,5 +121,5 @@ to install Splunk Firehose Nozzle for VMware Tanzu tile.
   * **Firehose Keep Alive**: Keep alive duration (in s/m/h. For example, 3600s or 60m or 1h) for the firehose consumer.
   * **Drop Warn Threshold**: Threshold for the count of dropped events in case the downstream is slow. Based on the threshold, the errors will be logged.
 
-1. **Resource Config**: Select default options.
-1. **Stemcell**: Ensure the proper stemcell is available.
+     1. **Resource Config**: Select default options.
+     2. **Stemcell**: Ensure the proper stemcell is available.

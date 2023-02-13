@@ -13,15 +13,14 @@ If you are new to Splunk, start with the [Search Tutorial](https://docs.splunk.c
 
 The following is an example Splunk dashboard for operational intelligence.
 
-![Report Example: Sample Ops Dashboard](images/dashboard-sample.png)
+![alt-text="Report Example: Sample Ops Dashboard"](images/dashboard-sample.png)
 
 <%#
-For a starter sample dashboard for operational intelligence, you can use community-supported
-[Splunk Add-on for Cloud Foundry](#add-on) which includes many pre-built panels and reports to
+For a starter sample dashboard for operational intelligence, you can use community-supported [Splunk Add-on for Cloud Foundry](#add-on) which includes many pre-built panels and reports to
 help you quickly build your own custom dashboards to monitor the health of your foundation and the performance of your apps.
 %>
 
-##<a id='search'></a>Search Firehose Data
+## <a id='search'></a>Search Firehose Data
 
 The Firehose event types forwarded by the Splunk Firehose Nozzle are assigned the following Splunk sourcetypes by default:
 
@@ -57,7 +56,7 @@ You must have access to the index specified to receive these Firehose events.
 You might need to explicitly specify the index in your search if that index is not part of the indexes searched by default for your Splunk role.
 These searches can be saved as reports and used to power dashboard panels, as shown in the next section.
 
-##<a id='report'></a>Report and Visualize Firehose Data
+## <a id='report'></a>Report and Visualize Firehose Data
 
 To monitor your environment operational health, you can build on these same searches to generate reports and visualizations. For example:
 
@@ -69,7 +68,7 @@ To monitor your environment operational health, you can build on these same sear
       | stats min(valueGB) as mem by job_instance
       | rename mem as "Available Memory (GB)", job_instance as "Job Instance"
     ```
-    ![Report Example: Available mem per cell](images/report-available-memory-per-cell.png)
+    ![alt-text="Report Example: Available mem per cell"](images/report-available-memory-per-cell.png)
 
   * Report available memory per cell over time:
 
@@ -78,7 +77,7 @@ To monitor your environment operational health, you can build on these same sear
       | eval valueGB=round(case(unit=="MiB", value/1024, unit=="KiB", value/(1024*1024), unit=="GiB", value),2)
       | timechart min(valueGB) by job_instance
     ```
-    ![Report Example: Available mem per cell over time](images/report-available-memory-per-cell-over-time.png)
+    ![alt-text="Report Example: Available mem per cell over time"](images/report-available-memory-per-cell-over-time.png)
 
   * Report number of routes registered with trend indicator:
 
@@ -86,7 +85,7 @@ To monitor your environment operational health, you can build on these same sear
     sourcetype=cf:valuemetric name=RoutesTotal
       | timechart avg(value) as numRoutes
     ```
-    ![Report Example: Total routes with trend](images/report-routes-total-with-trend.png)
+    ![alt-text="Report Example: Total routes with trend"](images/report-routes-total-with-trend.png)
 
 For more information about searching and reporting with Splunk,
 see [Splunk Docs](https://docs.splunk.com/Documentation/Splunk)
