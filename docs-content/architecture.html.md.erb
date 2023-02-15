@@ -72,57 +72,57 @@ Navigate to your deployment's your app manifest, and provide an environment vari
 
 1. Index routing via Splunk configuration
 
-Logs can be routed using fields such as app ID/name, space ID/name or org ID/name.
-Configure the Splunk configuration files props.conf and transforms.conf on your Splunk platform indexers or Splunk platform heavy forwarders, if deployed.
+  Logs can be routed using fields such as app ID/name, space ID/name or org ID/name.
+  Configure the Splunk configuration files props.conf and transforms.conf on your Splunk platform indexers or Splunk platform heavy forwarders, if deployed.
 
 The following are example index routing configurations:
 
-<span>1. </span> Example: Route data from application ID `95930b4e-c16c-478e-8ded-5c6e9c5981f8` to a Splunk `prod` index:
+1. Example: Route data from application ID `95930b4e-c16c-478e-8ded-5c6e9c5981f8` to a Splunk `prod` index:
 
-*$SPLUNK_HOME/etc/system/local/props.conf*
-```
-[cf:logmessage]
-TRANSFORMS-index_routing = route_data_to_index_by_field_cf_app_id
-```
+  *$SPLUNK_HOME/etc/system/local/props.conf*
+  ```
+  [cf:logmessage]
+  TRANSFORMS-index_routing = route_data_to_index_by_field_cf_app_id
+  ```
 
-*$SPLUNK_HOME/etc/system/local/transforms.conf*
-```
-[route_data_to_index_by_field_cf_app_id]
-REGEX = "(\w+)":"95930b4e-c16c-478e-8ded-5c6e9c5981f8"
-DEST_KEY = _MetaData:Index
-FORMAT = prod
-```
+  *$SPLUNK_HOME/etc/system/local/transforms.conf*
+  ```
+  [route_data_to_index_by_field_cf_app_id]
+  REGEX = "(\w+)":"95930b4e-c16c-478e-8ded-5c6e9c5981f8"
+  DEST_KEY = _MetaData:Index
+  FORMAT = prod
+  ```
 
-<span>2.</span> Example: Route application logs from any Cloud Foundry organizations whose names are prefixed with `sales` to a Splunk software `sales` index.
+1. Example: Route application logs from any Cloud Foundry organizations whose names are prefixed with `sales` to a Splunk software `sales` index.
 
-*$SPLUNK_HOME/etc/system/local/props.conf*
-```
-[cf:logmessage]
-TRANSFORMS-index_routing = route_data_to_index_by_field_cf_org_name
+  *$SPLUNK_HOME/etc/system/local/props.conf*
+  ```
+  [cf:logmessage]
+  TRANSFORMS-index_routing = route_data_to_index_by_field_cf_org_name
 
-```
+  ```
 
-*$SPLUNK_HOME/etc/system/local/transforms.conf*
-```
-[route_data_to_index_by_field_cf_org_name]
-REGEX = "cf_org_name":"(sales.*)"
-DEST_KEY = _MetaData:Index
-FORMAT = sales
-```
+  *$SPLUNK_HOME/etc/system/local/transforms.conf*
+  ```
+  [route_data_to_index_by_field_cf_org_name]
+  REGEX = "cf_org_name":"(sales.*)"
+  DEST_KEY = _MetaData:Index
+  FORMAT = sales
+  ```
 
-<span>3.</span> Example: Route data from sourcetype `cf:splunknozzle` to index `new_index`:
+1. Example: Route data from sourcetype `cf:splunknozzle` to index `new_index`:
 
-*$SPLUNK_HOME/etc/system/local/props.conf*
-```
-[cf:splunknozzle]
-TRANSFORMS-route_to_new_index = route_to_new_index
-```
+  *$SPLUNK_HOME/etc/system/local/props.conf*
+  ```
+  [cf:splunknozzle]
+  TRANSFORMS-route_to_new_index = route_to_new_index
+  ```
 
-*$SPLUNK_HOME/etc/system/local/transforms.conf*
-```
-[route_to_new_index]
-SOURCE_KEY = MetaData:Sourcetype
-DEST_KEY =_MetaData:Index
-REGEX = (sourcetype::cf:splunknozzle)
-FORMAT = new_index
-```
+  *$SPLUNK_HOME/etc/system/local/transforms.conf*
+  ```
+  [route_to_new_index]
+  SOURCE_KEY = MetaData:Sourcetype
+  DEST_KEY =_MetaData:Index
+  REGEX = (sourcetype::cf:splunknozzle)
+  FORMAT = new_index
+  ```
